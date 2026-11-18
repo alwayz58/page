@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Pages</title>
+  <title>พื้นที่ส่วนตัว — โพสต์และจัดเก็บผ่าน GitHub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1344,18 +1344,20 @@
 
     .link-preview-thumb {
       width: 100%;
-      max-height: 240px;
+      aspect-ratio: 16 / 9;
+      max-height: 310px;
       background: #181629;
       border-bottom: 1px solid var(--border-soft);
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
     .link-preview-thumb img {
       width: 100%;
-      max-height: 240px;
+      height: 100%;
       object-fit: cover;
       display: block;
     }
@@ -2017,17 +2019,6 @@
       <div class="brand-text">
         <span class="brand-title" id="headerTitle">My Pages</span>
       </div>
-    </div>
-
-    <div class="topbar-actions">
-      <button type="button" class="icon-btn" id="refreshBtn" title="ดึงข้อมูลล่าสุดจาก GitHub" aria-label="ดึงข้อมูลล่าสุดจาก GitHub" hidden>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-          <path d="M3 3v5h5"/>
-          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
-          <path d="M16 16h5v5"/>
-        </svg>
-      </button>
     </div>
   </header>
 
@@ -2709,6 +2700,329 @@
         }
       }
 
+      const previewPosterCache = new Map();
+
+      function wrapCanvasText(ctx, text, maxWidth, maxLines) {
+        const raw = String(text || '').replace(/\s+/g, ' ').trim();
+        if (!raw) return [];
+
+        let tokens = [];
+        if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+          try {
+            const seg = new Intl.Segmenter('th', { granularity: 'word' });
+            tokens = Array.from(seg.segment(raw), s => s.segment);
+          } catch (_) {
+            tokens = Array.from(raw);
+          }
+        } else {
+          tokens = Array.from(raw);
+        }
+
+        const lines = [];
+        let current = '';
+
+        for (let i = 0; i < tokens.length; i++) {
+          const tok = tokens[i];
+          const test = current + tok;
+          if (ctx.measureText(test).width <= maxWidth || !current) {
+            current = test;
+          } else {
+            lines.push(current.trim());
+            current = tok.trimStart();
+            if (lines.length >= maxLines) break;
+          }
+        }
+
+        if (lines.length < maxLines && current.trim()) {
+          lines.push(current.trim());
+        } else if (lines.length === maxLines && current.trim()) {
+          let last = lines[maxLines - 1];
+          while (last.length > 1 && ctx.measureText(last + '…').width > maxWidth) {
+            last = last.slice(0, -1);
+          }
+          lines[maxLines - 1] = last + '…';
+        }
+
+        return lines;
+      }
+
+      function getPreviewTheme(domain, url) {
+        const d = String(domain || '').toLowerCase();
+        const u = String(url || '').toLowerCase();
+        const isVideo =
+          d.includes('youtube.com') ||
+          d === 'youtu.be' ||
+          d.includes('tiktok.com') ||
+          d.includes('vimeo.com') ||
+          /\.(mp4|webm|ogg|mov)(\?|$)/i.test(u);
+
+        if (isVideo) {
+          return {
+            kind: 'video',
+            bgStart: '#1c1226',
+            bgMid: '#351832',
+            bgEnd: '#151326',
+            accent: '#ff4d6d',
+            badge: d.includes('youtube') || d === 'youtu.be' ? 'YOUTUBE VIDEO' : (d.includes('tiktok') ? 'TIKTOK VIDEO' : 'VIDEO PREVIEW')
+          };
+        }
+        if (d.includes('pantip.com')) {
+          return {
+            kind: 'forum',
+            bgStart: '#1f1d33',
+            bgMid: '#353156',
+            bgEnd: '#262342',
+            accent: '#fbc02d',
+            badge: 'PANTIP PREVIEW'
+          };
+        }
+        if (d.includes('facebook.com') || d.includes('fb.com') || d.includes('instagram.com') || d === 'x.com' || d.includes('twitter.com')) {
+          return {
+            kind: 'social',
+            bgStart: '#19224a',
+            bgMid: '#2c346b',
+            bgEnd: '#1b1d3a',
+            accent: '#60a5fa',
+            badge: 'SOCIAL POST'
+          };
+        }
+        if (d.includes('github.com') || d.includes('gitlab.com')) {
+          return {
+            kind: 'code',
+            bgStart: '#121829',
+            bgMid: '#1f2b46',
+            bgEnd: '#15192c',
+            accent: '#38bdf8',
+            badge: 'REPOSITORY / CODE'
+          };
+        }
+
+        const palettes = [
+          { bgStart: '#1f1d36', bgMid: '#3b3469', bgEnd: '#221f3d', accent: '#fbc02d' },
+          { bgStart: '#14293a', bgMid: '#1f455c', bgEnd: '#162238', accent: '#38bdf8' },
+          { bgStart: '#231934', bgMid: '#44295c', bgEnd: '#1c1830', accent: '#f472b6' },
+          { bgStart: '#162b2a', bgMid: '#214745', bgEnd: '#172330', accent: '#34d399' }
+        ];
+        let hash = 0;
+        for (let i = 0; i < d.length; i++) {
+          hash = ((hash << 5) - hash + d.charCodeAt(i)) | 0;
+        }
+        const picked = palettes[Math.abs(hash) % palettes.length];
+        return {
+          kind: 'web',
+          bgStart: picked.bgStart,
+          bgMid: picked.bgMid,
+          bgEnd: picked.bgEnd,
+          accent: picked.accent,
+          badge: 'CONTENT PREVIEW'
+        };
+      }
+
+      function drawRoundedRect(ctx, x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+      }
+
+      function generateLinkPreviewPosterDataUrl(preview) {
+        const domain = preview.domain || 'website';
+        const siteLabel = (preview.siteName || domain).toUpperCase();
+        const title = preview.title || domain;
+        const desc = preview.description || preview.url || '';
+        const cacheKey = `${domain}|${title}|${desc}`;
+
+        if (previewPosterCache.has(cacheKey)) {
+          return previewPosterCache.get(cacheKey);
+        }
+
+        const canvas = document.createElement('canvas');
+        canvas.width = 960;
+        canvas.height = 540;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return '';
+
+        const theme = getPreviewTheme(domain, preview.url);
+        const fontStack = '"Noto Sans Thai", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+
+        // Background gradient
+        const grad = ctx.createLinearGradient(0, 0, 960, 540);
+        grad.addColorStop(0, theme.bgStart);
+        grad.addColorStop(0.55, theme.bgMid);
+        grad.addColorStop(1, theme.bgEnd);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 960, 540);
+
+        // Ambient glow
+        const glow = ctx.createRadialGradient(760, 140, 20, 760, 140, 340);
+        glow.addColorStop(0, 'rgba(251, 192, 45, 0.16)');
+        glow.addColorStop(1, 'rgba(251, 192, 45, 0)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, 960, 540);
+
+        // Main preview card frame inside canvas
+        drawRoundedRect(ctx, 44, 38, 872, 464, 20);
+        ctx.fillStyle = 'rgba(24, 22, 42, 0.68)';
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.13)';
+        ctx.stroke();
+
+        // Top browser/window bar inside mockup
+        ctx.save();
+        drawRoundedRect(ctx, 44, 38, 872, 54, 20);
+        ctx.clip();
+        ctx.fillStyle = 'rgba(15, 14, 28, 0.72)';
+        ctx.fillRect(44, 38, 872, 54);
+        ctx.restore();
+
+        // Window dots
+        const dotColors = ['#ff5f56', '#ffbd2e', '#27c93f'];
+        dotColors.forEach((col, idx) => {
+          ctx.beginPath();
+          ctx.arc(76 + idx * 20, 65, 6, 0, Math.PI * 2);
+          ctx.fillStyle = col;
+          ctx.fill();
+        });
+
+        // Address bar pill in mockup header
+        drawRoundedRect(ctx, 148, 50, 560, 30, 15);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.fill();
+        ctx.font = `500 15px ${fontStack}`;
+        ctx.fillStyle = '#cfcbe8';
+        ctx.textBaseline = 'middle';
+        const shortUrl = String(preview.url || domain).replace(/^https?:\/\//i, '');
+        const clippedUrl = shortUrl.length > 56 ? shortUrl.slice(0, 55) + '…' : shortUrl;
+        ctx.fillText(clippedUrl, 166, 65);
+
+        // Category badge top-right
+        ctx.font = `700 13px ${fontStack}`;
+        const badgeText = theme.badge;
+        const badgeW = Math.min(200, ctx.measureText(badgeText).width + 26);
+        drawRoundedRect(ctx, 892 - badgeW, 50, badgeW, 30, 15);
+        ctx.fillStyle = theme.accent;
+        ctx.fill();
+        ctx.fillStyle = '#181629';
+        ctx.fillText(badgeText, 892 - badgeW + 13, 65);
+
+        // Right-side visual illustration (Play button for video, content preview thumbnail card for web)
+        drawRoundedRect(ctx, 636, 128, 244, 208, 16);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+        ctx.stroke();
+
+        if (theme.kind === 'video') {
+          ctx.beginPath();
+          ctx.arc(758, 224, 42, 0, Math.PI * 2);
+          ctx.fillStyle = theme.accent;
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.moveTo(747, 204);
+          ctx.lineTo(779, 224);
+          ctx.lineTo(747, 244);
+          ctx.closePath();
+          ctx.fillStyle = '#ffffff';
+          ctx.fill();
+
+          // Progress bar graphic
+          drawRoundedRect(ctx, 660, 304, 196, 8, 4);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.16)';
+          ctx.fill();
+          drawRoundedRect(ctx, 660, 304, 86, 8, 4);
+          ctx.fillStyle = theme.accent;
+          ctx.fill();
+        } else {
+          // Miniature content layout graphic
+          drawRoundedRect(ctx, 658, 148, 200, 92, 10);
+          ctx.fillStyle = 'rgba(251, 192, 45, 0.16)';
+          ctx.fill();
+
+          // Monogram circle inside graphic
+          ctx.beginPath();
+          ctx.arc(758, 194, 26, 0, Math.PI * 2);
+          ctx.fillStyle = theme.accent;
+          ctx.fill();
+
+          ctx.font = `700 24px ${fontStack}`;
+          ctx.fillStyle = '#181629';
+          ctx.textAlign = 'center';
+          const initial = getInitial(domain);
+          ctx.fillText(initial, 758, 195);
+          ctx.textAlign = 'left';
+
+          // Decorative content lines
+          drawRoundedRect(ctx, 658, 258, 180, 12, 6);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.28)';
+          ctx.fill();
+          drawRoundedRect(ctx, 658, 280, 140, 10, 5);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.16)';
+          ctx.fill();
+          drawRoundedRect(ctx, 658, 300, 162, 10, 5);
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
+          ctx.fill();
+        }
+
+        // Left-side text content: Site label, Title, Description
+        ctx.textBaseline = 'top';
+        ctx.font = `700 17px ${fontStack}`;
+        ctx.fillStyle = theme.accent;
+        const shortSite = siteLabel.length > 34 ? siteLabel.slice(0, 33) + '…' : siteLabel;
+        ctx.fillText(shortSite, 82, 130);
+
+        // Title (up to 3 lines)
+        ctx.font = `700 32px ${fontStack}`;
+        ctx.fillStyle = '#f8f7ff';
+        const titleLines = wrapCanvasText(ctx, title, 520, 3);
+        let cursorY = 166;
+        titleLines.forEach(line => {
+          ctx.fillText(line, 82, cursorY);
+          cursorY += 44;
+        });
+
+        // Description snippet (up to 2 lines)
+        if (desc) {
+          cursorY += 10;
+          ctx.font = `400 21px ${fontStack}`;
+          ctx.fillStyle = '#c5c0e2';
+          const descLines = wrapCanvasText(ctx, desc, 520, 2);
+          descLines.forEach(line => {
+            ctx.fillText(line, 82, cursorY);
+            cursorY += 30;
+          });
+        }
+
+        // Bottom accent bar & hint
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.fillRect(82, 434, 798, 1);
+
+        ctx.font = `600 16px ${fontStack}`;
+        ctx.fillStyle = '#bdb8da';
+        ctx.fillText(`ตัวอย่างเนื้อหาจาก ${domain}`, 82, 452);
+
+        let dataUrl = '';
+        try {
+          dataUrl = canvas.toDataURL('image/png');
+          if (previewPosterCache.size > 60) {
+            const firstKey = previewPosterCache.keys().next().value;
+            previewPosterCache.delete(firstKey);
+          }
+          previewPosterCache.set(cacheKey, dataUrl);
+        } catch (_) {}
+
+        return dataUrl;
+      }
+
       function createLinkPreviewElement(preview, clickable) {
         const wrapper = clickable ? document.createElement('a') : document.createElement('div');
         wrapper.className = 'link-preview-card';
@@ -2718,16 +3032,27 @@
           wrapper.rel = 'noopener noreferrer';
         }
 
+        // Always render a visual preview image (real OG/media image if reachable, otherwise generated content preview poster)
+        const thumb = document.createElement('div');
+        thumb.className = 'link-preview-thumb';
+        const img = document.createElement('img');
+        img.alt = preview.title || 'ภาพพรีวิวตัวอย่างเนื้อหา';
+
+        const fallbackPoster = generateLinkPreviewPosterDataUrl(preview);
         if (preview.image) {
-          const thumb = document.createElement('div');
-          thumb.className = 'link-preview-thumb';
-          const img = document.createElement('img');
           img.src = preview.image;
-          img.alt = preview.title || 'พรีวิวลิงก์';
-          img.loading = 'lazy';
           img.addEventListener('error', () => {
-            thumb.remove();
+            if (fallbackPoster && img.src !== fallbackPoster) {
+              img.src = fallbackPoster;
+            } else {
+              thumb.remove();
+            }
           });
+        } else if (fallbackPoster) {
+          img.src = fallbackPoster;
+        }
+
+        if (img.src) {
           thumb.appendChild(img);
           wrapper.appendChild(thumb);
         }
@@ -3012,9 +3337,9 @@
         return objUrl;
       }
 
-      // Persist local-only text/url posts, groups & saved IDs best-effort
+      // Persist local-only text/url/image posts, groups & saved IDs best-effort
       function saveLocalPostsSnapshot() {
-        const serializable = state.posts
+        const buildList = (stripDataImages) => state.posts
           .filter(p => p.localOnly)
           .map(p => ({
             id: p.id,
@@ -3027,9 +3352,21 @@
             createdAt: p.createdAt,
             updatedAt: p.updatedAt || null,
             localOnly: true,
-            media: (p.media || []).filter(m => !m.isSessionObjectUrl)
+            media: (p.media || [])
+              .filter(m => !m.isSessionObjectUrl && (!stripDataImages || !String(m.url || '').startsWith('data:')))
+              .map(m => ({
+                kind: m.kind,
+                url: m.url,
+                name: m.name || '',
+                mime: m.mime || ''
+              }))
           }));
-        safeSetStorage(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(serializable));
+
+        try {
+          window.localStorage.setItem(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(buildList(false)));
+        } catch (_) {
+          safeSetStorage(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(buildList(true)));
+        }
       }
 
       function persistGroups() {
@@ -3465,13 +3802,13 @@
           if (els.openSettingsBtn) els.openSettingsBtn.classList.add('connected');
           if (els.ghStatusLabel) els.ghStatusLabel.textContent = `${state.gh.owner}/${state.gh.repo}`;
           if (els.headerSubtitle) els.headerSubtitle.textContent = `เชื่อมต่อกับ GitHub (${state.gh.branch})`;
-          els.refreshBtn.hidden = false;
+          if (els.refreshBtn) els.refreshBtn.hidden = false;
           els.disconnectGhBtn.hidden = false;
         } else {
           if (els.openSettingsBtn) els.openSettingsBtn.classList.remove('connected');
           if (els.ghStatusLabel) els.ghStatusLabel.textContent = '';
           if (els.headerSubtitle) els.headerSubtitle.textContent = '';
-          els.refreshBtn.hidden = true;
+          if (els.refreshBtn) els.refreshBtn.hidden = true;
           els.disconnectGhBtn.hidden = true;
         }
 
@@ -3843,43 +4180,66 @@
               : (imageCount === 2 && mediaList.length === 2 ? 'count-2' : 'count-many');
             mediaGrid.className = `post-media ${layoutClass}`;
 
+            const mountMediaIntoFrame = (frame, mediaItem, resolvedUrl) => {
+              frame.innerHTML = '';
+              if (!resolvedUrl) {
+                const unavailable = document.createElement('div');
+                unavailable.className = 'media-loading';
+                unavailable.textContent = 'ไม่สามารถแสดงไฟล์สื่อได้';
+                frame.appendChild(unavailable);
+                return;
+              }
+
+              if (mediaItem.kind === 'video') {
+                const videoEl = document.createElement('video');
+                videoEl.controls = true;
+                videoEl.playsInline = true;
+                videoEl.preload = 'metadata';
+                videoEl.src = resolvedUrl;
+                frame.appendChild(videoEl);
+              } else {
+                const imgEl = document.createElement('img');
+                imgEl.src = resolvedUrl;
+                imgEl.alt = mediaItem.name || 'รูปภาพประกอบโพสต์';
+                imgEl.addEventListener('error', () => {
+                  let domain = 'media';
+                  try {
+                    domain = new URL(resolvedUrl).hostname.replace(/^www\./i, '');
+                  } catch (_) {}
+                  const fallback = generateLinkPreviewPosterDataUrl({
+                    url: resolvedUrl,
+                    domain,
+                    siteName: domain,
+                    title: mediaItem.name || 'ตัวอย่างรูปภาพจากลิงก์',
+                    description: resolvedUrl
+                  });
+                  if (fallback && imgEl.src !== fallback) {
+                    imgEl.src = fallback;
+                  }
+                });
+                imgEl.addEventListener('click', () => openLightbox(imgEl.src || resolvedUrl));
+                frame.appendChild(imgEl);
+              }
+            };
+
             mediaList.forEach(mediaItem => {
               const frame = document.createElement('div');
               frame.className = mediaItem.kind === 'video' ? 'media-frame video-frame' : 'media-frame';
 
-              const placeholder = document.createElement('div');
-              placeholder.className = 'media-loading';
-              placeholder.textContent = 'กำลังโหลดสื่อ...';
-              frame.appendChild(placeholder);
+              if (!mediaItem.path && mediaItem.url) {
+                mountMediaIntoFrame(frame, mediaItem, mediaItem.url);
+              } else {
+                const placeholder = document.createElement('div');
+                placeholder.className = 'media-loading';
+                placeholder.textContent = 'กำลังโหลดสื่อ...';
+                frame.appendChild(placeholder);
 
-              resolveRepoMediaUrl(mediaItem).then(resolvedUrl => {
-                frame.innerHTML = '';
-                if (!resolvedUrl) {
-                  const unavailable = document.createElement('div');
-                  unavailable.className = 'media-loading';
-                  unavailable.textContent = 'ไม่สามารถแสดงไฟล์สื่อได้';
-                  frame.appendChild(unavailable);
-                  return;
-                }
-
-                if (mediaItem.kind === 'video') {
-                  const videoEl = document.createElement('video');
-                  videoEl.controls = true;
-                  videoEl.playsInline = true;
-                  videoEl.preload = 'metadata';
-                  videoEl.src = resolvedUrl;
-                  frame.appendChild(videoEl);
-                } else {
-                  const imgEl = document.createElement('img');
-                  imgEl.src = resolvedUrl;
-                  imgEl.alt = mediaItem.name || 'รูปภาพประกอบโพสต์';
-                  imgEl.loading = 'lazy';
-                  imgEl.addEventListener('click', () => openLightbox(resolvedUrl));
-                  frame.appendChild(imgEl);
-                }
-              }).catch(() => {
-                placeholder.textContent = 'โหลดสื่อไม่สำเร็จ';
-              });
+                resolveRepoMediaUrl(mediaItem).then(resolvedUrl => {
+                  mountMediaIntoFrame(frame, mediaItem, resolvedUrl);
+                }).catch(() => {
+                  placeholder.textContent = 'โหลดสื่อไม่สำเร็จ';
+                });
+              }
 
               mediaGrid.appendChild(frame);
             });
@@ -3888,6 +4248,44 @@
           }
 
           els.feedStream.appendChild(article);
+        });
+      }
+
+      function imageFileToCompressedDataUrl(file) {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const rawDataUrl = String(reader.result || '');
+            const img = new Image();
+            img.onload = () => {
+              try {
+                const maxDim = 1024;
+                let w = img.naturalWidth || img.width;
+                let h = img.naturalHeight || img.height;
+                if (w > maxDim || h > maxDim) {
+                  if (w >= h) {
+                    h = Math.round((h * maxDim) / w);
+                    w = maxDim;
+                  } else {
+                    w = Math.round((w * maxDim) / h);
+                    h = maxDim;
+                  }
+                }
+                const canvas = document.createElement('canvas');
+                canvas.width = w || 640;
+                canvas.height = h || 480;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                resolve(canvas.toDataURL('image/jpeg', 0.84));
+              } catch (_) {
+                resolve(rawDataUrl);
+              }
+            };
+            img.onerror = () => resolve(rawDataUrl);
+            img.src = rawDataUrl;
+          };
+          reader.onerror = () => resolve('');
+          reader.readAsDataURL(file);
         });
       }
 
@@ -3906,16 +4304,23 @@
           }
 
           const previewUrl = URL.createObjectURL(file);
-          state.pendingAttachments.push({
+          const item = {
             id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
             kind,
             source: 'file',
             file,
             previewUrl,
+            dataUrl: '',
             name: file.name,
             size: file.size,
             mime: file.type
-          });
+          };
+          if (kind === 'image') {
+            imageFileToCompressedDataUrl(file).then(dUrl => {
+              if (dUrl) item.dataUrl = dUrl;
+            });
+          }
+          state.pendingAttachments.push(item);
         }
 
         renderComposerPreviews();
@@ -4030,13 +4435,22 @@
           } else {
             // Local mode when GitHub is not configured yet
             for (const att of state.pendingAttachments) {
+              let resolvedLocalUrl = att.previewUrl;
+              let sessionOnly = att.source === 'file';
+              if (att.source === 'file' && att.kind === 'image') {
+                const persistentDataUrl = att.dataUrl || (await imageFileToCompressedDataUrl(att.file));
+                if (persistentDataUrl) {
+                  resolvedLocalUrl = persistentDataUrl;
+                  sessionOnly = false;
+                }
+              }
               uploadedMedia.push({
                 kind: att.kind,
-                url: att.previewUrl,
+                url: resolvedLocalUrl,
                 name: att.name,
                 mime: att.mime || '',
                 fileRef: att.source === 'file' ? att.file : null,
-                isSessionObjectUrl: att.source === 'file'
+                isSessionObjectUrl: sessionOnly
               });
             }
 
@@ -4255,8 +4669,10 @@
       async function refreshFeedFromGitHub() {
         if (!state.gh.connected) return;
         state.loadingFeed = true;
-        els.refreshBtn.classList.add('spinning');
-        els.refreshBtn.disabled = true;
+        if (els.refreshBtn) {
+          els.refreshBtn.classList.add('spinning');
+          els.refreshBtn.disabled = true;
+        }
         renderFeed();
 
         try {
@@ -4272,8 +4688,10 @@
           showComposerMessage(err.message || 'โหลดข้อมูลจาก GitHub ไม่สำเร็จ', 'error');
         } finally {
           state.loadingFeed = false;
-          els.refreshBtn.classList.remove('spinning');
-          els.refreshBtn.disabled = false;
+          if (els.refreshBtn) {
+            els.refreshBtn.classList.remove('spinning');
+            els.refreshBtn.disabled = false;
+          }
           renderComposerGroupOptions();
           renderSidebarAndActiveView();
           renderCalendar();
@@ -4441,7 +4859,7 @@
 
       els.submitPostBtn.addEventListener('click', handleCreatePost);
       els.syncLocalBtn.addEventListener('click', handleSyncLocalPostsToGitHub);
-      els.refreshBtn.addEventListener('click', refreshFeedFromGitHub);
+      if (els.refreshBtn) els.refreshBtn.addEventListener('click', refreshFeedFromGitHub);
 
       if (els.openSettingsBtn) els.openSettingsBtn.addEventListener('click', openSettingsModal);
       els.closeSettingsBtn.addEventListener('click', closeSettingsModal);
