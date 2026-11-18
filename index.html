@@ -144,6 +144,284 @@
       flex-shrink: 0;
     }
 
+    /* Topbar Search Bar & Button */
+    .topbar-search {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 0 1 420px;
+      min-width: 0;
+    }
+
+    .topbar-search-input-wrap {
+      position: relative;
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .topbar-search-input {
+      width: 100%;
+      min-width: 0;
+      height: 36px;
+      padding: 6px 32px 6px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--ink);
+      font-size: 14px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+    }
+
+    .topbar-search-input::-webkit-search-cancel-button {
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .topbar-search-input::placeholder {
+      color: var(--muted);
+    }
+
+    .topbar-search-input:focus {
+      outline: none;
+      background: #4b4779;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px rgba(251, 192, 45, 0.2);
+    }
+
+    .topbar-search-clear {
+      position: absolute;
+      right: 6px;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: rgba(25, 23, 44, 0.65);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .topbar-search-clear:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    .topbar-search-clear[hidden] {
+      display: none;
+    }
+
+    .topbar-search-btn {
+      height: 36px;
+      padding: 0 13px;
+      font-size: 13.5px;
+      gap: 6px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* Privacy & Public Access Controls */
+    .topbar-controls {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 8px;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .topbar-privacy-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .privacy-btn {
+      height: 36px;
+      padding: 0 12px;
+      font-size: 13px;
+      gap: 6px;
+      white-space: nowrap;
+      border-radius: var(--radius-pill);
+    }
+
+    .privacy-btn.mode-public {
+      background: var(--success-soft);
+      border-color: rgba(38, 205, 55, 0.48);
+      color: #8cf596;
+    }
+
+    .privacy-btn.mode-private {
+      background: var(--brand-soft);
+      border-color: rgba(251, 192, 45, 0.48);
+      color: var(--brand);
+    }
+
+    .post-visibility-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 1px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    button.post-visibility-tag {
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    button.post-visibility-tag:hover {
+      background: var(--surface-input);
+      color: var(--ink);
+    }
+
+    .post-visibility-tag.is-public {
+      color: #8cf596;
+      border-color: rgba(38, 205, 55, 0.4);
+      background: rgba(38, 205, 55, 0.12);
+    }
+
+    .post-visibility-tag.is-private {
+      color: #fde68a;
+      border-color: rgba(251, 192, 45, 0.42);
+      background: rgba(251, 192, 45, 0.14);
+    }
+
+    .public-mode-banner {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: var(--surface-header);
+      border: 1px solid rgba(38, 205, 55, 0.45);
+      border-radius: var(--radius-lg);
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .public-mode-banner[hidden] {
+      display: none;
+    }
+
+    .public-mode-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .lock-screen-wrap {
+      min-height: calc(100vh - 58px);
+      min-height: calc(100dvh - 58px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .lock-screen-wrap[hidden] {
+      display: none;
+    }
+
+    .lock-screen-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+    }
+
+    .lock-screen-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--surface-header);
+      border: 1px solid rgba(251, 192, 45, 0.45);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lock-screen-form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .privacy-policy-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .privacy-policy-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 11px 13px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+      cursor: pointer;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .privacy-policy-card:hover {
+      background: #2f2c4e;
+    }
+
+    .privacy-policy-card.selected {
+      border-color: var(--brand);
+      background: rgba(251, 192, 45, 0.1);
+    }
+
+    .privacy-policy-card input[type="radio"] {
+      margin-top: 3px;
+      accent-color: var(--brand);
+      flex-shrink: 0;
+    }
+
+    .privacy-policy-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .privacy-policy-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .privacy-policy-desc {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -1197,6 +1475,104 @@
       line-height: 1.45;
     }
 
+    /* Sidebar GitHub Sync Card (alwayz58) */
+    .sidebar-sync-card {
+      margin: 4px 14px 0;
+      padding: 12px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .sidebar-sync-card[hidden] {
+      display: none;
+    }
+
+    .sidebar-sync-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .sidebar-sync-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--brand);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .sidebar-sync-link {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+      text-decoration: underline;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+      max-width: 100%;
+    }
+
+    .sidebar-sync-link:hover {
+      color: var(--brand);
+    }
+
+    .sidebar-sync-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .sidebar-sync-status.is-connected {
+      color: #8cf596;
+    }
+
+    .sidebar-sync-status.is-readonly {
+      color: #fde68a;
+    }
+
+    .sidebar-sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #928db8;
+      flex-shrink: 0;
+    }
+
+    .sidebar-sync-status.is-connected .sidebar-sync-dot {
+      background: var(--success);
+    }
+
+    .sidebar-sync-status.is-readonly .sidebar-sync-dot {
+      background: var(--brand);
+    }
+
+    .sidebar-sync-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .sidebar-sync-actions .btn {
+      flex: 1 1 auto;
+      padding: 6px 10px;
+      font-size: 12.5px;
+      justify-content: center;
+    }
+
     .feed-main-wrap {
       grid-area: main;
       width: 100%;
@@ -1750,6 +2126,10 @@
         padding: 2px 2px 0;
       }
 
+      .sidebar-sync-card {
+        margin: 4px 0 0;
+      }
+
       .feed-container {
         padding: 14px 12px 18px;
         gap: 14px;
@@ -1790,10 +2170,32 @@
         min-height: 54px;
         padding: 6px max(12px, env(safe-area-inset-right)) 6px max(12px, env(safe-area-inset-left));
         gap: 8px;
+        flex-wrap: wrap;
       }
 
       .brand {
         gap: 8px;
+        flex-shrink: 0;
+      }
+
+      .topbar-search {
+        order: 3;
+        flex: 1 1 100%;
+      }
+
+      .topbar-privacy-group {
+        margin-left: auto;
+      }
+
+      .privacy-btn {
+        height: 32px;
+        padding: 0 10px;
+        font-size: 12px;
+      }
+
+      .topbar-search-btn {
+        padding: 0 10px;
+        font-size: 13px;
       }
 
       .brand-logo {
@@ -2020,10 +2422,85 @@
         <span class="brand-title" id="headerTitle">My Pages</span>
       </div>
     </div>
+
+    <form class="topbar-search" id="topbarSearchForm" role="search" aria-label="ค้นหาโพสต์">
+      <div class="topbar-search-input-wrap">
+        <label for="searchPostInput" class="sr-only">ค้นหาโพสต์ในฟีด</label>
+        <input
+          type="search"
+          id="searchPostInput"
+          class="topbar-search-input"
+          placeholder="ค้นหาโพสต์..."
+          autocomplete="off"
+        >
+        <button
+          type="button"
+          class="topbar-search-clear"
+          id="clearSearchBtn"
+          title="ล้างคำค้นหา"
+          aria-label="ล้างคำค้นหา"
+          hidden
+        >✕</button>
+      </div>
+      <button type="submit" class="btn btn-primary topbar-search-btn" id="searchPostBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="m21 21-4.3-4.3"/>
+        </svg>
+        <span>ค้นหา</span>
+      </button>
+    </form>
+
+    <div class="topbar-privacy-group">
+      <button type="button" class="btn privacy-btn" id="toggleLockModeBtn">
+        <span id="toggleLockModeIcon" aria-hidden="true"></span>
+        <span id="toggleLockModeLabel">เปิดสาธารณะ</span>
+      </button>
+      <button
+        type="button"
+        class="icon-btn"
+        id="openPrivacyBtn"
+        title="ตั้งค่าการป้องกันแบบส่วนตัวและการเปิดสาธารณะ"
+        aria-label="ตั้งค่าการป้องกันแบบส่วนตัวและการเปิดสาธารณะ"
+      >
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+      </button>
+    </div>
   </header>
 
+  <!-- Full-Page Private Protection Lock Screen -->
+  <div class="lock-screen-wrap" id="privateLockScreen" hidden>
+    <section class="card lock-screen-card" aria-labelledby="lockScreenTitle">
+      <div class="lock-screen-icon" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+          <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+      <h2 class="state-title" id="lockScreenTitle">การป้องกันแบบส่วนตัวทำงานอยู่</h2>
+      <p class="state-desc">เพจนี้ตั้งค่าการป้องกันแบบส่วนตัว กรุณากรอกรหัสผ่านเพื่อปลดล็อกเข้าดูเนื้อหา</p>
+      <form class="lock-screen-form" id="lockScreenForm">
+        <div class="token-wrap">
+          <label for="lockScreenPwdInput" class="sr-only">รหัสผ่านปลดล็อกเพจ</label>
+          <input
+            type="password"
+            id="lockScreenPwdInput"
+            class="input-field"
+            placeholder="กรอกรหัสผ่าน..."
+            autocomplete="off"
+          >
+          <button type="button" class="btn" id="toggleLockScreenPwdBtn">แสดง</button>
+        </div>
+        <div class="modal-status error" id="lockScreenError" hidden></div>
+        <button type="submit" class="btn btn-primary" style="width:100%; padding:10px 16px;">ปลดล็อกเข้าใช้งาน</button>
+      </form>
+    </section>
+  </div>
+
   <!-- App Shell with Left Toolbar Panel + Main Feed -->
-  <div class="app-layout">
+  <div class="app-layout" id="mainAppLayout">
     <aside class="left-sidebar" aria-label="แผงเครื่องมือซ้าย">
       <div class="sidebar-section">
         <button type="button" class="sidebar-nav-btn active" id="navAllPostsBtn">
@@ -2073,11 +2550,52 @@
         <div class="group-list" id="sidebarGroupList" role="list"></div>
         <div class="sidebar-empty-hint" id="sidebarGroupEmpty">ยังไม่มีกลุ่มเนื้อหา กดปุ่ม "+ สร้างกลุ่มเนื้อหา" เพื่อจัดหมวดหมู่โพสต์</div>
       </div>
+
+      <div class="sidebar-divider" id="sidebarSyncDivider"></div>
+
+      <div class="sidebar-sync-card" id="sidebarSyncCard">
+        <div class="sidebar-sync-head">
+          <span class="sidebar-sync-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+              <path d="M3 3v5h5"/>
+              <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+              <path d="M16 16h5v5"/>
+            </svg>
+            <span>ลิงก์ข้อมูลข้ามอุปกรณ์</span>
+          </span>
+        </div>
+
+        <a class="sidebar-sync-link" id="sidebarGhAccountLink" href="https://github.com/alwayz58/" target="_blank" rel="noopener noreferrer">github.com/alwayz58</a>
+
+        <div class="sidebar-sync-status" id="sidebarSyncStatus">
+          <span class="sidebar-sync-dot" aria-hidden="true"></span>
+          <span id="sidebarSyncStatusText">เลือก Repository เพื่อเริ่มซิงค์ข้ามอุปกรณ์</span>
+        </div>
+
+        <div class="sidebar-sync-actions">
+          <button type="button" class="btn" id="sidebarSyncNowBtn" hidden>อัปเดตล่าสุด</button>
+          <button type="button" class="btn btn-primary" id="sidebarConfigSyncBtn">ตั้งค่าการซิงค์</button>
+        </div>
+      </div>
     </aside>
 
     <div class="feed-main-wrap">
       <!-- Main Feed -->
       <main class="feed-container">
+        <!-- Public Visitor Mode Banner -->
+        <div class="public-mode-banner" id="publicModeBanner" hidden>
+          <div class="public-mode-info">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#8cf596" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M2 12h20"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span>โหมดเปิดสาธารณะ: แสดงเฉพาะโพสต์สาธารณะ (เนื้อหาส่วนตัวและการแก้ไขถูกซ่อนไว้)</span>
+          </div>
+          <button type="button" class="btn btn-primary" id="bannerUnlockBtn" style="padding:6px 12px; font-size:13px;">ปลดล็อกเจ้าของเพจ</button>
+        </div>
+
         <!-- Active View / Filter Bar -->
         <div class="active-view-bar" id="activeViewBar" hidden>
           <div class="active-view-info" id="activeViewLabel">เนื้อหาที่บันทึกไว้</div>
@@ -2091,7 +2609,7 @@
         </div>
 
         <!-- Post Composer -->
-        <section class="card composer" aria-label="สร้างโพสต์ใหม่">
+        <section class="card composer" id="composerSection" aria-label="สร้างโพสต์ใหม่">
           <div class="composer-top">
             <div class="avatar" id="composerAvatar" aria-hidden="true">ฉ</div>
             <div class="composer-input-wrap">
@@ -2104,7 +2622,7 @@
             </div>
           </div>
 
-          <!-- Select Group for Post -->
+          <!-- Select Group & Visibility for Post -->
           <div class="composer-group-row">
             <label for="composerGroupSelect" class="composer-group-label">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -2114,6 +2632,17 @@
             </label>
             <select id="composerGroupSelect" class="composer-group-select">
               <option value="">ไม่ระบุกลุ่ม</option>
+            </select>
+
+            <label for="composerVisibilitySelect" class="composer-group-label" style="margin-left:4px;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              <span>การมองเห็น:</span>
+            </label>
+            <select id="composerVisibilitySelect" class="composer-group-select">
+              <option value="public">สาธารณะ</option>
+              <option value="private">ส่วนตัว</option>
             </select>
           </div>
 
@@ -2245,7 +2774,7 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-label" for="ghOwnerInput">GitHub Username / Owner</label>
-            <input type="text" id="ghOwnerInput" class="input-field" placeholder="เช่น my-username" autocomplete="off">
+            <input type="text" id="ghOwnerInput" class="input-field" placeholder="alwayz58" value="alwayz58" autocomplete="off">
           </div>
           <div class="form-group">
             <label class="form-label" for="ghBranchInput">Branch</label>
@@ -2254,18 +2783,22 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="ghRepoInput">ชื่อ Repository สำหรับเก็บข้อมูล</label>
-          <input type="text" id="ghRepoInput" class="input-field" placeholder="เช่น personal-feed-storage" autocomplete="off">
-          <span class="form-hint">ระบบจะจัดเก็บโพสต์ในไฟล์ <code>data/posts.json</code> และอัปโหลดรูปภาพ/วิดีโอไว้ในโฟลเดอร์ <code>media/</code></span>
+          <label class="form-label" for="ghRepoInput">ชื่อ Repository สำหรับซิงค์ข้อมูลข้ามอุปกรณ์</label>
+          <div class="token-wrap">
+            <input type="text" id="ghRepoInput" class="input-field" list="ghRepoDatalist" placeholder="เลือกหรือพิมพ์ชื่อ Repo เช่น my-pages-data" autocomplete="off">
+            <datalist id="ghRepoDatalist"></datalist>
+            <button type="button" class="btn" id="fetchReposBtn">ดึงรายชื่อ Repo</button>
+          </div>
+          <span class="form-hint" id="ghRepoListHint">ผูกกับบัญชี <strong>alwayz58</strong> อัตโนมัติ จัดเก็บข้อมูลทั้งหมดใน <code>data/posts.json</code> และไฟล์สื่อใน <code>media/</code></span>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="ghTokenInput">GitHub Personal Access Token (PAT)</label>
+          <label class="form-label" for="ghTokenInput">GitHub Personal Access Token (ใส่เพื่อบันทึกและแก้ไขข้ามอุปกรณ์)</label>
           <div class="token-wrap">
-            <input type="password" id="ghTokenInput" class="input-field" placeholder="github_pat_... หรือ ghp_..." autocomplete="off">
+            <input type="password" id="ghTokenInput" class="input-field" placeholder="github_pat_... หรือ ghp_... (เว้นว่างได้หากอ่านจาก Public Repo)" autocomplete="off">
             <button type="button" class="btn" id="toggleTokenBtn">แสดง</button>
           </div>
-          <span class="form-hint">รองรับทั้ง Public และ Private Repository (ขนาดไฟล์ต่อชิ้นผ่านเบราว์เซอร์ไม่เกิน 25 MB)</span>
+          <span class="form-hint">หากใส่ Token จะซิงค์โพสต์ กลุ่มเนื้อหา รายการที่บันทึก และการตั้งค่าขึ้น GitHub อัตโนมัติทุกครั้งที่มีการเปลี่ยนแปลง</span>
         </div>
 
         <details class="help-box">
@@ -2291,6 +2824,96 @@
     </div>
   </div>
 
+  <!-- Privacy Protection & Public Access Modal -->
+  <div class="modal-backdrop" id="privacyModal" role="dialog" aria-modal="true" aria-labelledby="privacyModalTitle" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="privacyModalTitle">ตั้งค่าการป้องกันแบบส่วนตัวและการเปิดสาธารณะ</h2>
+        <button type="button" class="icon-btn" id="closePrivacyBtn" aria-label="ปิดหน้าต่าง">✕</button>
+      </div>
+
+      <form id="privacyForm" class="modal-body">
+        <div class="form-group">
+          <span class="form-label">รูปแบบการทำงานเมื่อล็อกเพจ / เปิดผู้ชมภายนอก</span>
+          <div class="privacy-policy-list">
+            <label class="privacy-policy-card selected" id="policyPublicCard">
+              <input type="radio" name="privacyPolicyRadio" id="policyPublicRadio" value="public" checked>
+              <span class="privacy-policy-text">
+                <span class="privacy-policy-title">เปิดสาธารณะ (แสดงเฉพาะโพสต์สาธารณะ)</span>
+                <span class="privacy-policy-desc">บุคคลทั่วไปสามารถอ่านโพสต์ที่ตั้งค่าเป็น "สาธารณะ" ได้ แต่ซ่อนโพสต์ "ส่วนตัว" และซ่อนเครื่องมือโพสต์/แก้ไขจนกว่าจะปลดล็อก</span>
+              </span>
+            </label>
+
+            <label class="privacy-policy-card" id="policyPrivateCard">
+              <input type="radio" name="privacyPolicyRadio" id="policyPrivateRadio" value="private">
+              <span class="privacy-policy-text">
+                <span class="privacy-policy-title">การป้องกันแบบส่วนตัวทั้งหมด (ล็อกทั้งเพจ)</span>
+                <span class="privacy-policy-desc">ซ่อนเนื้อหาทั้งหมดของเพจ แสดงหน้าจอล็อกและต้องกรอกรหัสผ่านให้ถูกต้องก่อนจึงจะเข้าดูได้</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="privacyPasswordInput" id="privacyPasswordLabel">ตั้งรหัสผ่านป้องกันส่วนตัว (สำหรับปลดล็อกเจ้าของเพจ)</label>
+          <div class="token-wrap">
+            <input
+              type="password"
+              id="privacyPasswordInput"
+              class="input-field"
+              placeholder="กำหนดรหัสผ่านใหม่ (เว้นว่างหากไม่เปลี่ยน)..."
+              autocomplete="new-password"
+            >
+            <button type="button" class="btn" id="togglePrivacyPwdBtn">แสดง</button>
+          </div>
+          <span class="form-hint" id="privacyPasswordHint">ยังไม่ได้ตั้งรหัสผ่าน สามารถกำหนดรหัสผ่านเพื่อป้องกันการปลดล็อกกลับเป็นโหมดเจ้าของเพจ</span>
+        </div>
+
+        <div class="modal-status" id="privacyStatus" hidden></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="clearPrivacyPwdBtn" hidden>ลบรหัสผ่าน</button>
+          <div style="display:flex; gap:8px; margin-left:auto;">
+            <button type="submit" class="btn" id="savePrivacySettingsBtn">บันทึกการตั้งค่า</button>
+            <button type="button" class="btn btn-primary" id="saveAndLockNowBtn">บันทึกและสลับโหมดทันที</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Unlock Owner Mode Modal (when unlocking from Public Mode with password) -->
+  <div class="modal-backdrop" id="unlockModal" role="dialog" aria-modal="true" aria-labelledby="unlockModalTitle" hidden>
+    <div class="modal-dialog" style="max-width:420px;">
+      <div class="modal-header">
+        <h2 class="modal-title" id="unlockModalTitle">ปลดล็อกโหมดเจ้าของเพจ</h2>
+        <button type="button" class="icon-btn" id="closeUnlockBtn" aria-label="ปิดหน้าต่าง">✕</button>
+      </div>
+      <form id="unlockModalForm" class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="unlockModalPwdInput">รหัสผ่านป้องกันส่วนตัว</label>
+          <div class="token-wrap">
+            <input
+              type="password"
+              id="unlockModalPwdInput"
+              class="input-field"
+              placeholder="กรอกรหัสผ่านของคุณ..."
+              autocomplete="off"
+            >
+            <button type="button" class="btn" id="toggleUnlockModalPwdBtn">แสดง</button>
+          </div>
+        </div>
+        <div class="modal-status error" id="unlockModalError" hidden></div>
+        <div class="modal-footer">
+          <div style="display:flex; gap:8px; margin-left:auto;">
+            <button type="button" class="btn" id="cancelUnlockModalBtn">ยกเลิก</button>
+            <button type="submit" class="btn btn-primary">ปลดล็อก</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Image Lightbox -->
   <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="ดูรูปภาพขนาดเต็ม" hidden>
     <button type="button" class="lightbox-close" id="lightboxCloseBtn" aria-label="ปิดรูปภาพ">✕</button>
@@ -2305,18 +2928,28 @@
       const STORAGE_KEY_LOCAL_POSTS = 'personal_fb_local_posts_v1';
       const STORAGE_KEY_GROUPS = 'personal_fb_groups_v1';
       const STORAGE_KEY_SAVED_IDS = 'personal_fb_saved_posts_v1';
+      const STORAGE_KEY_PRIVACY = 'personal_fb_privacy_v1';
       const MAX_GITHUB_FILE_BYTES = 25 * 1024 * 1024; // 25 MB safe browser API upload cap
+
+      const DEFAULT_GH_OWNER = 'alwayz58';
 
       // Application State
       const state = {
         displayName: 'ฉัน',
         gh: {
-          owner: '',
+          owner: DEFAULT_GH_OWNER,
           repo: '',
           branch: 'main',
           token: '',
           connected: false,
-          isPrivate: false
+          readOnly: false,
+          isPrivate: false,
+          lastSyncedAt: ''
+        },
+        privacy: {
+          policy: 'public', // 'public' | 'private'
+          passwordHash: '',
+          isLocked: false
         },
         posts: [],
         groups: [], // { id, name, createdAt }
@@ -2325,6 +2958,7 @@
           mode: 'all', // 'all' | 'saved' | 'group'
           groupId: null
         },
+        searchQuery: '',
         selectedDate: null, // 'YYYY-MM-DD' local date or null
         calendarViewYear: new Date().getFullYear(),
         calendarViewMonth: new Date().getMonth(),
@@ -2471,6 +3105,10 @@
       const els = {
         headerTitle: document.getElementById('headerTitle'),
         headerSubtitle: document.getElementById('headerSubtitle'),
+        topbarSearchForm: document.getElementById('topbarSearchForm'),
+        searchPostInput: document.getElementById('searchPostInput'),
+        clearSearchBtn: document.getElementById('clearSearchBtn'),
+        searchPostBtn: document.getElementById('searchPostBtn'),
         refreshBtn: document.getElementById('refreshBtn'),
         openSettingsBtn: document.getElementById('openSettingsBtn'),
         ghStatusLabel: document.getElementById('ghStatusLabel'),
@@ -2530,8 +3168,80 @@
         saveGhBtn: document.getElementById('saveGhBtn'),
         lightbox: document.getElementById('lightbox'),
         lightboxImg: document.getElementById('lightboxImg'),
-        lightboxCloseBtn: document.getElementById('lightboxCloseBtn')
+        lightboxCloseBtn: document.getElementById('lightboxCloseBtn'),
+        toggleLockModeBtn: document.getElementById('toggleLockModeBtn'),
+        toggleLockModeIcon: document.getElementById('toggleLockModeIcon'),
+        toggleLockModeLabel: document.getElementById('toggleLockModeLabel'),
+        openPrivacyBtn: document.getElementById('openPrivacyBtn'),
+        privateLockScreen: document.getElementById('privateLockScreen'),
+        lockScreenForm: document.getElementById('lockScreenForm'),
+        lockScreenPwdInput: document.getElementById('lockScreenPwdInput'),
+        toggleLockScreenPwdBtn: document.getElementById('toggleLockScreenPwdBtn'),
+        lockScreenError: document.getElementById('lockScreenError'),
+        mainAppLayout: document.getElementById('mainAppLayout'),
+        publicModeBanner: document.getElementById('publicModeBanner'),
+        bannerUnlockBtn: document.getElementById('bannerUnlockBtn'),
+        composerSection: document.getElementById('composerSection'),
+        composerVisibilitySelect: document.getElementById('composerVisibilitySelect'),
+        privacyModal: document.getElementById('privacyModal'),
+        closePrivacyBtn: document.getElementById('closePrivacyBtn'),
+        privacyForm: document.getElementById('privacyForm'),
+        policyPublicCard: document.getElementById('policyPublicCard'),
+        policyPrivateCard: document.getElementById('policyPrivateCard'),
+        policyPublicRadio: document.getElementById('policyPublicRadio'),
+        policyPrivateRadio: document.getElementById('policyPrivateRadio'),
+        privacyPasswordInput: document.getElementById('privacyPasswordInput'),
+        togglePrivacyPwdBtn: document.getElementById('togglePrivacyPwdBtn'),
+        privacyPasswordHint: document.getElementById('privacyPasswordHint'),
+        privacyStatus: document.getElementById('privacyStatus'),
+        clearPrivacyPwdBtn: document.getElementById('clearPrivacyPwdBtn'),
+        savePrivacySettingsBtn: document.getElementById('savePrivacySettingsBtn'),
+        saveAndLockNowBtn: document.getElementById('saveAndLockNowBtn'),
+        unlockModal: document.getElementById('unlockModal'),
+        closeUnlockBtn: document.getElementById('closeUnlockBtn'),
+        unlockModalForm: document.getElementById('unlockModalForm'),
+        unlockModalPwdInput: document.getElementById('unlockModalPwdInput'),
+        toggleUnlockModalPwdBtn: document.getElementById('toggleUnlockModalPwdBtn'),
+        unlockModalError: document.getElementById('unlockModalError'),
+        cancelUnlockModalBtn: document.getElementById('cancelUnlockModalBtn'),
+        sidebarSyncDivider: document.getElementById('sidebarSyncDivider'),
+        sidebarSyncCard: document.getElementById('sidebarSyncCard'),
+        sidebarGhAccountLink: document.getElementById('sidebarGhAccountLink'),
+        sidebarSyncStatus: document.getElementById('sidebarSyncStatus'),
+        sidebarSyncStatusText: document.getElementById('sidebarSyncStatusText'),
+        sidebarSyncNowBtn: document.getElementById('sidebarSyncNowBtn'),
+        sidebarConfigSyncBtn: document.getElementById('sidebarConfigSyncBtn'),
+        ghRepoDatalist: document.getElementById('ghRepoDatalist'),
+        fetchReposBtn: document.getElementById('fetchReposBtn'),
+        ghRepoListHint: document.getElementById('ghRepoListHint')
       };
+
+      // Pure-JS deterministic salted hash for client-side password protection (works in all sandboxed iframes)
+      function hashPasswordSync(pwd) {
+        const salted = `mypages_v1_salt::${String(pwd || '')}`;
+        const bytes = new TextEncoder().encode(salted);
+        let h1 = 0x811c9dc5;
+        let h2 = 0x01000193;
+        let h3 = 0x9e3779b9;
+        let h4 = 0x85ebca6b;
+        for (let i = 0; i < bytes.length; i++) {
+          const b = bytes[i];
+          h1 = Math.imul(h1 ^ b, 0x01000193) >>> 0;
+          h2 = Math.imul(h2 ^ ((b + i) & 0xff), 0x85ebca6b) >>> 0;
+          h3 = Math.imul(h3 ^ ((b << 1) & 0xff), 0xc2b2ae35) >>> 0;
+          h4 = Math.imul(h4 ^ (b ^ 0x5a), 0x27d4eb2f) >>> 0;
+        }
+        return [h1, h2, h3, h4].map(n => n.toString(16).padStart(8, '0')).join('');
+      }
+
+      function isPostPublic(post) {
+        return !post || post.visibility !== 'private';
+      }
+
+      function isPostVisibleInCurrentMode(post) {
+        if (!state.privacy.isLocked) return true;
+        return isPostPublic(post);
+      }
 
       // Link Detection & Preview Helpers
       function extractFirstUrl(text) {
@@ -3134,7 +3844,10 @@
         }
       }
 
-      // GitHub REST API Helpers
+      // GitHub REST API Helpers (linked with github.com/alwayz58 via https://api.github.com)
+      const GITHUB_API_BASE = 'https://api.github.com';
+      let lastRemoteCheckMs = 0;
+
       async function ghRequest(endpoint, options = {}, customGh = null) {
         const cfg = customGh || state.gh;
         const headers = Object.assign({
@@ -3146,7 +3859,8 @@
           headers['Authorization'] = `Bearer ${cfg.token}`;
         }
 
-        const res = await fetch(`about:invalid#zPythonSafez`, {
+        const apiUrl = new URL(endpoint, GITHUB_API_BASE);
+        const res = await fetch(apiUrl.href, {
           method: options.method || 'GET',
           headers,
           body: options.body || undefined,
@@ -3159,15 +3873,121 @@
       async function verifyRepoConnection(cfg) {
         const res = await ghRequest(`/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}`, {}, cfg);
         if (!res.ok) {
-          if (res.status === 401) throw new Error('Token ไม่ถูกต้องหรือหมดอายุ (401 Unauthorized)');
-          if (res.status === 404) throw new Error('ไม่พบ Repository นี้ หรือ Token ไม่มีสิทธิ์เข้าถึง (404 Not Found)');
-          throw new Error(`เชื่อมต่อ GitHub ไม่สำเร็จ (รหัส ${res.status})`);
+          const err = new Error(
+            res.status === 401
+              ? 'Token ไม่ถูกต้องหรือหมดอายุ (401 Unauthorized)'
+              : res.status === 404
+                ? 'ไม่พบ Repository นี้ หรือเป็น Private Repo ที่ต้องใส่ Token (404 Not Found)'
+                : `เชื่อมต่อ GitHub ไม่สำเร็จ (รหัส ${res.status})`
+          );
+          err.status = res.status;
+          throw err;
         }
         const repoData = await res.json();
         return {
           isPrivate: Boolean(repoData.private),
-          defaultBranch: repoData.default_branch || 'main'
+          defaultBranch: repoData.default_branch || 'main',
+          canPush: Boolean(cfg.token && (!repoData.permissions || repoData.permissions.push !== false))
         };
+      }
+
+      async function tryCreateRepoForOwner(cfg) {
+        if (!cfg.token || !cfg.repo) return null;
+        const res = await ghRequest('/user/repos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: cfg.repo,
+            description: 'My Pages cross-device sync storage',
+            private: false,
+            auto_init: true
+          })
+        }, cfg);
+
+        if (!res.ok) return null;
+        const created = await res.json();
+        return {
+          isPrivate: Boolean(created.private),
+          defaultBranch: created.default_branch || 'main',
+          owner: (created.owner && created.owner.login) || cfg.owner
+        };
+      }
+
+      async function fetchOwnerRepositories(ownerName, tokenValue) {
+        const cleanOwner = (ownerName || DEFAULT_GH_OWNER).trim();
+        const tempCfg = { owner: cleanOwner, token: (tokenValue || '').trim() };
+        let repos = [];
+
+        if (tempCfg.token) {
+          const authRes = await ghRequest('/user/repos?per_page=100&sort=pushed', {}, tempCfg);
+          if (authRes.ok) {
+            const allAuthRepos = await authRes.json();
+            if (Array.isArray(allAuthRepos)) {
+              repos = allAuthRepos.filter(r =>
+                !cleanOwner || (r.owner && String(r.owner.login || '').toLowerCase() === cleanOwner.toLowerCase())
+              );
+            }
+          }
+        }
+
+        if (repos.length === 0 && cleanOwner) {
+          const pubRes = await ghRequest(`/users/${encodeURIComponent(cleanOwner)}/repos?per_page=100&sort=pushed`, {}, tempCfg);
+          if (pubRes.ok) {
+            const pubRepos = await pubRes.json();
+            if (Array.isArray(pubRepos)) {
+              repos = pubRepos;
+            }
+          }
+        }
+
+        if (els.ghRepoDatalist) {
+          els.ghRepoDatalist.innerHTML = '';
+          repos.forEach(r => {
+            if (!r || !r.name) return;
+            const opt = document.createElement('option');
+            opt.value = r.name;
+            opt.label = r.private ? `${r.name} (Private)` : `${r.name} (Public)`;
+            els.ghRepoDatalist.appendChild(opt);
+          });
+        }
+
+        return repos;
+      }
+
+      function applyRemoteBundleMetadata(parsedObj) {
+        if (!parsedObj || typeof parsedObj !== 'object' || Array.isArray(parsedObj)) return;
+
+        if (parsedObj.displayName && typeof parsedObj.displayName === 'string') {
+          state.displayName = parsedObj.displayName;
+        }
+
+        if (Array.isArray(parsedObj.groups)) {
+          const validRemoteGroups = parsedObj.groups.filter(g => g && g.id && g.name);
+          const mergedGroups = [...validRemoteGroups];
+          state.groups.forEach(localGrp => {
+            if (!mergedGroups.some(rg => rg.id === localGrp.id)) {
+              mergedGroups.push(localGrp);
+            }
+          });
+          state.groups = mergedGroups;
+          persistGroups();
+        }
+
+        if (Array.isArray(parsedObj.savedPostIds)) {
+          state.savedPostIds = new Set(parsedObj.savedPostIds);
+          persistSavedPostIds();
+        }
+
+        if (parsedObj.privacy && typeof parsedObj.privacy === 'object') {
+          state.privacy.policy = parsedObj.privacy.policy === 'private' ? 'private' : 'public';
+          if (typeof parsedObj.privacy.passwordHash === 'string') {
+            state.privacy.passwordHash = parsedObj.privacy.passwordHash;
+          }
+          if (state.privacy.isLocked && state.privacy.policy === 'private' && !state.privacy.passwordHash) {
+            state.privacy.isLocked = false;
+          }
+          persistPrivacyConfig();
+        }
       }
 
       async function fetchPostsFromGitHub() {
@@ -3181,24 +4001,63 @@
         }
 
         if (!res.ok) {
-          throw new Error(`โหลดรายการโพสต์จาก GitHub ไม่สำเร็จ (${res.status})`);
+          throw new Error(`โหลดข้อมูลซิงค์จาก GitHub ไม่สำเร็จ (${res.status})`);
         }
 
         const data = await res.json();
         state.postsSha = data.sha || null;
-        const decoded = base64ToUtf8(data.content || '');
+
+        let decoded = '';
+        if (data.content) {
+          decoded = base64ToUtf8(data.content);
+        } else {
+          const rawRes = await ghRequest(endpoint, {
+            headers: { 'Accept': 'application/vnd.github.raw+json' }
+          });
+          if (rawRes.ok) {
+            decoded = await rawRes.text();
+          }
+        }
+
+        if (!decoded.trim()) return [];
         const parsed = JSON.parse(decoded);
-        return Array.isArray(parsed) ? parsed : [];
+
+        if (Array.isArray(parsed)) {
+          return parsed;
+        }
+
+        if (parsed && typeof parsed === 'object') {
+          applyRemoteBundleMetadata(parsed);
+          return Array.isArray(parsed.posts) ? parsed.posts : [];
+        }
+
+        return [];
       }
 
       async function savePostsJsonToGitHub(postsArray, commitMessage) {
+        if (!state.gh.connected || !state.gh.token) return;
         const { owner, repo, branch } = state.gh;
         const endpoint = `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/data/posts.json`;
-        const contentB64 = utf8ToBase64(JSON.stringify(postsArray, null, 2));
+
+        const syncBundle = {
+          version: 2,
+          owner,
+          updatedAt: new Date().toISOString(),
+          displayName: state.displayName || 'ฉัน',
+          privacy: {
+            policy: state.privacy.policy === 'private' ? 'private' : 'public',
+            passwordHash: state.privacy.passwordHash || ''
+          },
+          groups: state.groups,
+          savedPostIds: Array.from(state.savedPostIds),
+          posts: postsArray
+        };
+
+        const contentB64 = utf8ToBase64(JSON.stringify(syncBundle, null, 2));
 
         async function attemptPut(sha) {
           const payload = {
-            message: commitMessage || 'Update posts.json',
+            message: commitMessage || 'Sync My Pages data',
             content: contentB64,
             branch
           };
@@ -3210,7 +4069,6 @@
           });
         }
 
-        // Refresh latest SHA if unknown
         if (!state.postsSha) {
           const check = await ghRequest(`${endpoint}?ref=${encodeURIComponent(branch)}`);
           if (check.ok) {
@@ -3221,7 +4079,6 @@
 
         let res = await attemptPut(state.postsSha);
 
-        // Retry once on SHA conflict (409 or 422)
         if (res.status === 409 || res.status === 422) {
           const check = await ghRequest(`${endpoint}?ref=${encodeURIComponent(branch)}`);
           const latestSha = check.ok ? (await check.json()).sha : null;
@@ -3239,6 +4096,17 @@
 
         const saved = await res.json();
         state.postsSha = saved.content && saved.content.sha ? saved.content.sha : null;
+        state.gh.lastSyncedAt = new Date().toISOString();
+        lastRemoteCheckMs = Date.now();
+        updateHeaderUI();
+      }
+
+      async function pushCurrentStateToGitHub(commitMessage) {
+        if (!state.gh.connected || !state.gh.token) return;
+        try {
+          const ghPosts = state.posts.filter(p => !p.localOnly);
+          await savePostsJsonToGitHub(ghPosts, commitMessage || 'Sync My Pages state');
+        } catch (_) {}
       }
 
       async function uploadMediaFileToGitHub(attachment, indexLabel) {
@@ -3263,7 +4131,6 @@
 
         const data = await res.json();
         const savedContent = data.content || {};
-        // Cache current session blob so immediate display needs zero extra network call
         if (attachment.previewUrl) {
           state.mediaBlobCache.set(uniquePath, attachment.previewUrl);
         }
@@ -3272,7 +4139,7 @@
           kind: attachment.kind,
           path: uniquePath,
           sha: savedContent.sha || null,
-          url: savedContent.download_url || `about:invalid#zPythonSafez`,
+          url: savedContent.download_url || '',
           mime: attachment.mime || '',
           name: attachment.name
         };
@@ -3301,9 +4168,7 @@
               branch
             })
           });
-        } catch (_) {
-          // Best-effort cleanup of media file
-        }
+        } catch (_) {}
       }
 
       async function resolveRepoMediaUrl(mediaItem) {
@@ -3312,29 +4177,27 @@
         if (state.mediaBlobCache.has(mediaItem.path)) {
           return state.mediaBlobCache.get(mediaItem.path);
         }
-        // Public repos can use direct raw/download_url immediately unless private
-        if (!state.gh.isPrivate && mediaItem.url) {
-          return mediaItem.url;
-        }
-        if (!state.gh.connected) {
+        if (!state.gh.owner || !state.gh.repo) {
           return mediaItem.url || '';
         }
 
-        const { owner, repo, branch, token } = state.gh;
-        const endpoint = `about:invalid#zPythonSafez`;
-        const res = await fetch(endpoint, {
-          headers: {
-            'Accept': 'application/vnd.github.raw',
-            'Authorization': `Bearer ${token}`,
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
-        });
-        if (!res.ok) return mediaItem.url || '';
-        const rawBlob = await res.blob();
-        const typedBlob = mediaItem.mime ? new Blob([rawBlob], { type: mediaItem.mime }) : rawBlob;
-        const objUrl = URL.createObjectURL(typedBlob);
-        state.mediaBlobCache.set(mediaItem.path, objUrl);
-        return objUrl;
+        const { owner, repo, branch } = state.gh;
+        const endpoint = `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeRepoPath(mediaItem.path)}?ref=${encodeURIComponent(branch)}`;
+        try {
+          const res = await ghRequest(endpoint, {
+            headers: {
+              'Accept': 'application/vnd.github.raw+json'
+            }
+          });
+          if (!res.ok) return mediaItem.url || '';
+          const rawBlob = await res.blob();
+          const typedBlob = mediaItem.mime ? new Blob([rawBlob], { type: mediaItem.mime }) : rawBlob;
+          const objUrl = URL.createObjectURL(typedBlob);
+          state.mediaBlobCache.set(mediaItem.path, objUrl);
+          return objUrl;
+        } catch (_) {
+          return mediaItem.url || '';
+        }
       }
 
       // Persist local-only text/url/image posts, groups & saved IDs best-effort
@@ -3345,6 +4208,7 @@
             id: p.id,
             author: p.author,
             text: p.text,
+            visibility: p.visibility === 'private' ? 'private' : 'public',
             groupId: p.groupId || '',
             groupName: p.groupName || '',
             linkPreview: p.linkPreview || null,
@@ -3414,12 +4278,13 @@
             const parsed = JSON.parse(raw);
             if (parsed.displayName) state.displayName = parsed.displayName;
             if (parsed.gh) {
-              state.gh.owner = parsed.gh.owner || '';
+              state.gh.owner = parsed.gh.owner || DEFAULT_GH_OWNER;
               state.gh.repo = parsed.gh.repo || '';
               state.gh.branch = parsed.gh.branch || 'main';
               state.gh.token = parsed.gh.token || '';
               state.gh.isPrivate = Boolean(parsed.gh.isPrivate);
               state.gh.connected = Boolean(state.gh.owner && state.gh.repo && state.gh.token);
+              state.gh.readOnly = Boolean(state.gh.owner && state.gh.repo && !state.gh.token);
             }
           } catch (_) {}
         }
@@ -3444,6 +4309,21 @@
           } catch (_) {}
         }
 
+        const privacyRaw = safeGetStorage(STORAGE_KEY_PRIVACY);
+        if (privacyRaw) {
+          try {
+            const parsedPrivacy = JSON.parse(privacyRaw);
+            if (parsedPrivacy && typeof parsedPrivacy === 'object') {
+              state.privacy.policy = parsedPrivacy.policy === 'private' ? 'private' : 'public';
+              state.privacy.passwordHash = String(parsedPrivacy.passwordHash || '');
+              state.privacy.isLocked = Boolean(parsedPrivacy.isLocked);
+              if (state.privacy.isLocked && state.privacy.policy === 'private' && !state.privacy.passwordHash) {
+                state.privacy.isLocked = false;
+              }
+            }
+          } catch (_) {}
+        }
+
         const localRaw = safeGetStorage(STORAGE_KEY_LOCAL_POSTS);
         if (localRaw) {
           try {
@@ -3454,6 +4334,14 @@
             }
           } catch (_) {}
         }
+      }
+
+      function persistPrivacyConfig() {
+        safeSetStorage(STORAGE_KEY_PRIVACY, JSON.stringify({
+          policy: state.privacy.policy,
+          passwordHash: state.privacy.passwordHash,
+          isLocked: state.privacy.isLocked
+        }));
       }
 
       function persistConfig() {
@@ -3493,9 +4381,38 @@
         }
       }
 
+      function matchesSearchQuery(post, rawQuery) {
+        const q = String(rawQuery || '').trim().toLowerCase();
+        if (!q) return true;
+        const groupName = getGroupNameById(post.groupId) || post.groupName || '';
+        const lp = post.linkPreview || {};
+        const haystack = [
+          post.text || '',
+          post.author || '',
+          groupName,
+          lp.title || '',
+          lp.description || '',
+          lp.domain || '',
+          lp.siteName || '',
+          lp.url || ''
+        ].join(' ').toLowerCase();
+        return haystack.includes(q);
+      }
+
+      function applySearchQuery(rawQuery) {
+        state.searchQuery = String(rawQuery || '');
+        if (els.clearSearchBtn) {
+          els.clearSearchBtn.hidden = !state.searchQuery.trim();
+        }
+        renderSidebarAndActiveView();
+        renderCalendar();
+        renderFeed();
+      }
+
       function renderSidebarAndActiveView() {
         const { mode, groupId } = state.activeFilter;
-        els.navAllPostsBtn.classList.toggle('active', mode === 'all' && !state.selectedDate);
+        const trimmedSearch = state.searchQuery.trim();
+        els.navAllPostsBtn.classList.toggle('active', mode === 'all' && !state.selectedDate && !trimmedSearch);
         els.navSavedPostsBtn.classList.toggle('active', mode === 'saved');
 
         els.sidebarGroupList.innerHTML = '';
@@ -3541,9 +4458,16 @@
             }
           });
 
-          row.append(btn, delBtn);
+          row.appendChild(btn);
+          if (!state.privacy.isLocked) {
+            row.appendChild(delBtn);
+          }
           els.sidebarGroupList.appendChild(row);
         });
+
+        els.sidebarGroupEmpty.textContent = state.privacy.isLocked
+          ? 'ยังไม่มีกลุ่มเนื้อหา'
+          : 'ยังไม่มีกลุ่มเนื้อหา กดปุ่ม "+ สร้างกลุ่มเนื้อหา" เพื่อจัดหมวดหมู่โพสต์';
 
         // Validate group still exists if mode === 'group'
         let activeGroupName = '';
@@ -3554,7 +4478,7 @@
           }
         }
 
-        // Build Active View Banner label (supports mode, selectedDate, or both)
+        // Build Active View Banner label (supports mode, selectedDate, and searchQuery)
         const labelParts = [];
         if (state.activeFilter.mode === 'saved') {
           labelParts.push('เนื้อหาที่บันทึกไว้');
@@ -3567,6 +4491,10 @@
           labelParts.push(labelParts.length > 0 ? `วันที่ ${thaiDate}` : `เนื้อหาของวันที่ ${thaiDate}`);
         }
 
+        if (trimmedSearch) {
+          labelParts.push(`ผลการค้นหา: "${trimmedSearch}"`);
+        }
+
         if (labelParts.length > 0) {
           els.activeViewBar.hidden = false;
           els.activeViewLabel.textContent = labelParts.join(' • ');
@@ -3577,13 +4505,16 @@
 
       function getPostsMatchingSidebarMode() {
         const { mode, groupId } = state.activeFilter;
+        let list = state.posts.filter(p => isPostVisibleInCurrentMode(p));
         if (mode === 'saved') {
-          return state.posts.filter(p => isPostSaved(p));
+          list = list.filter(p => isPostSaved(p));
+        } else if (mode === 'group' && groupId) {
+          list = list.filter(p => p.groupId === groupId);
         }
-        if (mode === 'group' && groupId) {
-          return state.posts.filter(p => p.groupId === groupId);
+        if (state.searchQuery.trim()) {
+          list = list.filter(p => matchesSearchQuery(p, state.searchQuery));
         }
-        return state.posts;
+        return list;
       }
 
       function renderCalendar() {
@@ -3642,6 +4573,9 @@
         state.activeFilter = { mode, groupId };
         if (resetDate) {
           state.selectedDate = null;
+          state.searchQuery = '';
+          if (els.searchPostInput) els.searchPostInput.value = '';
+          if (els.clearSearchBtn) els.clearSearchBtn.hidden = true;
         }
         if (mode === 'group' && groupId) {
           renderComposerGroupOptions(groupId);
@@ -3678,6 +4612,7 @@
 
         state.groups.push(newGroup);
         persistGroups();
+        pushCurrentStateToGitHub(`Create group ${name}`);
 
         els.newGroupNameInput.value = '';
         els.groupCreateError.hidden = true;
@@ -3692,21 +4627,16 @@
         persistGroups();
 
         // Unassign deleted group from posts cleanly without deleting posts
-        let remoteChanged = false;
         state.posts = state.posts.map(p => {
           if (p.groupId === groupId) {
-            if (!p.localOnly) remoteChanged = true;
             return Object.assign({}, p, { groupId: '', groupName: '' });
           }
           return p;
         });
 
         saveLocalPostsSnapshot();
-        if (remoteChanged && state.gh.connected) {
-          try {
-            const ghPosts = state.posts.filter(p => !p.localOnly);
-            await savePostsJsonToGitHub(ghPosts, `Remove deleted group ${groupId}`);
-          } catch (_) {}
+        if (state.gh.connected) {
+          await pushCurrentStateToGitHub(`Remove deleted group ${groupId}`);
         }
 
         if (state.activeFilter.mode === 'group' && state.activeFilter.groupId === groupId) {
@@ -3745,6 +4675,166 @@
             const ghPosts = state.posts.filter(p => !p.localOnly);
             await savePostsJsonToGitHub(ghPosts, `Toggle bookmark on post ${postId}`);
           } catch (_) {}
+        }
+      }
+
+      async function handleTogglePostVisibility(postId) {
+        if (state.privacy.isLocked) return;
+        const postIdx = state.posts.findIndex(p => p.id === postId);
+        if (postIdx === -1) return;
+
+        const target = state.posts[postIdx];
+        const nextVisibility = isPostPublic(target) ? 'private' : 'public';
+        const updatedPost = Object.assign({}, target, { visibility: nextVisibility });
+        state.posts[postIdx] = updatedPost;
+
+        saveLocalPostsSnapshot();
+        renderCalendar();
+        renderFeed();
+
+        if (!target.localOnly && state.gh.connected) {
+          try {
+            const ghPosts = state.posts.filter(p => !p.localOnly);
+            await savePostsJsonToGitHub(ghPosts, `Update visibility on post ${postId}`);
+          } catch (_) {}
+        }
+      }
+
+      const ICON_GLOBE_SM = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
+      const ICON_LOCK_SM = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`;
+
+      function applyPrivacyModeUI() {
+        const locked = state.privacy.isLocked;
+        const policy = state.privacy.policy;
+
+        if (locked && policy === 'private') {
+          els.privateLockScreen.hidden = false;
+          els.mainAppLayout.hidden = true;
+          if (els.topbarSearchForm) els.topbarSearchForm.hidden = true;
+          els.openPrivacyBtn.hidden = true;
+          els.toggleLockModeBtn.className = 'btn privacy-btn mode-private';
+          els.toggleLockModeIcon.innerHTML = ICON_LOCK_SM;
+          els.toggleLockModeLabel.textContent = 'ปลดล็อกเพจ';
+          els.lockScreenError.hidden = true;
+          return;
+        }
+
+        els.privateLockScreen.hidden = true;
+        els.mainAppLayout.hidden = false;
+        if (els.topbarSearchForm) els.topbarSearchForm.hidden = false;
+
+        if (locked && policy === 'public') {
+          els.publicModeBanner.hidden = false;
+          els.composerSection.hidden = true;
+          els.navSavedPostsBtn.hidden = true;
+          els.openCreateGroupBtn.hidden = true;
+          els.groupCreateBox.hidden = true;
+          els.openPrivacyBtn.hidden = true;
+          if (els.sidebarSyncDivider) els.sidebarSyncDivider.hidden = true;
+          if (els.sidebarSyncCard) els.sidebarSyncCard.hidden = true;
+
+          if (state.activeFilter.mode === 'saved') {
+            state.activeFilter = { mode: 'all', groupId: null };
+          }
+
+          els.toggleLockModeBtn.className = 'btn privacy-btn mode-private';
+          els.toggleLockModeIcon.innerHTML = ICON_LOCK_SM;
+          els.toggleLockModeLabel.textContent = 'ปลดล็อกส่วนตัว';
+        } else {
+          els.publicModeBanner.hidden = true;
+          els.composerSection.hidden = false;
+          els.navSavedPostsBtn.hidden = false;
+          els.openCreateGroupBtn.hidden = false;
+          els.openPrivacyBtn.hidden = false;
+          if (els.sidebarSyncDivider) els.sidebarSyncDivider.hidden = false;
+          if (els.sidebarSyncCard) els.sidebarSyncCard.hidden = false;
+
+          if (policy === 'private') {
+            els.toggleLockModeBtn.className = 'btn privacy-btn mode-private';
+            els.toggleLockModeIcon.innerHTML = ICON_LOCK_SM;
+            els.toggleLockModeLabel.textContent = 'ล็อกส่วนตัว';
+          } else {
+            els.toggleLockModeBtn.className = 'btn privacy-btn mode-public';
+            els.toggleLockModeIcon.innerHTML = ICON_GLOBE_SM;
+            els.toggleLockModeLabel.textContent = 'เปิดสาธารณะ';
+          }
+        }
+
+        renderSidebarAndActiveView();
+        renderCalendar();
+        updateSyncBanner();
+        renderFeed();
+      }
+
+      function setPrivacyModalStatus(text, type) {
+        if (!text) {
+          els.privacyStatus.hidden = true;
+          els.privacyStatus.textContent = '';
+          els.privacyStatus.className = 'modal-status';
+          return;
+        }
+        els.privacyStatus.hidden = false;
+        els.privacyStatus.textContent = text;
+        els.privacyStatus.className = `modal-status ${type || 'success'}`;
+      }
+
+      function syncPolicyCardStyles() {
+        const isPub = els.policyPublicRadio.checked;
+        els.policyPublicCard.classList.toggle('selected', isPub);
+        els.policyPrivateCard.classList.toggle('selected', !isPub);
+      }
+
+      function openPrivacyModal(initialWarning) {
+        els.policyPublicRadio.checked = state.privacy.policy !== 'private';
+        els.policyPrivateRadio.checked = state.privacy.policy === 'private';
+        syncPolicyCardStyles();
+        els.privacyPasswordInput.value = '';
+        els.privacyPasswordInput.type = 'password';
+        els.togglePrivacyPwdBtn.textContent = 'แสดง';
+
+        const hasPwd = Boolean(state.privacy.passwordHash);
+        els.clearPrivacyPwdBtn.hidden = !hasPwd;
+        els.privacyPasswordHint.textContent = hasPwd
+          ? 'ตั้งรหัสผ่านป้องกันไว้แล้ว (เว้นว่างหากต้องการใช้รหัสผ่านเดิม หรือพิมพ์ใหม่เพื่อเปลี่ยนรหัส)'
+          : 'ยังไม่ได้ตั้งรหัสผ่าน สามารถกำหนดรหัสผ่านเพื่อป้องกันการปลดล็อกกลับเป็นโหมดเจ้าของเพจ';
+
+        if (initialWarning) {
+          setPrivacyModalStatus(initialWarning, 'error');
+        } else {
+          setPrivacyModalStatus('', '');
+        }
+
+        els.privacyModal.hidden = false;
+      }
+
+      function closePrivacyModal() {
+        els.privacyModal.hidden = true;
+      }
+
+      function openUnlockModal() {
+        els.unlockModalPwdInput.value = '';
+        els.unlockModalPwdInput.type = 'password';
+        els.toggleUnlockModalPwdBtn.textContent = 'แสดง';
+        els.unlockModalError.hidden = true;
+        els.unlockModal.hidden = false;
+        els.unlockModalPwdInput.focus();
+      }
+
+      function closeUnlockModal() {
+        els.unlockModal.hidden = true;
+      }
+
+      function requestOwnerUnlock() {
+        if (!state.privacy.passwordHash) {
+          state.privacy.isLocked = false;
+          persistPrivacyConfig();
+          applyPrivacyModeUI();
+          return;
+        }
+        if (state.privacy.policy === 'private') {
+          els.lockScreenPwdInput.focus();
+        } else {
+          openUnlockModal();
         }
       }
 
@@ -3798,18 +4888,47 @@
         els.composerAvatar.textContent = getInitial(state.displayName);
         els.headerTitle.textContent = 'My Pages';
 
+        const activeOwner = state.gh.owner || DEFAULT_GH_OWNER;
+        if (els.sidebarGhAccountLink) {
+          els.sidebarGhAccountLink.textContent = state.gh.repo
+            ? `github.com/${activeOwner}/${state.gh.repo}`
+            : `github.com/${activeOwner}`;
+        }
+
         if (state.gh.connected) {
           if (els.openSettingsBtn) els.openSettingsBtn.classList.add('connected');
-          if (els.ghStatusLabel) els.ghStatusLabel.textContent = `${state.gh.owner}/${state.gh.repo}`;
+          if (els.ghStatusLabel) els.ghStatusLabel.textContent = `${activeOwner}/${state.gh.repo}`;
           if (els.headerSubtitle) els.headerSubtitle.textContent = `เชื่อมต่อกับ GitHub (${state.gh.branch})`;
           if (els.refreshBtn) els.refreshBtn.hidden = false;
           els.disconnectGhBtn.hidden = false;
+          if (els.sidebarSyncStatus) els.sidebarSyncStatus.className = 'sidebar-sync-status is-connected';
+          if (els.sidebarSyncStatusText) {
+            const syncNote = state.gh.lastSyncedAt ? ` • อัปเดต ${formatThaiDateTime(state.gh.lastSyncedAt)}` : '';
+            els.sidebarSyncStatusText.textContent = `ซิงค์ข้ามอุปกรณ์แล้ว (${state.gh.branch})${syncNote}`;
+          }
+          if (els.sidebarSyncNowBtn) els.sidebarSyncNowBtn.hidden = false;
+        } else if (state.gh.readOnly && state.gh.repo) {
+          if (els.openSettingsBtn) els.openSettingsBtn.classList.remove('connected');
+          if (els.ghStatusLabel) els.ghStatusLabel.textContent = '';
+          if (els.headerSubtitle) els.headerSubtitle.textContent = '';
+          if (els.refreshBtn) els.refreshBtn.hidden = true;
+          els.disconnectGhBtn.hidden = false;
+          if (els.sidebarSyncStatus) els.sidebarSyncStatus.className = 'sidebar-sync-status is-readonly';
+          if (els.sidebarSyncStatusText) {
+            els.sidebarSyncStatusText.textContent = `ดึงข้อมูลจาก ${activeOwner}/${state.gh.repo} (ใส่ Token หากต้องการบันทึกกลับ)`;
+          }
+          if (els.sidebarSyncNowBtn) els.sidebarSyncNowBtn.hidden = false;
         } else {
           if (els.openSettingsBtn) els.openSettingsBtn.classList.remove('connected');
           if (els.ghStatusLabel) els.ghStatusLabel.textContent = '';
           if (els.headerSubtitle) els.headerSubtitle.textContent = '';
           if (els.refreshBtn) els.refreshBtn.hidden = true;
           els.disconnectGhBtn.hidden = true;
+          if (els.sidebarSyncStatus) els.sidebarSyncStatus.className = 'sidebar-sync-status';
+          if (els.sidebarSyncStatusText) {
+            els.sidebarSyncStatusText.textContent = 'เลือก Repository เพื่อเริ่มซิงค์ข้ามอุปกรณ์';
+          }
+          if (els.sidebarSyncNowBtn) els.sidebarSyncNowBtn.hidden = true;
         }
 
         updateSyncBanner();
@@ -3817,7 +4936,7 @@
 
       function updateSyncBanner() {
         const localCount = state.posts.filter(p => p.localOnly).length;
-        if (state.gh.connected && localCount > 0) {
+        if (!state.privacy.isLocked && state.gh.connected && localCount > 0) {
           els.syncBanner.hidden = false;
           els.syncBannerText.textContent = `มี ${localCount} โพสต์ที่สร้างไว้ก่อนเชื่อมต่อ สามารถซิงค์ขึ้น GitHub Repository ได้ทันที`;
         } else {
@@ -3923,12 +5042,19 @@
           const emptyCard = document.createElement('div');
           emptyCard.className = 'card state-card';
 
-          let emptyTitle = 'ยังไม่มีโพสต์ในฟีดของคุณ';
-          let statusSubtext = state.gh.connected
-            ? `เชื่อมต่อกับ ${state.gh.owner}/${state.gh.repo} เรียบร้อยแล้ว เขียนข้อความหรือแนบรูปภาพและวิดีโอด้านบนเพื่อสร้างโพสต์แรกของคุณ`
-            : 'เริ่มโพสต์ข้อความ รูปภาพ หรือวิดีโอได้ทันที และกดปุ่ม "ตั้งค่า GitHub" มุมขวาบนเพื่อจัดเก็บข้อมูลทั้งหมดลงใน GitHub Repository ของคุณ';
+          let emptyTitle = state.privacy.isLocked
+            ? 'ยังไม่มีโพสต์สาธารณะในฟีด'
+            : 'ยังไม่มีโพสต์ในฟีดของคุณ';
+          let statusSubtext = state.privacy.isLocked
+            ? 'ขณะนี้อยู่ในโหมดเปิดสาธารณะ โพสต์ที่ตั้งค่าเป็นส่วนตัวจะถูกซ่อนไว้จนกว่าจะปลดล็อกโหมดเจ้าของเพจ'
+            : (state.gh.connected
+                ? `เชื่อมต่อกับ ${state.gh.owner}/${state.gh.repo} เรียบร้อยแล้ว เขียนข้อความหรือแนบรูปภาพและวิดีโอด้านบนเพื่อสร้างโพสต์แรกของคุณ`
+                : 'เริ่มโพสต์ข้อความ รูปภาพ หรือวิดีโอได้ทันที และกดปุ่ม "ตั้งค่า GitHub" มุมขวาบนเพื่อจัดเก็บข้อมูลทั้งหมดลงใน GitHub Repository ของคุณ');
 
-          if (state.selectedDate) {
+          if (state.searchQuery.trim()) {
+            emptyTitle = `ไม่พบโพสต์ที่ตรงกับ "${state.searchQuery.trim()}"`;
+            statusSubtext = 'ลองเปลี่ยนคำค้นหาใหม่ กดปุ่ม ✕ ในช่องค้นหาด้านบน หรือกด "ดูโพสต์ทั้งหมด" เพื่อแสดงโพสต์ทั้งหมดในฟีด';
+          } else if (state.selectedDate) {
             const thaiDate = formatThaiDateFromKey(state.selectedDate);
             emptyTitle = `ไม่มีเนื้อหาในวันที่ ${thaiDate}`;
             statusSubtext = 'ยังไม่มีโพสต์ที่สร้างในวันที่เลือก สามารถคลิกเลือกวันอื่นจากปฏิทินด้านขวา หรือกด "ดูโพสต์ทั้งหมด" เพื่อแสดงโพสต์ทุกวัน';
@@ -3995,6 +5121,17 @@
 
           metaLine.append(timeSpan, dot, storageTag);
 
+          const postIsPublic = isPostPublic(post);
+          const visEl = document.createElement(state.privacy.isLocked ? 'span' : 'button');
+          if (!state.privacy.isLocked) {
+            visEl.type = 'button';
+            visEl.title = 'คลิกเพื่อสลับการมองเห็น สาธารณะ / ส่วนตัว';
+            visEl.addEventListener('click', () => handleTogglePostVisibility(post.id));
+          }
+          visEl.className = 'post-visibility-tag ' + (postIsPublic ? 'is-public' : 'is-private');
+          visEl.innerHTML = `${postIsPublic ? ICON_GLOBE_SM : ICON_LOCK_SM}<span>${postIsPublic ? 'สาธารณะ' : 'ส่วนตัว'}</span>`;
+          metaLine.appendChild(visEl);
+
           const postGroupName = getGroupNameById(post.groupId) || post.groupName || '';
           if (post.groupId && postGroupName) {
             const grpBtn = document.createElement('button');
@@ -4016,6 +5153,9 @@
           // Post Actions (Bookmark / Edit / Inline Delete Confirmation)
           const actions = document.createElement('div');
           actions.className = 'post-actions';
+          if (state.privacy.isLocked) {
+            actions.style.display = 'none';
+          }
 
           if (state.confirmDeleteId === post.id) {
             const confirmBtn = document.createElement('button');
@@ -4113,7 +5253,23 @@
             });
             editGroupSelect.value = post.groupId || '';
 
-            editGroupRow.append(editGroupLabel, editGroupSelect);
+            const editVisLabel = document.createElement('span');
+            editVisLabel.className = 'composer-group-label';
+            editVisLabel.style.marginLeft = '4px';
+            editVisLabel.textContent = 'การมองเห็น:';
+
+            const editVisSelect = document.createElement('select');
+            editVisSelect.className = 'composer-group-select';
+            const pubOpt = document.createElement('option');
+            pubOpt.value = 'public';
+            pubOpt.textContent = 'สาธารณะ';
+            const privOpt = document.createElement('option');
+            privOpt.value = 'private';
+            privOpt.textContent = 'ส่วนตัว';
+            editVisSelect.append(pubOpt, privOpt);
+            editVisSelect.value = post.visibility === 'private' ? 'private' : 'public';
+
+            editGroupRow.append(editGroupLabel, editGroupSelect, editVisLabel, editVisSelect);
 
             const editActions = document.createElement('div');
             editActions.className = 'post-edit-actions';
@@ -4132,7 +5288,7 @@
             saveEditBtn.className = 'btn btn-primary';
             saveEditBtn.textContent = 'บันทึกข้อความ';
             saveEditBtn.addEventListener('click', () =>
-              handleSaveEditPost(post.id, editArea.value, editGroupSelect.value, saveEditBtn)
+              handleSaveEditPost(post.id, editArea.value, editGroupSelect.value, editVisSelect.value, saveEditBtn)
             );
 
             editActions.append(cancelEditBtn, saveEditBtn);
@@ -4371,6 +5527,7 @@
 
         const selectedGroupId = els.composerGroupSelect.value || '';
         const selectedGroupName = getGroupNameById(selectedGroupId);
+        const selectedVisibility = els.composerVisibilitySelect && els.composerVisibilitySelect.value === 'private' ? 'private' : 'public';
 
         let attachedPreview = null;
         if (state.draftLinkPreview && state.draftLinkPreview.url) {
@@ -4416,6 +5573,7 @@
               id: `post-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
               author: state.displayName || state.gh.owner || 'ฉัน',
               text,
+              visibility: selectedVisibility,
               groupId: selectedGroupId,
               groupName: selectedGroupName,
               linkPreview: attachedPreview,
@@ -4458,6 +5616,7 @@
               id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
               author: state.displayName || 'ฉัน',
               text,
+              visibility: selectedVisibility,
               groupId: selectedGroupId,
               groupName: selectedGroupName,
               linkPreview: attachedPreview,
@@ -4491,6 +5650,12 @@
             state.selectedDate = null;
             viewChanged = true;
           }
+          if (state.searchQuery.trim() && !matchesSearchQuery(state.posts[0] || {}, state.searchQuery)) {
+            state.searchQuery = '';
+            if (els.searchPostInput) els.searchPostInput.value = '';
+            if (els.clearSearchBtn) els.clearSearchBtn.hidden = true;
+            viewChanged = true;
+          }
           if (viewChanged) {
             renderSidebarAndActiveView();
           }
@@ -4508,7 +5673,7 @@
         }
       }
 
-      async function handleSaveEditPost(postId, newText, newGroupId, btnEl) {
+      async function handleSaveEditPost(postId, newText, newGroupId, newVisibility, btnEl) {
         const postIdx = state.posts.findIndex(p => p.id === postId);
         if (postIdx === -1) return;
 
@@ -4537,10 +5702,12 @@
 
         const resolvedGroupId = newGroupId || '';
         const resolvedGroupName = getGroupNameById(resolvedGroupId);
+        const resolvedVisibility = newVisibility === 'private' ? 'private' : 'public';
 
         try {
           const updatedPost = Object.assign({}, target, {
             text: trimmed,
+            visibility: resolvedVisibility,
             groupId: resolvedGroupId,
             groupName: resolvedGroupName,
             linkPreview: updatedPreview,
@@ -4636,6 +5803,7 @@
               id: newRemoteId,
               author: lp.author || state.displayName,
               text: lp.text,
+              visibility: lp.visibility === 'private' ? 'private' : 'public',
               groupId: lp.groupId || '',
               groupName: lp.groupName || '',
               linkPreview: lp.linkPreview || null,
@@ -4666,14 +5834,20 @@
         }
       }
 
-      async function refreshFeedFromGitHub() {
-        if (!state.gh.connected) return;
-        state.loadingFeed = true;
+      async function refreshFeedFromGitHub(silent = false) {
+        if (!state.gh.owner || !state.gh.repo || (!state.gh.connected && !state.gh.readOnly)) return;
+        if (state.loadingFeed) return;
+
+        state.loadingFeed = !silent;
         if (els.refreshBtn) {
           els.refreshBtn.classList.add('spinning');
           els.refreshBtn.disabled = true;
         }
-        renderFeed();
+        if (els.sidebarSyncNowBtn) {
+          els.sidebarSyncNowBtn.disabled = true;
+          els.sidebarSyncNowBtn.textContent = 'กำลังอัปเดต...';
+        }
+        if (!silent) renderFeed();
 
         try {
           const repoMeta = await verifyRepoConnection(state.gh);
@@ -4684,20 +5858,69 @@
           state.posts = [...localOnlyPosts, ...remotePosts].sort(
             (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
+          state.gh.lastSyncedAt = new Date().toISOString();
+          lastRemoteCheckMs = Date.now();
         } catch (err) {
-          showComposerMessage(err.message || 'โหลดข้อมูลจาก GitHub ไม่สำเร็จ', 'error');
+          if (!silent) {
+            showComposerMessage(err.message || 'โหลดข้อมูลจาก GitHub ไม่สำเร็จ', 'error');
+          }
         } finally {
           state.loadingFeed = false;
           if (els.refreshBtn) {
             els.refreshBtn.classList.remove('spinning');
             els.refreshBtn.disabled = false;
           }
+          if (els.sidebarSyncNowBtn) {
+            els.sidebarSyncNowBtn.disabled = false;
+            els.sidebarSyncNowBtn.textContent = 'อัปเดตล่าสุด';
+          }
           renderComposerGroupOptions();
-          renderSidebarAndActiveView();
-          renderCalendar();
           updateHeaderUI();
-          renderFeed();
+          applyPrivacyModeUI();
         }
+      }
+
+      async function autoDiscoverAlwayzSyncRepo() {
+        const targetOwner = state.gh.owner || DEFAULT_GH_OWNER;
+        try {
+          const repos = await fetchOwnerRepositories(targetOwner, state.gh.token);
+          if (state.gh.repo || !Array.isArray(repos) || repos.length === 0) return;
+
+          // Prioritize likely sync repo names, then check top 3 recently pushed public repos
+          const preferredNames = ['my-pages', 'mypages', 'my-pages-data', 'my-pages-sync', 'personal-feed-storage'];
+          const candidates = [];
+          repos.forEach(r => {
+            if (r && r.name && preferredNames.includes(String(r.name).toLowerCase())) {
+              candidates.push(r);
+            }
+          });
+          repos.slice(0, 4).forEach(r => {
+            if (r && r.name && !candidates.some(c => c.name === r.name)) {
+              candidates.push(r);
+            }
+          });
+
+          for (const repoObj of candidates.slice(0, 4)) {
+            const branchName = repoObj.default_branch || 'main';
+            const checkRes = await ghRequest(
+              `/repos/${encodeURIComponent(targetOwner)}/${encodeURIComponent(repoObj.name)}/contents/data/posts.json?ref=${encodeURIComponent(branchName)}`,
+              {},
+              { owner: targetOwner, token: state.gh.token }
+            );
+            if (checkRes.ok) {
+              state.gh.owner = targetOwner;
+              state.gh.repo = repoObj.name;
+              state.gh.branch = branchName;
+              state.gh.isPrivate = Boolean(repoObj.private);
+              state.gh.connected = Boolean(state.gh.token);
+              state.gh.readOnly = !state.gh.token;
+              persistConfig();
+              updateHeaderUI();
+              await refreshFeedFromGitHub(true);
+              break;
+            }
+          }
+        } catch (_) {}
       }
 
       // Settings Modal Controls
@@ -4714,14 +5937,21 @@
       }
 
       function openSettingsModal() {
+        const ownerVal = state.gh.owner || DEFAULT_GH_OWNER;
         els.displayNameInput.value = state.displayName || 'ฉัน';
-        els.ghOwnerInput.value = state.gh.owner || '';
+        els.ghOwnerInput.value = ownerVal;
         els.ghRepoInput.value = state.gh.repo || '';
         els.ghBranchInput.value = state.gh.branch || 'main';
         els.ghTokenInput.value = state.gh.token || '';
         setSettingsStatus('', '');
         els.settingsModal.hidden = false;
-        els.displayNameInput.focus();
+        els.ghRepoInput.focus();
+
+        fetchOwnerRepositories(ownerVal, state.gh.token).then(repos => {
+          if (els.ghRepoListHint && repos.length > 0) {
+            els.ghRepoListHint.textContent = `พบ ${repos.length} Repository ในบัญชี ${ownerVal} — คลิกช่องด้านบนเพื่อเลือก หรือพิมพ์ชื่อใหม่ได้`;
+          }
+        }).catch(() => {});
       }
 
       function closeSettingsModal() {
@@ -4740,6 +5970,29 @@
       }
 
       // Event Listeners
+      if (els.topbarSearchForm) {
+        els.topbarSearchForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          applySearchQuery(els.searchPostInput ? els.searchPostInput.value : '');
+        });
+      }
+
+      if (els.searchPostInput) {
+        els.searchPostInput.addEventListener('input', () => {
+          applySearchQuery(els.searchPostInput.value);
+        });
+      }
+
+      if (els.clearSearchBtn) {
+        els.clearSearchBtn.addEventListener('click', () => {
+          if (els.searchPostInput) {
+            els.searchPostInput.value = '';
+            els.searchPostInput.focus();
+          }
+          applySearchQuery('');
+        });
+      }
+
       els.postText.addEventListener('input', () => {
         updateSubmitButtonState();
         clearTimeout(linkDetectTimer);
@@ -4873,17 +6126,67 @@
         els.toggleTokenBtn.textContent = isPwd ? 'ซ่อน' : 'แสดง';
       });
 
+      if (els.sidebarConfigSyncBtn) {
+        els.sidebarConfigSyncBtn.addEventListener('click', openSettingsModal);
+      }
+
+      if (els.sidebarSyncNowBtn) {
+        els.sidebarSyncNowBtn.addEventListener('click', async () => {
+          if (state.gh.connected && state.posts.some(p => p.localOnly)) {
+            await handleSyncLocalPostsToGitHub();
+          } else {
+            await refreshFeedFromGitHub(false);
+          }
+        });
+      }
+
+      if (els.fetchReposBtn) {
+        els.fetchReposBtn.addEventListener('click', async () => {
+          const ownerVal = els.ghOwnerInput.value.trim() || DEFAULT_GH_OWNER;
+          const tokenVal = els.ghTokenInput.value.trim();
+          els.fetchReposBtn.disabled = true;
+          els.fetchReposBtn.textContent = 'กำลังดึง...';
+          setSettingsStatus('', '');
+          try {
+            const repos = await fetchOwnerRepositories(ownerVal, tokenVal);
+            if (repos.length > 0) {
+              if (!els.ghRepoInput.value.trim()) {
+                els.ghRepoInput.value = repos[0].name;
+              }
+              setSettingsStatus(`ดึงรายชื่อสำเร็จ พบ ${repos.length} Repository ของ ${ownerVal}`, 'success');
+            } else {
+              setSettingsStatus(`ยังไม่พบ Public Repository ในบัญชี ${ownerVal} (สามารถพิมพ์ชื่อ Repo ใหม่พร้อมใส่ Token เพื่อสร้างหรือเชื่อมต่อ Private Repo)`, 'error');
+            }
+          } catch (err) {
+            setSettingsStatus(err.message || 'ดึงรายชื่อ Repository ไม่สำเร็จ', 'error');
+          } finally {
+            els.fetchReposBtn.disabled = false;
+            els.fetchReposBtn.textContent = 'ดึงรายชื่อ Repo';
+          }
+        });
+      }
+
       els.saveProfileOnlyBtn.addEventListener('click', () => {
         const name = els.displayNameInput.value.trim() || 'ฉัน';
         state.displayName = name;
         persistConfig();
+        pushCurrentStateToGitHub('Update profile display name');
         updateHeaderUI();
         renderFeed();
         closeSettingsModal();
       });
 
       els.disconnectGhBtn.addEventListener('click', () => {
-        state.gh = { owner: '', repo: '', branch: 'main', token: '', connected: false, isPrivate: false };
+        state.gh = {
+          owner: DEFAULT_GH_OWNER,
+          repo: '',
+          branch: 'main',
+          token: '',
+          connected: false,
+          readOnly: false,
+          isPrivate: false,
+          lastSyncedAt: ''
+        };
         state.postsSha = null;
         state.posts = state.posts.filter(p => p.localOnly);
         persistConfig();
@@ -4896,13 +6199,13 @@
       els.settingsForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const displayName = els.displayNameInput.value.trim() || 'ฉัน';
-        const owner = els.ghOwnerInput.value.trim();
+        const owner = els.ghOwnerInput.value.trim() || DEFAULT_GH_OWNER;
         const repo = els.ghRepoInput.value.trim();
         const branch = els.ghBranchInput.value.trim() || 'main';
         const token = els.ghTokenInput.value.trim();
 
-        if (!owner || !repo || !token) {
-          setSettingsStatus('กรุณากรอก GitHub Username, ชื่อ Repository และ Personal Access Token ให้ครบถ้วน', 'error');
+        if (!owner || !repo) {
+          setSettingsStatus('กรุณาระบุ GitHub Username และชื่อ Repository สำหรับซิงค์ข้อมูล', 'error');
           return;
         }
 
@@ -4912,27 +6215,194 @@
 
         try {
           const candidate = { owner, repo, branch, token };
-          const repoMeta = await verifyRepoConnection(candidate);
+          let repoMeta = null;
+
+          try {
+            repoMeta = await verifyRepoConnection(candidate);
+          } catch (verifyErr) {
+            if (verifyErr && verifyErr.status === 404 && token) {
+              els.saveGhBtn.textContent = 'กำลังสร้าง Repo...';
+              const created = await tryCreateRepoForOwner(candidate);
+              if (created) {
+                repoMeta = {
+                  isPrivate: created.isPrivate,
+                  defaultBranch: created.defaultBranch,
+                  canPush: true
+                };
+              } else {
+                throw verifyErr;
+              }
+            } else {
+              throw verifyErr;
+            }
+          }
 
           state.displayName = displayName === 'ฉัน' && owner ? owner : displayName;
           state.gh = {
             owner,
             repo,
-            branch: branch || repoMeta.defaultBranch,
+            branch: branch || repoMeta.defaultBranch || 'main',
             token,
-            connected: true,
-            isPrivate: repoMeta.isPrivate
+            connected: Boolean(token),
+            readOnly: !token,
+            isPrivate: repoMeta.isPrivate,
+            lastSyncedAt: ''
           };
 
           persistConfig();
           updateHeaderUI();
           closeSettingsModal();
-          await refreshFeedFromGitHub();
+          await refreshFeedFromGitHub(false);
+
+          if (state.gh.connected) {
+            if (state.posts.some(p => p.localOnly)) {
+              await handleSyncLocalPostsToGitHub();
+            } else {
+              await pushCurrentStateToGitHub('Sync My Pages state across devices');
+            }
+          }
         } catch (err) {
           setSettingsStatus(err.message || 'ไม่สามารถเชื่อมต่อ GitHub ได้', 'error');
         } finally {
           els.saveGhBtn.disabled = false;
           els.saveGhBtn.textContent = 'บันทึกและเชื่อมต่อ GitHub';
+        }
+      });
+
+      // Privacy Protection & Public Access Event Listeners
+      els.toggleLockModeBtn.addEventListener('click', () => {
+        if (state.privacy.isLocked) {
+          requestOwnerUnlock();
+        } else if (state.privacy.policy === 'private' && !state.privacy.passwordHash) {
+          openPrivacyModal('กรุณากำหนดรหัสผ่านป้องกันส่วนตัวก่อนเปิดโหมดล็อกทั้งเพจ');
+        } else {
+          state.privacy.isLocked = true;
+          state.editingPostId = null;
+          state.confirmDeleteId = null;
+          state.confirmDeleteGroupId = null;
+          persistPrivacyConfig();
+          applyPrivacyModeUI();
+        }
+      });
+
+      els.openPrivacyBtn.addEventListener('click', () => openPrivacyModal());
+      els.closePrivacyBtn.addEventListener('click', closePrivacyModal);
+      els.privacyModal.addEventListener('click', (e) => {
+        if (e.target === els.privacyModal) closePrivacyModal();
+      });
+
+      els.policyPublicRadio.addEventListener('change', syncPolicyCardStyles);
+      els.policyPrivateRadio.addEventListener('change', syncPolicyCardStyles);
+
+      els.togglePrivacyPwdBtn.addEventListener('click', () => {
+        const isPwd = els.privacyPasswordInput.type === 'password';
+        els.privacyPasswordInput.type = isPwd ? 'text' : 'password';
+        els.togglePrivacyPwdBtn.textContent = isPwd ? 'ซ่อน' : 'แสดง';
+      });
+
+      els.clearPrivacyPwdBtn.addEventListener('click', () => {
+        state.privacy.passwordHash = '';
+        if (state.privacy.policy === 'private') {
+          state.privacy.policy = 'public';
+          els.policyPublicRadio.checked = true;
+          els.policyPrivateRadio.checked = false;
+          syncPolicyCardStyles();
+        }
+        state.privacy.isLocked = false;
+        persistPrivacyConfig();
+        pushCurrentStateToGitHub('Clear privacy password');
+        els.clearPrivacyPwdBtn.hidden = true;
+        els.privacyPasswordHint.textContent = 'ลบรหัสผ่านแล้ว สามารถกำหนดรหัสผ่านใหม่ได้ทุกเมื่อ';
+        setPrivacyModalStatus('ลบรหัสผ่านป้องกันส่วนตัวเรียบร้อยแล้ว', 'success');
+        applyPrivacyModeUI();
+      });
+
+      function savePrivacyFormValues(lockImmediately) {
+        const selectedPolicy = els.policyPrivateRadio.checked ? 'private' : 'public';
+        const newPwd = els.privacyPasswordInput.value.trim();
+        const nextHash = newPwd ? hashPasswordSync(newPwd) : state.privacy.passwordHash;
+
+        if (selectedPolicy === 'private' && !nextHash) {
+          setPrivacyModalStatus('กรุณากำหนดรหัสผ่านก่อนใช้การป้องกันแบบส่วนตัวทั้งหมด', 'error');
+          els.privacyPasswordInput.focus();
+          return;
+        }
+
+        state.privacy.policy = selectedPolicy;
+        state.privacy.passwordHash = nextHash;
+
+        if (lockImmediately) {
+          state.privacy.isLocked = true;
+          state.editingPostId = null;
+          state.confirmDeleteId = null;
+          state.confirmDeleteGroupId = null;
+        }
+
+        persistPrivacyConfig();
+        pushCurrentStateToGitHub('Update privacy policy');
+        closePrivacyModal();
+        applyPrivacyModeUI();
+      }
+
+      els.privacyForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        savePrivacyFormValues(false);
+      });
+
+      els.saveAndLockNowBtn.addEventListener('click', () => {
+        savePrivacyFormValues(true);
+      });
+
+      els.bannerUnlockBtn.addEventListener('click', requestOwnerUnlock);
+
+      els.toggleLockScreenPwdBtn.addEventListener('click', () => {
+        const isPwd = els.lockScreenPwdInput.type === 'password';
+        els.lockScreenPwdInput.type = isPwd ? 'text' : 'password';
+        els.toggleLockScreenPwdBtn.textContent = isPwd ? 'ซ่อน' : 'แสดง';
+      });
+
+      els.lockScreenForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const entered = els.lockScreenPwdInput.value.trim();
+        if (hashPasswordSync(entered) === state.privacy.passwordHash) {
+          els.lockScreenPwdInput.value = '';
+          els.lockScreenError.hidden = true;
+          state.privacy.isLocked = false;
+          persistPrivacyConfig();
+          applyPrivacyModeUI();
+        } else {
+          els.lockScreenError.textContent = 'รหัสผ่านไม่ถูกต้อง กรุณาลองอีกครั้ง';
+          els.lockScreenError.hidden = false;
+          els.lockScreenPwdInput.focus();
+        }
+      });
+
+      els.toggleUnlockModalPwdBtn.addEventListener('click', () => {
+        const isPwd = els.unlockModalPwdInput.type === 'password';
+        els.unlockModalPwdInput.type = isPwd ? 'text' : 'password';
+        els.toggleUnlockModalPwdBtn.textContent = isPwd ? 'ซ่อน' : 'แสดง';
+      });
+
+      els.closeUnlockBtn.addEventListener('click', closeUnlockModal);
+      els.cancelUnlockModalBtn.addEventListener('click', closeUnlockModal);
+      els.unlockModal.addEventListener('click', (e) => {
+        if (e.target === els.unlockModal) closeUnlockModal();
+      });
+
+      els.unlockModalForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const entered = els.unlockModalPwdInput.value.trim();
+        if (hashPasswordSync(entered) === state.privacy.passwordHash) {
+          els.unlockModalPwdInput.value = '';
+          els.unlockModalError.hidden = true;
+          closeUnlockModal();
+          state.privacy.isLocked = false;
+          persistPrivacyConfig();
+          applyPrivacyModeUI();
+        } else {
+          els.unlockModalError.textContent = 'รหัสผ่านไม่ถูกต้อง กรุณาลองอีกครั้ง';
+          els.unlockModalError.hidden = false;
+          els.unlockModalPwdInput.focus();
         }
       });
 
@@ -4944,6 +6414,8 @@
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           if (!els.lightbox.hidden) closeLightbox();
+          else if (!els.unlockModal.hidden) closeUnlockModal();
+          else if (!els.privacyModal.hidden) closePrivacyModal();
           else if (!els.settingsModal.hidden) closeSettingsModal();
           else if (state.confirmDeleteGroupId) {
             state.confirmDeleteGroupId = null;
@@ -4952,15 +6424,30 @@
         }
       });
 
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          const canSync = state.gh.owner && state.gh.repo && (state.gh.connected || state.gh.readOnly);
+          if (
+            canSync &&
+            !state.loadingFeed &&
+            !state.submittingPost &&
+            !state.editingPostId &&
+            Date.now() - lastRemoteCheckMs > 15000
+          ) {
+            refreshFeedFromGitHub(true);
+          }
+        }
+      });
+
       // Initialize App
       loadSavedConfig();
       renderComposerGroupOptions();
-      renderSidebarAndActiveView();
-      renderCalendar();
       updateHeaderUI();
-      renderFeed();
-      if (state.gh.connected) {
-        refreshFeedFromGitHub();
+      applyPrivacyModeUI();
+      if (state.gh.owner && state.gh.repo && (state.gh.connected || state.gh.readOnly)) {
+        refreshFeedFromGitHub(false);
+      } else {
+        autoDiscoverAlwayzSyncRepo();
       }
     })();
   </script>
