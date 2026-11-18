@@ -1,0 +1,4550 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Pages</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #3c3963;
+      --topbar-bg: #2d2a49;
+      --surface: #353156;
+      --surface-header: #1f1d33;
+      --surface-subtle: #282541;
+      --surface-input: #44416f;
+      --surface-hover: #4d497c;
+      --border: #585484;
+      --border-soft: #49456e;
+      --ink: #f5f4fb;
+      --muted: #bdb8da;
+      --brand: #fbc02d;
+      --brand-hover: #ffd147;
+      --brand-ink: #1f1d33;
+      --brand-soft: rgba(251, 192, 45, 0.14);
+      --photo-accent: #26cd37;
+      --video-accent: #ff6b81;
+      --link-accent: #fbc02d;
+      --danger: #e41e3f;
+      --danger-soft: rgba(228, 30, 63, 0.18);
+      --success: #26cd37;
+      --success-soft: rgba(38, 205, 55, 0.16);
+      --radius-lg: 8px;
+      --radius-md: 6px;
+      --radius-pill: 999px;
+      --shadow-card: 0 2px 8px rgba(15, 14, 28, 0.28);
+      --shadow-modal: 0 16px 36px rgba(10, 9, 20, 0.55), 0 2px 6px rgba(10, 9, 20, 0.35);
+      --font: 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.5;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: clip;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, input, textarea, select {
+      font-family: inherit;
+      max-width: 100%;
+    }
+
+    img, video, svg {
+      max-width: 100%;
+    }
+
+    code {
+      background: var(--surface-header);
+      color: var(--brand);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.92em;
+      overflow-wrap: anywhere;
+    }
+
+    /* Top Navigation Bar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--topbar-bg);
+      border-bottom: 1px solid var(--border-soft);
+      box-shadow: 0 2px 8px rgba(15, 14, 28, 0.35);
+      min-height: 58px;
+      padding: 8px max(16px, env(safe-area-inset-right)) 8px max(16px, env(safe-area-inset-left));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #44416f 0%, #1f1d33 100%);
+      color: var(--brand);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(15, 14, 28, 0.35);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--brand);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 8px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease, transform 0.06s ease;
+      background: var(--surface-input);
+      color: var(--ink);
+    }
+
+    .btn:hover:not(:disabled) {
+      background: var(--surface-hover);
+    }
+
+    .btn:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: var(--brand-ink);
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--brand-hover);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: #ffffff;
+      border-color: transparent;
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: #c81937;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: transparent;
+      color: var(--muted);
+      padding: 6px 10px;
+    }
+
+    .btn-ghost:hover:not(:disabled) {
+      background: var(--surface-input);
+      color: var(--ink);
+    }
+
+    .gh-status-btn {
+      border-radius: var(--radius-pill);
+      padding: 7px 14px;
+      background: var(--surface-input);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      font-size: 13px;
+      max-width: 240px;
+    }
+
+    .gh-status-btn.connected {
+      background: var(--success-soft);
+      border-color: rgba(38, 205, 55, 0.5);
+      color: #8cf596;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #928db8;
+      flex-shrink: 0;
+    }
+
+    .gh-status-btn.connected .status-dot {
+      background: var(--success);
+    }
+
+    .gh-status-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border-radius: 50%;
+      background: var(--surface-input);
+      color: var(--ink);
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background-color 0.15s ease, transform 0.1s ease;
+      flex-shrink: 0;
+    }
+
+    .icon-btn:hover:not(:disabled) {
+      background: var(--surface-hover);
+    }
+
+    .icon-btn:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    .icon-btn.spinning svg {
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Main Feed Container */
+    .feed-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px 12px 56px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      border: 1px solid var(--border);
+    }
+
+    /* Notice Banner when unsynced local posts exist */
+    .sync-banner {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: var(--surface-subtle);
+      border: 1px solid rgba(251, 192, 45, 0.45);
+      border-radius: var(--radius-lg);
+      font-size: 14px;
+      color: var(--ink);
+    }
+
+    .sync-banner[hidden] {
+      display: none;
+    }
+
+    /* Composer Card */
+    .composer {
+      padding: 16px;
+    }
+
+    .composer-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #44416f, #282541);
+      color: var(--brand);
+      border: 1px solid var(--border);
+      font-weight: 700;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      user-select: none;
+    }
+
+    .composer-input-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .composer-textarea {
+      width: 100%;
+      min-height: 76px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-input);
+      padding: 12px 16px;
+      font-size: 16px;
+      color: var(--ink);
+      resize: vertical;
+      transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .composer-textarea::placeholder {
+      color: var(--muted);
+    }
+
+    .composer-textarea:focus {
+      outline: none;
+      background: #4b4779;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px rgba(251, 192, 45, 0.2);
+    }
+
+    /* URL Attachment Drawer */
+    .url-drawer {
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .url-drawer[hidden] {
+      display: none;
+    }
+
+    .url-drawer-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .input-field {
+      flex: 1;
+      min-width: 180px;
+      padding: 9px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      font-size: 14px;
+      background: var(--surface-input);
+      color: var(--ink);
+    }
+
+    .input-field::placeholder {
+      color: var(--muted);
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px rgba(251, 192, 45, 0.2);
+    }
+
+    .select-field {
+      padding: 9px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      font-size: 14px;
+      background: var(--surface-input);
+      color: var(--ink);
+    }
+
+    .select-field:focus {
+      outline: none;
+      border-color: var(--brand);
+    }
+
+    /* Media Preview Area in Composer */
+    .composer-previews {
+      margin-top: 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+    }
+
+    .composer-previews:empty {
+      display: none;
+    }
+
+    .preview-item {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #181629;
+      aspect-ratio: 4 / 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .preview-item img,
+    .preview-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .preview-badge {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      background: rgba(20, 18, 36, 0.82);
+      color: var(--ink);
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      max-width: calc(100% - 16px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .preview-remove {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(25, 23, 44, 0.85);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .preview-remove:hover {
+      background: var(--danger);
+      border-color: transparent;
+    }
+
+    .composer-divider {
+      height: 1px;
+      background: var(--border-soft);
+      margin: 12px 0;
+    }
+
+    .composer-message {
+      margin-top: 10px;
+      padding: 9px 12px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+    }
+
+    .composer-message[hidden] {
+      display: none;
+    }
+
+    .composer-message.error {
+      background: var(--danger-soft);
+      color: #fecdd3;
+      border: 1px solid rgba(228, 30, 63, 0.5);
+    }
+
+    .composer-message.info {
+      background: var(--brand-soft);
+      color: #fde68a;
+      border: 1px solid rgba(251, 192, 45, 0.45);
+    }
+
+    .composer-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .media-triggers {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .media-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      background: transparent;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .media-btn:hover {
+      background: var(--surface-input);
+      border-color: var(--border-soft);
+      color: var(--ink);
+    }
+
+    .media-btn:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    .post-submit-btn {
+      min-width: 110px;
+      padding: 9px 20px;
+      font-size: 15px;
+    }
+
+    /* Feed Posts */
+    .feed-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .post-card {
+      overflow: hidden;
+    }
+
+    .post-header {
+      padding: 12px 16px;
+      background: var(--surface-header);
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .post-author-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .post-author-meta {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .post-author-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--brand);
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .post-meta-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: var(--muted);
+      flex-wrap: wrap;
+    }
+
+    .storage-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .post-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+
+    .post-body {
+      padding: 14px 16px 16px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 15.5px;
+      color: var(--ink);
+    }
+
+    .post-body.short-text {
+      font-size: 21px;
+      line-height: 1.4;
+      font-weight: 400;
+      padding-bottom: 18px;
+    }
+
+    .post-edit-box {
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .post-edit-textarea {
+      width: 100%;
+      min-height: 84px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--brand);
+      background: var(--surface-input);
+      color: var(--ink);
+      font-size: 15px;
+      resize: vertical;
+    }
+
+    .post-edit-textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(251, 192, 45, 0.2);
+    }
+
+    .post-edit-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    /* Post Media Grid */
+    .post-media {
+      display: grid;
+      gap: 2px;
+      background: var(--surface-header);
+      border-top: 1px solid var(--border-soft);
+    }
+
+    .post-media.count-1 {
+      grid-template-columns: 1fr;
+    }
+
+    .post-media.count-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .post-media.count-many {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .media-frame {
+      position: relative;
+      background: #181629;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: 200px;
+      max-height: 540px;
+    }
+
+    .post-media.count-2 .media-frame,
+    .post-media.count-many .media-frame {
+      aspect-ratio: 1 / 1;
+      max-height: 340px;
+    }
+
+    .media-frame.video-frame {
+      grid-column: 1 / -1;
+      aspect-ratio: auto;
+      max-height: 520px;
+    }
+
+    .media-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      cursor: zoom-in;
+      transition: opacity 0.15s ease;
+    }
+
+    .post-media.count-1 .media-frame {
+      min-height: 160px;
+    }
+
+    .post-media.count-1 .media-frame img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      max-height: min(520px, 74vh);
+      background: #181629;
+    }
+
+    .media-frame video {
+      width: 100%;
+      height: auto;
+      max-height: min(520px, 74vh);
+      display: block;
+      background: #0e0d1a;
+    }
+
+    .media-loading {
+      color: var(--muted);
+      font-size: 13px;
+      padding: 32px 16px;
+      text-align: center;
+    }
+
+    /* Empty & Loading States */
+    .state-card {
+      padding: 44px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .state-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--surface-header);
+      color: var(--brand);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .state-title {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .state-desc {
+      margin: 0;
+      max-width: 440px;
+      font-size: 14.5px;
+      color: var(--muted);
+    }
+
+    /* Modal Backdrop & GitHub Settings Dialog */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(16, 14, 30, 0.78);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .modal-dialog {
+      width: 100%;
+      max-width: 500px;
+      max-height: 92vh;
+      overflow-y: auto;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-modal);
+      border: 1px solid var(--border);
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      background: var(--surface-header);
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--brand);
+    }
+
+    .modal-body {
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 10px;
+    }
+
+    .form-label {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .form-hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .token-wrap {
+      display: flex;
+      gap: 6px;
+    }
+
+    .help-box {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .help-box summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--brand);
+      user-select: none;
+    }
+
+    .help-box ol {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .modal-status {
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      font-size: 13.5px;
+    }
+
+    .modal-status[hidden] {
+      display: none;
+    }
+
+    .modal-status.error {
+      background: var(--danger-soft);
+      color: #fecdd3;
+      border: 1px solid rgba(228, 30, 63, 0.5);
+    }
+
+    .modal-status.success {
+      background: var(--success-soft);
+      color: #8cf596;
+      border: 1px solid rgba(38, 205, 55, 0.5);
+    }
+
+    .modal-footer {
+      padding: 14px 20px;
+      background: var(--topbar-bg);
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Lightbox for full-screen image view */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      background: rgba(12, 11, 24, 0.94);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox[hidden] {
+      display: none;
+    }
+
+    .lightbox img {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: 6px;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--ink);
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-close:hover {
+      background: var(--surface-hover);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    /* Three-Column Responsive App Shell (PC / Tablet / Mobile) */
+    .app-layout {
+      display: grid;
+      grid-template-columns: clamp(208px, 19vw, 260px) minmax(0, 1fr) clamp(244px, 21vw, 286px);
+      grid-template-areas: "left main right";
+      align-items: start;
+      width: 100%;
+      min-height: calc(100vh - 58px);
+      min-height: calc(100dvh - 58px);
+    }
+
+    .left-sidebar {
+      grid-area: left;
+      width: 100%;
+      min-width: 0;
+      position: sticky;
+      top: 58px;
+      height: calc(100vh - 58px);
+      height: calc(100dvh - 58px);
+      overflow-y: auto;
+      background: var(--surface);
+      border-right: 1px solid var(--border-soft);
+      padding: 12px 0 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sidebar-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--border-soft);
+      margin: 8px 0;
+    }
+
+    .sidebar-heading-row {
+      padding: 4px 16px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .sidebar-heading {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand);
+      letter-spacing: 0.01em;
+    }
+
+    .sidebar-nav-btn {
+      width: 100%;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 16px;
+      border: none;
+      border-left: 3px solid transparent;
+      background: transparent;
+      color: var(--ink);
+      font-size: 14.5px;
+      font-weight: 500;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .sidebar-nav-btn svg {
+      flex-shrink: 0;
+    }
+
+    .sidebar-nav-btn:hover {
+      background: var(--surface-subtle);
+    }
+
+    .sidebar-nav-btn:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: -2px;
+    }
+
+    .sidebar-nav-btn.active {
+      background: var(--surface-header);
+      border-left-color: var(--brand);
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .sidebar-nav-label {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .create-group-trigger {
+      margin: 4px 14px 8px;
+      width: calc(100% - 28px);
+      justify-content: center;
+      font-size: 13.5px;
+      padding: 8px 12px;
+    }
+
+    .group-create-box {
+      margin: 2px 14px 10px;
+      padding: 10px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .group-create-box[hidden] {
+      display: none;
+    }
+
+    .group-create-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .group-create-error {
+      font-size: 12px;
+      color: #fecdd3;
+      overflow-wrap: anywhere;
+    }
+
+    .group-create-error[hidden] {
+      display: none;
+    }
+
+    .group-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .group-item-row {
+      display: flex;
+      align-items: center;
+      position: relative;
+      min-width: 0;
+    }
+
+    .group-item-row .sidebar-nav-btn {
+      padding-right: 38px;
+    }
+
+    .group-delete-btn {
+      position: absolute;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+
+    .group-item-row:hover .group-delete-btn,
+    .group-delete-btn:focus-visible,
+    .group-delete-btn.confirming {
+      opacity: 1;
+    }
+
+    .group-delete-btn:hover {
+      background: var(--surface-input);
+      color: var(--ink);
+    }
+
+    .group-delete-btn.confirming {
+      width: auto;
+      padding: 2px 7px;
+      background: var(--danger);
+      color: #fff;
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .sidebar-empty-hint {
+      padding: 6px 16px 4px;
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .feed-main-wrap {
+      grid-area: main;
+      width: 100%;
+      min-width: 0;
+    }
+
+    .feed-container {
+      width: 100%;
+    }
+
+    .token-wrap .input-field {
+      min-width: 0;
+    }
+
+    .composer-message,
+    .modal-status,
+    .sync-banner {
+      overflow-wrap: anywhere;
+    }
+
+    .lightbox-close {
+      top: max(14px, env(safe-area-inset-top));
+      right: max(14px, env(safe-area-inset-right));
+    }
+
+    /* Active View / Group Filter Banner */
+    .active-view-bar {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: var(--surface-header);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+
+    .active-view-bar[hidden] {
+      display: none;
+    }
+
+    .active-view-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brand);
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    /* Composer Group Selector */
+    .composer-group-row {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .composer-group-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .composer-group-select {
+      padding: 6px 10px;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-subtle);
+      color: var(--ink);
+      max-width: 240px;
+      min-width: 0;
+    }
+
+    .composer-group-select:focus {
+      outline: none;
+      border-color: var(--brand);
+    }
+
+    /* Link Preview Card (Composer & Post Feed) */
+    .composer-link-preview-wrap {
+      margin-top: 12px;
+      position: relative;
+      min-width: 0;
+    }
+
+    .composer-link-preview-wrap[hidden] {
+      display: none;
+    }
+
+    .link-preview-dismiss {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      z-index: 2;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(20, 18, 36, 0.86);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .link-preview-dismiss:hover {
+      background: var(--danger);
+      border-color: transparent;
+    }
+
+    .link-preview-card {
+      display: block;
+      margin: 0;
+      max-width: 100%;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+    }
+
+    a.link-preview-card:hover {
+      border-color: var(--brand);
+      background: #2e2b4b;
+    }
+
+    .post-link-preview {
+      padding: 0 16px 14px;
+      min-width: 0;
+    }
+
+    .link-preview-thumb {
+      width: 100%;
+      max-height: 240px;
+      background: #181629;
+      border-bottom: 1px solid var(--border-soft);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .link-preview-thumb img {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .link-preview-body {
+      padding: 11px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .link-preview-domain {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: lowercase;
+      min-width: 0;
+    }
+
+    .link-preview-domain span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .link-preview-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brand);
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .link-preview-desc {
+      font-size: 13.5px;
+      color: var(--ink);
+      opacity: 0.92;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .link-preview-url {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+
+    .post-body a.inline-post-link {
+      color: var(--brand);
+      text-decoration: underline;
+      word-break: break-all;
+    }
+
+    .post-body a.inline-post-link:hover {
+      color: var(--brand-hover);
+    }
+
+    /* Post Group Tag & Bookmark Button */
+    .post-group-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 1px 8px;
+      border-radius: var(--radius-pill);
+      background: var(--brand-soft);
+      border: 1px solid rgba(251, 192, 45, 0.38);
+      color: var(--brand);
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .post-group-tag:hover {
+      background: rgba(251, 192, 45, 0.24);
+    }
+
+    .btn-save-post.saved {
+      color: var(--brand);
+      background: var(--brand-soft);
+      border-color: rgba(251, 192, 45, 0.38);
+    }
+
+    /* Right Sidebar Mini Calendar Tool */
+    .right-sidebar {
+      grid-area: right;
+      width: 100%;
+      min-width: 0;
+      position: sticky;
+      top: 58px;
+      max-height: calc(100vh - 58px);
+      max-height: calc(100dvh - 58px);
+      overflow-y: auto;
+      padding: 20px 16px 24px 0;
+    }
+
+    .calendar-widget {
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .calendar-header {
+      padding: 10px 12px;
+      background: var(--surface-header);
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .calendar-title-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--brand);
+      user-select: none;
+      min-width: 0;
+      text-align: center;
+    }
+
+    .calendar-title-wrap span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .calendar-nav-btn {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--ink);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: background-color 0.15s ease;
+    }
+
+    .calendar-nav-btn:hover {
+      background: var(--surface-hover);
+    }
+
+    .calendar-nav-btn:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 2px;
+    }
+
+    .calendar-body {
+      padding: 12px;
+    }
+
+    .calendar-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 2px;
+      margin-bottom: 6px;
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--muted);
+      user-select: none;
+    }
+
+    .calendar-days {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 3px;
+    }
+
+    .cal-day-empty {
+      height: 34px;
+      min-width: 0;
+    }
+
+    .cal-day {
+      position: relative;
+      height: 34px;
+      min-width: 0;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--ink);
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      transition: background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+    }
+
+    .cal-day:hover {
+      background: var(--surface-input);
+    }
+
+    .cal-day:focus-visible {
+      outline: 2px solid var(--brand);
+      outline-offset: 1px;
+    }
+
+    .cal-day.is-today {
+      border-color: var(--brand);
+      color: var(--brand);
+      font-weight: 700;
+    }
+
+    .cal-day.has-post::after {
+      content: '';
+      position: absolute;
+      bottom: 3px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--brand);
+    }
+
+    .cal-day.is-selected {
+      background: var(--brand);
+      color: var(--brand-ink);
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .cal-day.is-selected:hover {
+      background: var(--brand-hover);
+    }
+
+    .cal-day.is-selected.has-post::after {
+      background: var(--brand-ink);
+    }
+
+    .calendar-footer {
+      padding: 8px 12px 10px;
+      border-top: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .calendar-footer-btn {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    /* Touch devices: keep group delete button accessible without hover */
+    @media (hover: none) {
+      .group-delete-btn {
+        opacity: 0.8;
+      }
+    }
+
+    /* Tablet Portrait / Narrow Split Window (768px - 960px) */
+    @media (max-width: 960px) {
+      .app-layout {
+        grid-template-columns: 212px minmax(0, 1fr);
+        grid-template-areas:
+          "left main"
+          "left right";
+      }
+
+      .feed-container {
+        padding-bottom: 20px;
+      }
+
+      .right-sidebar {
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 0 12px 36px;
+      }
+    }
+
+    /* Mobile & Large Phone Layout (<= 767px) */
+    @media (max-width: 767px) {
+      .app-layout {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas:
+          "left"
+          "main"
+          "right";
+      }
+
+      .left-sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        overflow-y: visible;
+        border-right: none;
+        border-bottom: 1px solid var(--border-soft);
+        padding: 10px 12px 12px;
+        gap: 8px;
+      }
+
+      .left-sidebar > .sidebar-section:first-child {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .left-sidebar > .sidebar-section:first-child .sidebar-nav-btn {
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-md);
+        padding: 9px 10px;
+        justify-content: center;
+        text-align: center;
+        gap: 8px;
+        background: var(--surface-subtle);
+      }
+
+      .left-sidebar > .sidebar-section:first-child .sidebar-nav-btn.active {
+        background: var(--surface-header);
+        border-color: var(--brand);
+      }
+
+      .left-sidebar > .sidebar-section:first-child .sidebar-nav-label {
+        flex: 0 1 auto;
+      }
+
+      .sidebar-divider {
+        margin: 2px 0;
+      }
+
+      .sidebar-heading-row {
+        padding: 2px 2px 4px;
+      }
+
+      .create-group-trigger {
+        margin: 2px 0 6px;
+        width: 100%;
+      }
+
+      .group-create-box {
+        margin: 2px 0 8px;
+      }
+
+      .group-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+        gap: 6px;
+      }
+
+      .group-item-row .sidebar-nav-btn {
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-md);
+        padding: 8px 34px 8px 10px;
+        background: var(--surface-subtle);
+        font-size: 13.5px;
+      }
+
+      .group-item-row .sidebar-nav-btn.active {
+        background: var(--surface-header);
+        border-color: var(--brand);
+      }
+
+      .sidebar-empty-hint {
+        padding: 2px 2px 0;
+      }
+
+      .feed-container {
+        padding: 14px 12px 18px;
+        gap: 14px;
+      }
+
+      .right-sidebar {
+        position: static;
+        max-height: none;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 0 12px calc(32px + env(safe-area-inset-bottom));
+      }
+
+      .cal-day-empty,
+      .cal-day {
+        height: 38px;
+        font-size: 13px;
+      }
+
+      /* Prevent iOS Safari input auto-zoom distortion */
+      input,
+      textarea,
+      select,
+      .input-field,
+      .select-field,
+      .composer-textarea,
+      .composer-group-select,
+      .post-edit-textarea,
+      .group-create-box .input-field {
+        font-size: 16px !important;
+      }
+    }
+
+    /* Standard & Compact Smartphones (<= 560px) */
+    @media (max-width: 560px) {
+      .topbar {
+        min-height: 54px;
+        padding: 6px max(12px, env(safe-area-inset-right)) 6px max(12px, env(safe-area-inset-left));
+        gap: 8px;
+      }
+
+      .brand {
+        gap: 8px;
+      }
+
+      .brand-logo {
+        width: 34px;
+        height: 34px;
+      }
+
+      .brand-title {
+        font-size: 16px;
+      }
+
+      .brand-subtitle {
+        display: none;
+      }
+
+      .gh-status-btn {
+        max-width: 158px;
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+
+      .feed-container {
+        padding: 12px 10px 16px;
+        gap: 12px;
+      }
+
+      .composer {
+        padding: 12px;
+      }
+
+      .composer-top {
+        gap: 10px;
+      }
+
+      .avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 14.5px;
+      }
+
+      .composer-textarea {
+        min-height: 70px;
+        padding: 10px 12px;
+      }
+
+      .composer-group-row {
+        width: 100%;
+      }
+
+      .composer-group-select {
+        flex: 1 1 auto;
+        max-width: none;
+      }
+
+      .url-drawer {
+        padding: 10px;
+      }
+
+      .url-drawer-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .url-drawer-row .input-field,
+      .url-drawer-row .select-field,
+      .url-drawer-row .btn {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .composer-previews {
+        grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+        gap: 8px;
+      }
+
+      .composer-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+      }
+
+      .media-triggers {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 6px;
+        width: 100%;
+      }
+
+      .media-btn {
+        justify-content: center;
+        padding: 8px 6px;
+        font-size: 13px;
+        gap: 5px;
+        background: var(--surface-subtle);
+        border-color: var(--border-soft);
+        white-space: nowrap;
+      }
+
+      .media-btn svg {
+        width: 17px;
+        height: 17px;
+        flex-shrink: 0;
+      }
+
+      .post-submit-btn {
+        width: 100%;
+        padding: 10px 16px;
+      }
+
+      .post-header {
+        flex-wrap: wrap;
+        align-items: flex-start;
+        padding: 10px 12px;
+        gap: 8px;
+      }
+
+      .post-author-group {
+        flex: 1 1 180px;
+      }
+
+      .post-actions {
+        width: 100%;
+        justify-content: flex-end;
+        padding-top: 6px;
+        border-top: 1px solid var(--border-soft);
+      }
+
+      .post-body {
+        padding: 12px 12px 14px;
+      }
+
+      .post-body.short-text {
+        font-size: 18.5px;
+        padding-bottom: 14px;
+      }
+
+      .post-edit-box {
+        padding: 12px;
+      }
+
+      .post-link-preview {
+        padding: 0 12px 12px;
+      }
+
+      .media-frame {
+        min-height: 140px;
+      }
+
+      .state-card {
+        padding: 32px 16px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-backdrop {
+        padding: 10px;
+      }
+
+      .modal-dialog {
+        max-height: 90vh;
+        max-height: 90dvh;
+      }
+
+      .modal-header,
+      .modal-body,
+      .modal-footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .modal-title {
+        font-size: 17px;
+      }
+
+      .modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .modal-footer > div {
+        width: 100%;
+        margin-left: 0 !important;
+        flex-wrap: wrap;
+      }
+
+      .modal-footer .btn {
+        flex: 1 1 auto;
+        justify-content: center;
+      }
+    }
+
+    /* Extra-Narrow Phones (<= 370px) */
+    @media (max-width: 370px) {
+      .gh-status-btn {
+        max-width: 132px;
+      }
+
+      .left-sidebar > .sidebar-section:first-child {
+        grid-template-columns: 1fr;
+      }
+
+      .media-triggers {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .media-triggers .media-btn:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
+<style data-link-removed-style>a[data-link-removed],a[href*="zPythonSafez"]:not([onclick]){pointer-events:none!important;cursor:default!important;opacity:.6}</style></head>
+<body>
+  <!-- Header -->
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-title" id="headerTitle">My Pages</span>
+      </div>
+    </div>
+
+    <div class="topbar-actions">
+      <button type="button" class="icon-btn" id="refreshBtn" title="ดึงข้อมูลล่าสุดจาก GitHub" aria-label="ดึงข้อมูลล่าสุดจาก GitHub" hidden>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+          <path d="M3 3v5h5"/>
+          <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/>
+          <path d="M16 16h5v5"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- App Shell with Left Toolbar Panel + Main Feed -->
+  <div class="app-layout">
+    <aside class="left-sidebar" aria-label="แผงเครื่องมือซ้าย">
+      <div class="sidebar-section">
+        <button type="button" class="sidebar-nav-btn active" id="navAllPostsBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span class="sidebar-nav-label">โพสต์ทั้งหมด</span>
+        </button>
+
+        <button type="button" class="sidebar-nav-btn" id="navSavedPostsBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+          </svg>
+          <span class="sidebar-nav-label">เนื้อหาที่บันทึกไว้</span>
+        </button>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-heading-row">
+          <h2 class="sidebar-heading">กลุ่มเนื้อหา</h2>
+        </div>
+
+        <button type="button" class="btn btn-primary create-group-trigger" id="openCreateGroupBtn">
+          + สร้างกลุ่มเนื้อหา
+        </button>
+
+        <div class="group-create-box" id="groupCreateBox" hidden>
+          <label for="newGroupNameInput" class="sr-only">ชื่อกลุ่มเนื้อหาใหม่</label>
+          <input
+            type="text"
+            id="newGroupNameInput"
+            class="input-field"
+            style="min-width:0; width:100%; padding:7px 10px; font-size:13.5px;"
+            placeholder="ระบุชื่อกลุ่มเนื้อหา..."
+            maxlength="50"
+          >
+          <div class="group-create-error" id="groupCreateError" hidden></div>
+          <div class="group-create-actions">
+            <button type="button" class="btn btn-ghost" id="cancelCreateGroupBtn" style="padding:5px 10px; font-size:12.5px;">ยกเลิก</button>
+            <button type="button" class="btn btn-primary" id="confirmCreateGroupBtn" style="padding:5px 12px; font-size:12.5px;">สร้างกลุ่ม</button>
+          </div>
+        </div>
+
+        <div class="group-list" id="sidebarGroupList" role="list"></div>
+        <div class="sidebar-empty-hint" id="sidebarGroupEmpty">ยังไม่มีกลุ่มเนื้อหา กดปุ่ม "+ สร้างกลุ่มเนื้อหา" เพื่อจัดหมวดหมู่โพสต์</div>
+      </div>
+    </aside>
+
+    <div class="feed-main-wrap">
+      <!-- Main Feed -->
+      <main class="feed-container">
+        <!-- Active View / Filter Bar -->
+        <div class="active-view-bar" id="activeViewBar" hidden>
+          <div class="active-view-info" id="activeViewLabel">เนื้อหาที่บันทึกไว้</div>
+          <button type="button" class="btn" id="resetViewBtn" style="padding:6px 12px; font-size:13px;">ดูโพสต์ทั้งหมด</button>
+        </div>
+
+        <!-- Banner for syncing local-only posts once GitHub is connected -->
+        <div class="sync-banner" id="syncBanner" hidden>
+          <span id="syncBannerText">มีโพสต์ที่สร้างไว้ในเบราว์เซอร์ สามารถซิงค์ขึ้น GitHub Repository ได้ทันที</span>
+          <button type="button" class="btn btn-primary" id="syncLocalBtn">ซิงค์ขึ้น GitHub</button>
+        </div>
+
+        <!-- Post Composer -->
+        <section class="card composer" aria-label="สร้างโพสต์ใหม่">
+          <div class="composer-top">
+            <div class="avatar" id="composerAvatar" aria-hidden="true">ฉ</div>
+            <div class="composer-input-wrap">
+              <label for="postText" class="sr-only">เขียนข้อความโพสต์</label>
+              <textarea
+                id="postText"
+                class="composer-textarea"
+                placeholder="คุณกำลังคิดอะไรอยู่? เขียนข้อความ หรือแนบรูปภาพและวิดีโอได้เลย..."
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Select Group for Post -->
+          <div class="composer-group-row">
+            <label for="composerGroupSelect" class="composer-group-label">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+              </svg>
+              <span>กลุ่มเนื้อหา:</span>
+            </label>
+            <select id="composerGroupSelect" class="composer-group-select">
+              <option value="">ไม่ระบุกลุ่ม</option>
+            </select>
+          </div>
+
+          <!-- Automatic Link Preview when pasting a URL in post -->
+          <div class="composer-link-preview-wrap" id="composerLinkPreviewWrap" hidden>
+            <button type="button" class="link-preview-dismiss" id="dismissLinkPreviewBtn" title="ซ่อนพรีวิวลิงก์นี้" aria-label="ซ่อนพรีวิวลิงก์นี้">✕</button>
+            <div id="composerLinkPreviewContent"></div>
+          </div>
+
+          <!-- Optional Direct Media URL Input -->
+          <div class="url-drawer" id="urlDrawer" hidden>
+            <div class="url-drawer-row">
+              <select id="urlMediaType" class="select-field" aria-label="ประเภทสื่อ">
+                <option value="image">รูปภาพ (URL)</option>
+                <option value="video">วิดีโอ (URL .mp4/.webm)</option>
+              </select>
+              <input
+                type="url"
+                id="urlMediaInput"
+                class="input-field"
+                placeholder="วางลิงก์ไฟล์รูปภาพหรือวิดีโอโดยตรง..."
+              >
+              <button type="button" class="btn btn-primary" id="addUrlMediaBtn">เพิ่มสื่อ</button>
+            </div>
+          </div>
+
+          <!-- Attached Media Previews -->
+          <div class="composer-previews" id="composerPreviews"></div>
+
+          <!-- Inline Feedback / Error -->
+          <div class="composer-message" id="composerMessage" role="status" hidden></div>
+
+          <div class="composer-divider"></div>
+
+          <div class="composer-footer">
+            <div class="media-triggers">
+              <input type="file" id="imageFileInput" accept="image/*" multiple hidden>
+              <input type="file" id="videoFileInput" accept="video/*" multiple hidden>
+
+              <button type="button" class="media-btn" id="pickImageBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--photo-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                  <circle cx="9" cy="9" r="2"/>
+                  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>
+                </svg>
+                <span>รูปภาพ</span>
+              </button>
+
+              <button type="button" class="media-btn" id="pickVideoBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--video-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"/>
+                  <rect x="2" y="6" width="14" height="12" rx="2"/>
+                </svg>
+                <span>วิดีโอ</span>
+              </button>
+
+              <button type="button" class="media-btn" id="toggleUrlDrawerBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--link-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                </svg>
+                <span>แนบลิงก์สื่อ</span>
+              </button>
+            </div>
+
+            <button type="button" class="btn btn-primary post-submit-btn" id="submitPostBtn" disabled>
+              โพสต์
+            </button>
+          </div>
+        </section>
+
+        <!-- Feed Stream -->
+        <section id="feedStream" class="feed-list" aria-live="polite"></section>
+      </main>
+    </div>
+
+    <!-- Right Sidebar: Mini Calendar Tool -->
+    <aside class="right-sidebar" aria-label="เครื่องมือปฏิทินเลือกวัน">
+      <section class="card calendar-widget" aria-label="ปฏิทินเลือกดูโพสต์ตามวัน">
+        <div class="calendar-header">
+          <button type="button" class="calendar-nav-btn" id="calPrevMonthBtn" title="เดือนก่อนหน้า" aria-label="เดือนก่อนหน้า">‹</button>
+          <div class="calendar-title-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+              <line x1="16" x2="16" y1="2" y2="6"/>
+              <line x1="8" x2="8" y1="2" y2="6"/>
+              <line x1="3" x2="21" y1="10" y2="10"/>
+            </svg>
+            <span id="calMonthYearLabel"></span>
+          </div>
+          <button type="button" class="calendar-nav-btn" id="calNextMonthBtn" title="เดือนถัดไป" aria-label="เดือนถัดไป">›</button>
+        </div>
+
+        <div class="calendar-body">
+          <div class="calendar-weekdays" aria-hidden="true">
+            <span>อา</span>
+            <span>จ</span>
+            <span>อ</span>
+            <span>พ</span>
+            <span>พฤ</span>
+            <span>ศ</span>
+            <span>ส</span>
+          </div>
+          <div class="calendar-days" id="calendarDaysGrid"></div>
+        </div>
+
+        <div class="calendar-footer">
+          <button type="button" class="btn calendar-footer-btn" id="calTodayBtn">วันนี้</button>
+          <button type="button" class="btn btn-ghost calendar-footer-btn" id="calClearDateBtn" hidden>ล้างวันที่เลือก</button>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <!-- GitHub Settings Modal -->
+  <div class="modal-backdrop" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle" hidden>
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="settingsModalTitle">ตั้งค่าโปรไฟล์และการจัดเก็บบน GitHub</h2>
+        <button type="button" class="icon-btn" id="closeSettingsBtn" aria-label="ปิดหน้าต่าง">✕</button>
+      </div>
+
+      <form id="settingsForm" class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="displayNameInput">ชื่อที่แสดงบนโปรไฟล์และโพสต์</label>
+          <input type="text" id="displayNameInput" class="input-field" placeholder="เช่น สมชาย หรือ ชื่อพื้นที่ส่วนตัว" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="ghOwnerInput">GitHub Username / Owner</label>
+            <input type="text" id="ghOwnerInput" class="input-field" placeholder="เช่น my-username" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ghBranchInput">Branch</label>
+            <input type="text" id="ghBranchInput" class="input-field" placeholder="main" value="main" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="ghRepoInput">ชื่อ Repository สำหรับเก็บข้อมูล</label>
+          <input type="text" id="ghRepoInput" class="input-field" placeholder="เช่น personal-feed-storage" autocomplete="off">
+          <span class="form-hint">ระบบจะจัดเก็บโพสต์ในไฟล์ <code>data/posts.json</code> และอัปโหลดรูปภาพ/วิดีโอไว้ในโฟลเดอร์ <code>media/</code></span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="ghTokenInput">GitHub Personal Access Token (PAT)</label>
+          <div class="token-wrap">
+            <input type="password" id="ghTokenInput" class="input-field" placeholder="github_pat_... หรือ ghp_..." autocomplete="off">
+            <button type="button" class="btn" id="toggleTokenBtn">แสดง</button>
+          </div>
+          <span class="form-hint">รองรับทั้ง Public และ Private Repository (ขนาดไฟล์ต่อชิ้นผ่านเบราว์เซอร์ไม่เกิน 25 MB)</span>
+        </div>
+
+        <details class="help-box">
+          <summary>วิธีเตรียม GitHub Repository และสร้าง Token แบบง่าย</summary>
+          <ol>
+            <li>สร้าง Repository ใหม่บน GitHub (เลือกเป็น Private ได้เพื่อความเป็นส่วนตัว และติ๊ก Add a README file เพื่อให้มี Branch เริ่มต้น)</li>
+            <li>ไปที่เมนู Settings ของบัญชี GitHub → Developer settings → Personal access tokens → Fine-grained tokens</li>
+            <li>กด Generate new token เลือกเฉพาะ Repository ที่ต้องการ แล้วกำหนด Repository permissions หมวด <strong>Contents</strong> เป็น <strong>Read and write</strong></li>
+            <li>คัดลอกรหัส Token มาวางในช่องด้านบน แล้วกด "บันทึกและเชื่อมต่อ GitHub"</li>
+          </ol>
+        </details>
+
+        <div class="modal-status" id="settingsStatus" hidden></div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" id="disconnectGhBtn" hidden>ยกเลิกการเชื่อม GitHub</button>
+          <div style="display:flex; gap:8px; margin-left:auto;">
+            <button type="button" class="btn" id="saveProfileOnlyBtn">บันทึกเฉพาะชื่อ</button>
+            <button type="submit" class="btn btn-primary" id="saveGhBtn">บันทึกและเชื่อมต่อ GitHub</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Image Lightbox -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="ดูรูปภาพขนาดเต็ม" hidden>
+    <button type="button" class="lightbox-close" id="lightboxCloseBtn" aria-label="ปิดรูปภาพ">✕</button>
+    <img id="lightboxImg" src="" alt="รูปภาพขนาดเต็ม">
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const STORAGE_KEY_CONFIG = 'personal_fb_gh_config_v1';
+      const STORAGE_KEY_LOCAL_POSTS = 'personal_fb_local_posts_v1';
+      const STORAGE_KEY_GROUPS = 'personal_fb_groups_v1';
+      const STORAGE_KEY_SAVED_IDS = 'personal_fb_saved_posts_v1';
+      const MAX_GITHUB_FILE_BYTES = 25 * 1024 * 1024; // 25 MB safe browser API upload cap
+
+      // Application State
+      const state = {
+        displayName: 'ฉัน',
+        gh: {
+          owner: '',
+          repo: '',
+          branch: 'main',
+          token: '',
+          connected: false,
+          isPrivate: false
+        },
+        posts: [],
+        groups: [], // { id, name, createdAt }
+        savedPostIds: new Set(),
+        activeFilter: {
+          mode: 'all', // 'all' | 'saved' | 'group'
+          groupId: null
+        },
+        selectedDate: null, // 'YYYY-MM-DD' local date or null
+        calendarViewYear: new Date().getFullYear(),
+        calendarViewMonth: new Date().getMonth(),
+        confirmDeleteGroupId: null,
+        postsSha: null,
+        loadingFeed: false,
+        submittingPost: false,
+        pendingAttachments: [], // { id, kind: 'image'|'video', source: 'file'|'url', file?, previewUrl, name, size, mime }
+        draftLinkPreview: null, // { url, domain, siteName, title, description, image, loading }
+        dismissedPreviewUrl: '',
+        editingPostId: null,
+        confirmDeleteId: null,
+        mediaBlobCache: new Map() // repo path -> objectURL
+      };
+
+      // Safe localStorage helpers
+      function safeGetStorage(key) {
+        try {
+          return window.localStorage.getItem(key);
+        } catch (_) {
+          return null;
+        }
+      }
+
+      function safeSetStorage(key, value) {
+        try {
+          window.localStorage.setItem(key, value);
+        } catch (_) {
+          // Ignore storage errors in restricted environments
+        }
+      }
+
+      function safeRemoveStorage(key) {
+        try {
+          window.localStorage.removeItem(key);
+        } catch (_) {
+          // Ignore
+        }
+      }
+
+      // UTF-8 <-> Base64 utilities for Thai & emoji support on GitHub Contents API
+      function utf8ToBase64(str) {
+        const bytes = new TextEncoder().encode(str);
+        let binary = '';
+        const chunk = 0x8000;
+        for (let i = 0; i < bytes.length; i += chunk) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunk));
+        }
+        return btoa(binary);
+      }
+
+      function base64ToUtf8(b64) {
+        const clean = b64.replace(/\s/g, '');
+        const binary = atob(clean);
+        const bytes = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) {
+          bytes[i] = binary.charCodeAt(i);
+        }
+        return new TextDecoder('utf-8').decode(bytes);
+      }
+
+      function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = String(reader.result || '');
+            const commaIdx = result.indexOf(',');
+            resolve(commaIdx >= 0 ? result.slice(commaIdx + 1) : result);
+          };
+          reader.onerror = () => reject(new Error('ไม่สามารถอ่านไฟล์ได้'));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function formatBytes(bytes) {
+        if (!bytes || bytes < 1024) return (bytes || 0) + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      }
+
+      function formatThaiDateTime(isoStr) {
+        try {
+          const d = new Date(isoStr);
+          if (Number.isNaN(d.getTime())) return '';
+          return d.toLocaleDateString('th-TH', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }) + ' น.';
+        } catch (_) {
+          return '';
+        }
+      }
+
+      function toLocalDateKey(input) {
+        const d = input instanceof Date ? input : new Date(input);
+        if (Number.isNaN(d.getTime())) return '';
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const dd = String(d.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      function formatThaiDateFromKey(dateKey) {
+        if (!dateKey) return '';
+        const parts = dateKey.split('-').map(Number);
+        if (parts.length !== 3 || parts.some(Number.isNaN)) return dateKey;
+        const d = new Date(parts[0], parts[1] - 1, parts[2]);
+        return d.toLocaleDateString('th-TH', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        });
+      }
+
+      function formatThaiMonthYear(year, month) {
+        const d = new Date(year, month, 1);
+        return d.toLocaleDateString('th-TH', {
+          month: 'long',
+          year: 'numeric'
+        });
+      }
+
+      function getInitial(name) {
+        const trimmed = (name || '').trim();
+        if (!trimmed) return 'ฉ';
+        // Skip Thai leading vowels if desired or take first grapheme
+        const match = trimmed.match(/[ก-ฮA-Za-z0-9]/);
+        return (match ? match[0] : trimmed.charAt(0)).toUpperCase();
+      }
+
+      function sanitizeFileName(name) {
+        const cleaned = (name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_');
+        return cleaned.slice(-60) || 'media';
+      }
+
+      function encodeRepoPath(path) {
+        return path.split('/').map(encodeURIComponent).join('/');
+      }
+
+      // DOM Elements
+      const els = {
+        headerTitle: document.getElementById('headerTitle'),
+        headerSubtitle: document.getElementById('headerSubtitle'),
+        refreshBtn: document.getElementById('refreshBtn'),
+        openSettingsBtn: document.getElementById('openSettingsBtn'),
+        ghStatusLabel: document.getElementById('ghStatusLabel'),
+        navAllPostsBtn: document.getElementById('navAllPostsBtn'),
+        navSavedPostsBtn: document.getElementById('navSavedPostsBtn'),
+        openCreateGroupBtn: document.getElementById('openCreateGroupBtn'),
+        groupCreateBox: document.getElementById('groupCreateBox'),
+        newGroupNameInput: document.getElementById('newGroupNameInput'),
+        groupCreateError: document.getElementById('groupCreateError'),
+        cancelCreateGroupBtn: document.getElementById('cancelCreateGroupBtn'),
+        confirmCreateGroupBtn: document.getElementById('confirmCreateGroupBtn'),
+        sidebarGroupList: document.getElementById('sidebarGroupList'),
+        sidebarGroupEmpty: document.getElementById('sidebarGroupEmpty'),
+        activeViewBar: document.getElementById('activeViewBar'),
+        activeViewLabel: document.getElementById('activeViewLabel'),
+        resetViewBtn: document.getElementById('resetViewBtn'),
+        syncBanner: document.getElementById('syncBanner'),
+        syncBannerText: document.getElementById('syncBannerText'),
+        syncLocalBtn: document.getElementById('syncLocalBtn'),
+        composerAvatar: document.getElementById('composerAvatar'),
+        postText: document.getElementById('postText'),
+        composerGroupSelect: document.getElementById('composerGroupSelect'),
+        composerLinkPreviewWrap: document.getElementById('composerLinkPreviewWrap'),
+        composerLinkPreviewContent: document.getElementById('composerLinkPreviewContent'),
+        dismissLinkPreviewBtn: document.getElementById('dismissLinkPreviewBtn'),
+        urlDrawer: document.getElementById('urlDrawer'),
+        urlMediaType: document.getElementById('urlMediaType'),
+        urlMediaInput: document.getElementById('urlMediaInput'),
+        addUrlMediaBtn: document.getElementById('addUrlMediaBtn'),
+        composerPreviews: document.getElementById('composerPreviews'),
+        composerMessage: document.getElementById('composerMessage'),
+        imageFileInput: document.getElementById('imageFileInput'),
+        videoFileInput: document.getElementById('videoFileInput'),
+        pickImageBtn: document.getElementById('pickImageBtn'),
+        pickVideoBtn: document.getElementById('pickVideoBtn'),
+        toggleUrlDrawerBtn: document.getElementById('toggleUrlDrawerBtn'),
+        submitPostBtn: document.getElementById('submitPostBtn'),
+        feedStream: document.getElementById('feedStream'),
+        calPrevMonthBtn: document.getElementById('calPrevMonthBtn'),
+        calNextMonthBtn: document.getElementById('calNextMonthBtn'),
+        calMonthYearLabel: document.getElementById('calMonthYearLabel'),
+        calendarDaysGrid: document.getElementById('calendarDaysGrid'),
+        calTodayBtn: document.getElementById('calTodayBtn'),
+        calClearDateBtn: document.getElementById('calClearDateBtn'),
+        settingsModal: document.getElementById('settingsModal'),
+        closeSettingsBtn: document.getElementById('closeSettingsBtn'),
+        settingsForm: document.getElementById('settingsForm'),
+        displayNameInput: document.getElementById('displayNameInput'),
+        ghOwnerInput: document.getElementById('ghOwnerInput'),
+        ghRepoInput: document.getElementById('ghRepoInput'),
+        ghBranchInput: document.getElementById('ghBranchInput'),
+        ghTokenInput: document.getElementById('ghTokenInput'),
+        toggleTokenBtn: document.getElementById('toggleTokenBtn'),
+        settingsStatus: document.getElementById('settingsStatus'),
+        disconnectGhBtn: document.getElementById('disconnectGhBtn'),
+        saveProfileOnlyBtn: document.getElementById('saveProfileOnlyBtn'),
+        saveGhBtn: document.getElementById('saveGhBtn'),
+        lightbox: document.getElementById('lightbox'),
+        lightboxImg: document.getElementById('lightboxImg'),
+        lightboxCloseBtn: document.getElementById('lightboxCloseBtn')
+      };
+
+      // Link Detection & Preview Helpers
+      function extractFirstUrl(text) {
+        if (!text) return '';
+        const match = text.match(/https?:\/\/[^\s<>"']+/i);
+        if (!match) return '';
+        const cleaned = match[0].replace(/[.,;!?)\]}]+$/, '');
+        try {
+          const parsed = new URL(cleaned);
+          if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+            return parsed.href;
+          }
+        } catch (_) {}
+        return '';
+      }
+
+      function safeDecodeSegment(seg) {
+        try {
+          return decodeURIComponent(seg);
+        } catch (_) {
+          return seg;
+        }
+      }
+
+      function buildInitialLinkPreview(rawUrl) {
+        const parsed = new URL(rawUrl);
+        const domain = parsed.hostname.replace(/^www\./i, '');
+        const cleanPath = safeDecodeSegment(parsed.pathname || '/');
+        const segments = cleanPath.split('/').filter(Boolean);
+        const lastSeg = segments.length > 0 ? segments[segments.length - 1] : '';
+
+        // Direct image link
+        if (/\.(jpe?g|png|gif|webp|svg|avif)$/i.test(parsed.pathname)) {
+          return {
+            url: parsed.href,
+            domain,
+            siteName: domain,
+            title: lastSeg || `รูปภาพจาก ${domain}`,
+            description: `ลิงก์รูปภาพโดยตรงจาก ${domain}`,
+            image: parsed.href,
+            isDirectMedia: true,
+            loading: false
+          };
+        }
+
+        // Direct video link
+        if (/\.(mp4|webm|ogg|mov)$/i.test(parsed.pathname)) {
+          return {
+            url: parsed.href,
+            domain,
+            siteName: domain,
+            title: lastSeg || `วิดีโอจาก ${domain}`,
+            description: `ลิงก์วิดีโอโดยตรงจาก ${domain}`,
+            image: '',
+            isDirectMedia: true,
+            loading: false
+          };
+        }
+
+        // Video sharing short/watch patterns
+        if (domain.includes('youtube.com') || domain === 'youtu.be') {
+          let vidId = parsed.searchParams.get('v') || '';
+          if (!vidId && domain === 'youtu.be' && segments[0]) vidId = segments[0];
+          if (!vidId && segments[0] === 'shorts' && segments[1]) vidId = segments[1];
+          return {
+            url: parsed.href,
+            domain,
+            siteName: 'YouTube',
+            title: vidId ? `วิดีโอ YouTube (${vidId})` : 'เนื้อหาวิดีโอจาก YouTube',
+            description: `เปิดรับชมเนื้อหาจากลิงก์ ${domain}${cleanPath !== '/' ? cleanPath : ''}`,
+            image: '',
+            isDirectMedia: false,
+            loading: true
+          };
+        }
+
+        // Readable title derived from URL path segments
+        let fallbackTitle = domain;
+        if (segments.length > 0) {
+          const readableSeg = lastSeg.replace(/[-_]+/g, ' ').trim();
+          fallbackTitle = readableSeg
+            ? `${readableSeg} — ${domain}`
+            : `${segments.join(' / ')} — ${domain}`;
+        } else {
+          fallbackTitle = `เว็บไซต์ ${domain}`;
+        }
+
+        const queryHint = parsed.search ? safeDecodeSegment(parsed.search).slice(0, 60) : '';
+        const fallbackDesc = cleanPath && cleanPath !== '/'
+          ? `หน้าเว็บจาก ${domain}: ${cleanPath}${queryHint}`
+          : `ลิงก์เนื้อหาเว็บไซต์จาก ${parsed.origin}`;
+
+        return {
+          url: parsed.href,
+          domain,
+          siteName: domain,
+          title: fallbackTitle,
+          description: fallbackDesc,
+          image: '',
+          isDirectMedia: false,
+          loading: true
+        };
+      }
+
+      let activePreviewController = null;
+      let linkDetectTimer = null;
+
+      async function enrichDraftLinkPreview(targetUrl) {
+        if (activePreviewController) {
+          activePreviewController.abort();
+        }
+        const controller = new AbortController();
+        activePreviewController = controller;
+        const timeoutId = setTimeout(() => controller.abort(), 2500);
+
+        try {
+          const res = await fetch(targetUrl, {
+            method: 'GET',
+            signal: controller.signal
+          });
+          clearTimeout(timeoutId);
+
+          if (!res.ok) throw new Error('non-ok');
+          const ctype = (res.headers.get('content-type') || '').toLowerCase();
+          if (!ctype.includes('text/html') && !ctype.includes('application/xhtml')) {
+            throw new Error('not-html');
+          }
+
+          const html = await res.text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+
+          const getMeta = (selector) => {
+            const el = doc.querySelector(selector);
+            return el ? (el.getAttribute('content') || '').trim() : '';
+          };
+
+          const ogTitle = getMeta('meta[property="og:title"]') || getMeta('meta[name="twitter:title"]') || (doc.title || '').trim();
+          const ogDesc = getMeta('meta[property="og:description"]') || getMeta('meta[name="twitter:description"]') || getMeta('meta[name="description"]');
+          const ogSite = getMeta('meta[property="og:site_name"]');
+          const rawImg = getMeta('meta[property="og:image"]') || getMeta('meta[name="twitter:image"]');
+
+          let resolvedImg = '';
+          if (rawImg) {
+            try {
+              const imgUrl = new URL(rawImg, targetUrl);
+              if (imgUrl.protocol === 'http:' || imgUrl.protocol === 'https:') {
+                resolvedImg = imgUrl.href;
+              }
+            } catch (_) {}
+          }
+
+          if (state.draftLinkPreview && state.draftLinkPreview.url === targetUrl) {
+            if (ogTitle) state.draftLinkPreview.title = ogTitle;
+            if (ogDesc) state.draftLinkPreview.description = ogDesc;
+            if (ogSite) state.draftLinkPreview.siteName = ogSite;
+            if (resolvedImg) state.draftLinkPreview.image = resolvedImg;
+            state.draftLinkPreview.loading = false;
+            renderComposerLinkPreview();
+          }
+        } catch (_) {
+          clearTimeout(timeoutId);
+          if (state.draftLinkPreview && state.draftLinkPreview.url === targetUrl) {
+            state.draftLinkPreview.loading = false;
+            renderComposerLinkPreview();
+          }
+        }
+      }
+
+      function createLinkPreviewElement(preview, clickable) {
+        const wrapper = clickable ? document.createElement('a') : document.createElement('div');
+        wrapper.className = 'link-preview-card';
+        if (clickable && preview.url) {
+          wrapper.href = preview.url;
+          wrapper.target = '_blank';
+          wrapper.rel = 'noopener noreferrer';
+        }
+
+        if (preview.image) {
+          const thumb = document.createElement('div');
+          thumb.className = 'link-preview-thumb';
+          const img = document.createElement('img');
+          img.src = preview.image;
+          img.alt = preview.title || 'พรีวิวลิงก์';
+          img.loading = 'lazy';
+          img.addEventListener('error', () => {
+            thumb.remove();
+          });
+          thumb.appendChild(img);
+          wrapper.appendChild(thumb);
+        }
+
+        const body = document.createElement('div');
+        body.className = 'link-preview-body';
+
+        const domainRow = document.createElement('div');
+        domainRow.className = 'link-preview-domain';
+        domainRow.innerHTML = `
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        `;
+        const domainSpan = document.createElement('span');
+        domainSpan.textContent = (preview.siteName || preview.domain || 'ลิงก์เว็บ') + (preview.loading ? ' • กำลังอ่านข้อมูลพรีวิว...' : '');
+        domainRow.appendChild(domainSpan);
+        body.appendChild(domainRow);
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'link-preview-title';
+        titleEl.textContent = preview.title || preview.url;
+        body.appendChild(titleEl);
+
+        if (preview.description) {
+          const descEl = document.createElement('div');
+          descEl.className = 'link-preview-desc';
+          descEl.textContent = preview.description;
+          body.appendChild(descEl);
+        }
+
+        const urlEl = document.createElement('div');
+        urlEl.className = 'link-preview-url';
+        urlEl.textContent = preview.url;
+        body.appendChild(urlEl);
+
+        wrapper.appendChild(body);
+        return wrapper;
+      }
+
+      function appendLinkifiedText(container, text) {
+        const regex = /(https?:\/\/[^\s<>"']+)/gi;
+        let lastIdx = 0;
+        let match;
+        while ((match = regex.exec(text)) !== null) {
+          if (match.index > lastIdx) {
+            container.appendChild(document.createTextNode(text.slice(lastIdx, match.index)));
+          }
+          const rawMatch = match[0];
+          const cleanUrl = rawMatch.replace(/[.,;!?)\]}]+$/, '');
+          const trailing = rawMatch.slice(cleanUrl.length);
+
+          let validHref = '';
+          try {
+            const parsed = new URL(cleanUrl);
+            if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+              validHref = parsed.href;
+            }
+          } catch (_) {}
+
+          if (validHref) {
+            const a = document.createElement('a');
+            a.className = 'inline-post-link';
+            a.href = validHref;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = cleanUrl;
+            container.appendChild(a);
+            if (trailing) container.appendChild(document.createTextNode(trailing));
+          } else {
+            container.appendChild(document.createTextNode(rawMatch));
+          }
+          lastIdx = regex.lastIndex;
+        }
+        if (lastIdx < text.length) {
+          container.appendChild(document.createTextNode(text.slice(lastIdx)));
+        }
+      }
+
+      // GitHub REST API Helpers
+      async function ghRequest(endpoint, options = {}, customGh = null) {
+        const cfg = customGh || state.gh;
+        const headers = Object.assign({
+          'Accept': 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28'
+        }, options.headers || {});
+
+        if (cfg.token) {
+          headers['Authorization'] = `Bearer ${cfg.token}`;
+        }
+
+        const res = await fetch(`about:invalid#zPythonSafez`, {
+          method: options.method || 'GET',
+          headers,
+          body: options.body || undefined,
+          cache: 'no-store'
+        });
+
+        return res;
+      }
+
+      async function verifyRepoConnection(cfg) {
+        const res = await ghRequest(`/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}`, {}, cfg);
+        if (!res.ok) {
+          if (res.status === 401) throw new Error('Token ไม่ถูกต้องหรือหมดอายุ (401 Unauthorized)');
+          if (res.status === 404) throw new Error('ไม่พบ Repository นี้ หรือ Token ไม่มีสิทธิ์เข้าถึง (404 Not Found)');
+          throw new Error(`เชื่อมต่อ GitHub ไม่สำเร็จ (รหัส ${res.status})`);
+        }
+        const repoData = await res.json();
+        return {
+          isPrivate: Boolean(repoData.private),
+          defaultBranch: repoData.default_branch || 'main'
+        };
+      }
+
+      async function fetchPostsFromGitHub() {
+        const { owner, repo, branch } = state.gh;
+        const endpoint = `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/data/posts.json?ref=${encodeURIComponent(branch)}`;
+        const res = await ghRequest(endpoint);
+
+        if (res.status === 404) {
+          state.postsSha = null;
+          return [];
+        }
+
+        if (!res.ok) {
+          throw new Error(`โหลดรายการโพสต์จาก GitHub ไม่สำเร็จ (${res.status})`);
+        }
+
+        const data = await res.json();
+        state.postsSha = data.sha || null;
+        const decoded = base64ToUtf8(data.content || '');
+        const parsed = JSON.parse(decoded);
+        return Array.isArray(parsed) ? parsed : [];
+      }
+
+      async function savePostsJsonToGitHub(postsArray, commitMessage) {
+        const { owner, repo, branch } = state.gh;
+        const endpoint = `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/data/posts.json`;
+        const contentB64 = utf8ToBase64(JSON.stringify(postsArray, null, 2));
+
+        async function attemptPut(sha) {
+          const payload = {
+            message: commitMessage || 'Update posts.json',
+            content: contentB64,
+            branch
+          };
+          if (sha) payload.sha = sha;
+          return ghRequest(endpoint, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+        }
+
+        // Refresh latest SHA if unknown
+        if (!state.postsSha) {
+          const check = await ghRequest(`${endpoint}?ref=${encodeURIComponent(branch)}`);
+          if (check.ok) {
+            const existing = await check.json();
+            state.postsSha = existing.sha || null;
+          }
+        }
+
+        let res = await attemptPut(state.postsSha);
+
+        // Retry once on SHA conflict (409 or 422)
+        if (res.status === 409 || res.status === 422) {
+          const check = await ghRequest(`${endpoint}?ref=${encodeURIComponent(branch)}`);
+          const latestSha = check.ok ? (await check.json()).sha : null;
+          res = await attemptPut(latestSha);
+        }
+
+        if (!res.ok) {
+          let detail = '';
+          try {
+            const errJson = await res.json();
+            detail = errJson.message ? `: ${errJson.message}` : '';
+          } catch (_) {}
+          throw new Error(`บันทึกข้อมูลลง GitHub ไม่สำเร็จ (${res.status}${detail})`);
+        }
+
+        const saved = await res.json();
+        state.postsSha = saved.content && saved.content.sha ? saved.content.sha : null;
+      }
+
+      async function uploadMediaFileToGitHub(attachment, indexLabel) {
+        const { owner, repo, branch } = state.gh;
+        const base64Content = await fileToBase64(attachment.file);
+        const uniquePath = `media/${Date.now()}-${indexLabel}-${sanitizeFileName(attachment.name)}`;
+        const endpoint = `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeRepoPath(uniquePath)}`;
+
+        const res = await ghRequest(endpoint, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            message: `Upload ${attachment.kind}: ${attachment.name}`,
+            content: base64Content,
+            branch
+          })
+        });
+
+        if (!res.ok) {
+          throw new Error(`อัปโหลดไฟล์ "${attachment.name}" ไม่สำเร็จ (${res.status})`);
+        }
+
+        const data = await res.json();
+        const savedContent = data.content || {};
+        // Cache current session blob so immediate display needs zero extra network call
+        if (attachment.previewUrl) {
+          state.mediaBlobCache.set(uniquePath, attachment.previewUrl);
+        }
+
+        return {
+          kind: attachment.kind,
+          path: uniquePath,
+          sha: savedContent.sha || null,
+          url: savedContent.download_url || `about:invalid#zPythonSafez`,
+          mime: attachment.mime || '',
+          name: attachment.name
+        };
+      }
+
+      async function deleteMediaFromGitHub(mediaItem) {
+        if (!mediaItem || !mediaItem.path || !state.gh.connected) return;
+        const { owner, repo, branch } = state.gh;
+        const endpoint = `/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/contents/${encodeRepoPath(mediaItem.path)}`;
+        try {
+          let sha = mediaItem.sha;
+          if (!sha) {
+            const infoRes = await ghRequest(`${endpoint}?ref=${encodeURIComponent(branch)}`);
+            if (infoRes.ok) {
+              const info = await infoRes.json();
+              sha = info.sha;
+            }
+          }
+          if (!sha) return;
+          await ghRequest(endpoint, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              message: `Delete media ${mediaItem.path}`,
+              sha,
+              branch
+            })
+          });
+        } catch (_) {
+          // Best-effort cleanup of media file
+        }
+      }
+
+      async function resolveRepoMediaUrl(mediaItem) {
+        if (!mediaItem) return '';
+        if (!mediaItem.path) return mediaItem.url || '';
+        if (state.mediaBlobCache.has(mediaItem.path)) {
+          return state.mediaBlobCache.get(mediaItem.path);
+        }
+        // Public repos can use direct raw/download_url immediately unless private
+        if (!state.gh.isPrivate && mediaItem.url) {
+          return mediaItem.url;
+        }
+        if (!state.gh.connected) {
+          return mediaItem.url || '';
+        }
+
+        const { owner, repo, branch, token } = state.gh;
+        const endpoint = `about:invalid#zPythonSafez`;
+        const res = await fetch(endpoint, {
+          headers: {
+            'Accept': 'application/vnd.github.raw',
+            'Authorization': `Bearer ${token}`,
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+        if (!res.ok) return mediaItem.url || '';
+        const rawBlob = await res.blob();
+        const typedBlob = mediaItem.mime ? new Blob([rawBlob], { type: mediaItem.mime }) : rawBlob;
+        const objUrl = URL.createObjectURL(typedBlob);
+        state.mediaBlobCache.set(mediaItem.path, objUrl);
+        return objUrl;
+      }
+
+      // Persist local-only text/url posts, groups & saved IDs best-effort
+      function saveLocalPostsSnapshot() {
+        const serializable = state.posts
+          .filter(p => p.localOnly)
+          .map(p => ({
+            id: p.id,
+            author: p.author,
+            text: p.text,
+            groupId: p.groupId || '',
+            groupName: p.groupName || '',
+            linkPreview: p.linkPreview || null,
+            saved: isPostSaved(p),
+            createdAt: p.createdAt,
+            updatedAt: p.updatedAt || null,
+            localOnly: true,
+            media: (p.media || []).filter(m => !m.isSessionObjectUrl)
+          }));
+        safeSetStorage(STORAGE_KEY_LOCAL_POSTS, JSON.stringify(serializable));
+      }
+
+      function persistGroups() {
+        safeSetStorage(STORAGE_KEY_GROUPS, JSON.stringify(state.groups));
+      }
+
+      function persistSavedPostIds() {
+        safeSetStorage(STORAGE_KEY_SAVED_IDS, JSON.stringify(Array.from(state.savedPostIds)));
+      }
+
+      function isPostSaved(post) {
+        if (!post) return false;
+        return state.savedPostIds.has(post.id) || Boolean(post.saved);
+      }
+
+      function syncGroupsFromPosts(postsList) {
+        let added = false;
+        (postsList || []).forEach(p => {
+          if (p.saved) {
+            state.savedPostIds.add(p.id);
+          }
+          if (p.groupId && p.groupName && !state.groups.some(g => g.id === p.groupId)) {
+            state.groups.push({
+              id: p.groupId,
+              name: p.groupName,
+              createdAt: p.createdAt || new Date().toISOString()
+            });
+            added = true;
+          }
+        });
+        if (added) persistGroups();
+        persistSavedPostIds();
+      }
+
+      function getGroupNameById(groupId) {
+        if (!groupId) return '';
+        const found = state.groups.find(g => g.id === groupId);
+        return found ? found.name : '';
+      }
+
+      function loadSavedConfig() {
+        const raw = safeGetStorage(STORAGE_KEY_CONFIG);
+        if (raw) {
+          try {
+            const parsed = JSON.parse(raw);
+            if (parsed.displayName) state.displayName = parsed.displayName;
+            if (parsed.gh) {
+              state.gh.owner = parsed.gh.owner || '';
+              state.gh.repo = parsed.gh.repo || '';
+              state.gh.branch = parsed.gh.branch || 'main';
+              state.gh.token = parsed.gh.token || '';
+              state.gh.isPrivate = Boolean(parsed.gh.isPrivate);
+              state.gh.connected = Boolean(state.gh.owner && state.gh.repo && state.gh.token);
+            }
+          } catch (_) {}
+        }
+
+        const groupsRaw = safeGetStorage(STORAGE_KEY_GROUPS);
+        if (groupsRaw) {
+          try {
+            const parsedGroups = JSON.parse(groupsRaw);
+            if (Array.isArray(parsedGroups)) {
+              state.groups = parsedGroups.filter(g => g && g.id && g.name);
+            }
+          } catch (_) {}
+        }
+
+        const savedIdsRaw = safeGetStorage(STORAGE_KEY_SAVED_IDS);
+        if (savedIdsRaw) {
+          try {
+            const parsedIds = JSON.parse(savedIdsRaw);
+            if (Array.isArray(parsedIds)) {
+              state.savedPostIds = new Set(parsedIds);
+            }
+          } catch (_) {}
+        }
+
+        const localRaw = safeGetStorage(STORAGE_KEY_LOCAL_POSTS);
+        if (localRaw) {
+          try {
+            const parsedPosts = JSON.parse(localRaw);
+            if (Array.isArray(parsedPosts)) {
+              state.posts = parsedPosts;
+              syncGroupsFromPosts(parsedPosts);
+            }
+          } catch (_) {}
+        }
+      }
+
+      function persistConfig() {
+        safeSetStorage(STORAGE_KEY_CONFIG, JSON.stringify({
+          displayName: state.displayName,
+          gh: {
+            owner: state.gh.owner,
+            repo: state.gh.repo,
+            branch: state.gh.branch,
+            token: state.gh.token,
+            isPrivate: state.gh.isPrivate
+          }
+        }));
+      }
+
+      // Sidebar & Group Management UI
+      function renderComposerGroupOptions(preferredGroupId) {
+        const currentVal = preferredGroupId !== undefined ? preferredGroupId : els.composerGroupSelect.value;
+        els.composerGroupSelect.innerHTML = '';
+
+        const noneOpt = document.createElement('option');
+        noneOpt.value = '';
+        noneOpt.textContent = 'ไม่ระบุกลุ่ม';
+        els.composerGroupSelect.appendChild(noneOpt);
+
+        state.groups.forEach(group => {
+          const opt = document.createElement('option');
+          opt.value = group.id;
+          opt.textContent = group.name;
+          els.composerGroupSelect.appendChild(opt);
+        });
+
+        if (currentVal && state.groups.some(g => g.id === currentVal)) {
+          els.composerGroupSelect.value = currentVal;
+        } else {
+          els.composerGroupSelect.value = '';
+        }
+      }
+
+      function renderSidebarAndActiveView() {
+        const { mode, groupId } = state.activeFilter;
+        els.navAllPostsBtn.classList.toggle('active', mode === 'all' && !state.selectedDate);
+        els.navSavedPostsBtn.classList.toggle('active', mode === 'saved');
+
+        els.sidebarGroupList.innerHTML = '';
+        els.sidebarGroupEmpty.hidden = state.groups.length > 0;
+
+        state.groups.forEach(group => {
+          const row = document.createElement('div');
+          row.className = 'group-item-row';
+          row.setAttribute('role', 'listitem');
+
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'sidebar-nav-btn' + (mode === 'group' && groupId === group.id ? ' active' : '');
+          btn.innerHTML = `
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+            </svg>
+          `;
+          const labelSpan = document.createElement('span');
+          labelSpan.className = 'sidebar-nav-label';
+          labelSpan.textContent = group.name;
+          btn.appendChild(labelSpan);
+
+          btn.addEventListener('click', () => {
+            setActiveFilter('group', group.id);
+          });
+
+          const delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          const isConfirming = state.confirmDeleteGroupId === group.id;
+          delBtn.className = 'group-delete-btn' + (isConfirming ? ' confirming' : '');
+          delBtn.title = isConfirming ? 'กดอีกครั้งเพื่อลบกลุ่มนี้' : 'ลบกลุ่มเนื้อหา';
+          delBtn.setAttribute('aria-label', isConfirming ? `ยืนยันลบกลุ่ม ${group.name}` : `ลบกลุ่ม ${group.name}`);
+          delBtn.textContent = isConfirming ? 'ยืนยันลบ' : '✕';
+
+          delBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (state.confirmDeleteGroupId === group.id) {
+              handleDeleteGroup(group.id);
+            } else {
+              state.confirmDeleteGroupId = group.id;
+              renderSidebarAndActiveView();
+            }
+          });
+
+          row.append(btn, delBtn);
+          els.sidebarGroupList.appendChild(row);
+        });
+
+        // Validate group still exists if mode === 'group'
+        let activeGroupName = '';
+        if (mode === 'group') {
+          activeGroupName = getGroupNameById(groupId);
+          if (!activeGroupName) {
+            state.activeFilter = { mode: 'all', groupId: null };
+          }
+        }
+
+        // Build Active View Banner label (supports mode, selectedDate, or both)
+        const labelParts = [];
+        if (state.activeFilter.mode === 'saved') {
+          labelParts.push('เนื้อหาที่บันทึกไว้');
+        } else if (state.activeFilter.mode === 'group' && activeGroupName) {
+          labelParts.push(`กลุ่มเนื้อหา: ${activeGroupName}`);
+        }
+
+        if (state.selectedDate) {
+          const thaiDate = formatThaiDateFromKey(state.selectedDate);
+          labelParts.push(labelParts.length > 0 ? `วันที่ ${thaiDate}` : `เนื้อหาของวันที่ ${thaiDate}`);
+        }
+
+        if (labelParts.length > 0) {
+          els.activeViewBar.hidden = false;
+          els.activeViewLabel.textContent = labelParts.join(' • ');
+        } else {
+          els.activeViewBar.hidden = true;
+        }
+      }
+
+      function getPostsMatchingSidebarMode() {
+        const { mode, groupId } = state.activeFilter;
+        if (mode === 'saved') {
+          return state.posts.filter(p => isPostSaved(p));
+        }
+        if (mode === 'group' && groupId) {
+          return state.posts.filter(p => p.groupId === groupId);
+        }
+        return state.posts;
+      }
+
+      function renderCalendar() {
+        const year = state.calendarViewYear;
+        const month = state.calendarViewMonth;
+        els.calMonthYearLabel.textContent = formatThaiMonthYear(year, month);
+
+        const postDates = new Set();
+        getPostsMatchingSidebarMode().forEach(p => {
+          const key = toLocalDateKey(p.createdAt);
+          if (key) postDates.add(key);
+        });
+
+        const todayKey = toLocalDateKey(new Date());
+        const firstDayWeekday = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        els.calendarDaysGrid.innerHTML = '';
+
+        for (let i = 0; i < firstDayWeekday; i++) {
+          const blank = document.createElement('div');
+          blank.className = 'cal-day-empty';
+          blank.setAttribute('aria-hidden', 'true');
+          els.calendarDaysGrid.appendChild(blank);
+        }
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'cal-day';
+          if (dateKey === todayKey) btn.classList.add('is-today');
+          if (postDates.has(dateKey)) btn.classList.add('has-post');
+          const isSelected = state.selectedDate === dateKey;
+          if (isSelected) btn.classList.add('is-selected');
+
+          btn.textContent = String(day);
+          btn.setAttribute('aria-pressed', isSelected ? 'true' : 'false');
+          btn.setAttribute('aria-label', `เลือกวันที่ ${formatThaiDateFromKey(dateKey)}`);
+
+          btn.addEventListener('click', () => {
+            state.selectedDate = state.selectedDate === dateKey ? null : dateKey;
+            renderSidebarAndActiveView();
+            renderCalendar();
+            renderFeed();
+          });
+
+          els.calendarDaysGrid.appendChild(btn);
+        }
+
+        els.calClearDateBtn.hidden = !state.selectedDate;
+      }
+
+      function setActiveFilter(mode, groupId = null, resetDate = false) {
+        state.confirmDeleteGroupId = null;
+        state.activeFilter = { mode, groupId };
+        if (resetDate) {
+          state.selectedDate = null;
+        }
+        if (mode === 'group' && groupId) {
+          renderComposerGroupOptions(groupId);
+        } else {
+          renderComposerGroupOptions();
+        }
+        renderSidebarAndActiveView();
+        renderCalendar();
+        renderFeed();
+      }
+
+      function handleCreateGroup() {
+        const name = els.newGroupNameInput.value.trim();
+        if (!name) {
+          els.groupCreateError.textContent = 'กรุณาระบุชื่อกลุ่มเนื้อหา';
+          els.groupCreateError.hidden = false;
+          els.newGroupNameInput.focus();
+          return;
+        }
+
+        const duplicate = state.groups.some(g => g.name.toLowerCase() === name.toLowerCase());
+        if (duplicate) {
+          els.groupCreateError.textContent = 'มีกลุ่มเนื้อหาชื่อนี้อยู่แล้ว';
+          els.groupCreateError.hidden = false;
+          els.newGroupNameInput.focus();
+          return;
+        }
+
+        const newGroup = {
+          id: `grp-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+          name,
+          createdAt: new Date().toISOString()
+        };
+
+        state.groups.push(newGroup);
+        persistGroups();
+
+        els.newGroupNameInput.value = '';
+        els.groupCreateError.hidden = true;
+        els.groupCreateBox.hidden = true;
+
+        setActiveFilter('group', newGroup.id);
+      }
+
+      async function handleDeleteGroup(groupId) {
+        state.groups = state.groups.filter(g => g.id !== groupId);
+        state.confirmDeleteGroupId = null;
+        persistGroups();
+
+        // Unassign deleted group from posts cleanly without deleting posts
+        let remoteChanged = false;
+        state.posts = state.posts.map(p => {
+          if (p.groupId === groupId) {
+            if (!p.localOnly) remoteChanged = true;
+            return Object.assign({}, p, { groupId: '', groupName: '' });
+          }
+          return p;
+        });
+
+        saveLocalPostsSnapshot();
+        if (remoteChanged && state.gh.connected) {
+          try {
+            const ghPosts = state.posts.filter(p => !p.localOnly);
+            await savePostsJsonToGitHub(ghPosts, `Remove deleted group ${groupId}`);
+          } catch (_) {}
+        }
+
+        if (state.activeFilter.mode === 'group' && state.activeFilter.groupId === groupId) {
+          state.activeFilter = { mode: 'all', groupId: null };
+        }
+
+        renderComposerGroupOptions();
+        renderSidebarAndActiveView();
+        renderCalendar();
+        renderFeed();
+      }
+
+      async function handleToggleSavePost(postId) {
+        const postIdx = state.posts.findIndex(p => p.id === postId);
+        if (postIdx === -1) return;
+
+        const target = state.posts[postIdx];
+        const nextSaved = !isPostSaved(target);
+
+        if (nextSaved) {
+          state.savedPostIds.add(postId);
+        } else {
+          state.savedPostIds.delete(postId);
+        }
+
+        const updatedPost = Object.assign({}, target, { saved: nextSaved });
+        state.posts[postIdx] = updatedPost;
+
+        persistSavedPostIds();
+        saveLocalPostsSnapshot();
+        renderCalendar();
+        renderFeed();
+
+        if (!target.localOnly && state.gh.connected) {
+          try {
+            const ghPosts = state.posts.filter(p => !p.localOnly);
+            await savePostsJsonToGitHub(ghPosts, `Toggle bookmark on post ${postId}`);
+          } catch (_) {}
+        }
+      }
+
+      // Composer Link Preview Rendering & Detection
+      function renderComposerLinkPreview() {
+        els.composerLinkPreviewContent.innerHTML = '';
+        if (!state.draftLinkPreview) {
+          els.composerLinkPreviewWrap.hidden = true;
+          return;
+        }
+        els.composerLinkPreviewWrap.hidden = false;
+        const cardEl = createLinkPreviewElement(state.draftLinkPreview, false);
+        els.composerLinkPreviewContent.appendChild(cardEl);
+      }
+
+      function detectLinkInComposerText() {
+        const text = els.postText.value;
+        const foundUrl = extractFirstUrl(text);
+
+        if (!foundUrl) {
+          state.draftLinkPreview = null;
+          state.dismissedPreviewUrl = '';
+          if (activePreviewController) activePreviewController.abort();
+          renderComposerLinkPreview();
+          return;
+        }
+
+        if (state.dismissedPreviewUrl === foundUrl) {
+          return;
+        }
+
+        if (state.draftLinkPreview && state.draftLinkPreview.url === foundUrl) {
+          return;
+        }
+
+        try {
+          const initial = buildInitialLinkPreview(foundUrl);
+          state.draftLinkPreview = initial;
+          renderComposerLinkPreview();
+          if (initial.loading && !initial.isDirectMedia) {
+            enrichDraftLinkPreview(foundUrl);
+          }
+        } catch (_) {
+          state.draftLinkPreview = null;
+          renderComposerLinkPreview();
+        }
+      }
+
+      // UI Rendering
+      function updateHeaderUI() {
+        els.composerAvatar.textContent = getInitial(state.displayName);
+        els.headerTitle.textContent = 'My Pages';
+
+        if (state.gh.connected) {
+          if (els.openSettingsBtn) els.openSettingsBtn.classList.add('connected');
+          if (els.ghStatusLabel) els.ghStatusLabel.textContent = `${state.gh.owner}/${state.gh.repo}`;
+          if (els.headerSubtitle) els.headerSubtitle.textContent = `เชื่อมต่อกับ GitHub (${state.gh.branch})`;
+          els.refreshBtn.hidden = false;
+          els.disconnectGhBtn.hidden = false;
+        } else {
+          if (els.openSettingsBtn) els.openSettingsBtn.classList.remove('connected');
+          if (els.ghStatusLabel) els.ghStatusLabel.textContent = '';
+          if (els.headerSubtitle) els.headerSubtitle.textContent = '';
+          els.refreshBtn.hidden = true;
+          els.disconnectGhBtn.hidden = true;
+        }
+
+        updateSyncBanner();
+      }
+
+      function updateSyncBanner() {
+        const localCount = state.posts.filter(p => p.localOnly).length;
+        if (state.gh.connected && localCount > 0) {
+          els.syncBanner.hidden = false;
+          els.syncBannerText.textContent = `มี ${localCount} โพสต์ที่สร้างไว้ก่อนเชื่อมต่อ สามารถซิงค์ขึ้น GitHub Repository ได้ทันที`;
+        } else {
+          els.syncBanner.hidden = true;
+        }
+      }
+
+      function showComposerMessage(text, type) {
+        if (!text) {
+          els.composerMessage.hidden = true;
+          els.composerMessage.textContent = '';
+          els.composerMessage.className = 'composer-message';
+          return;
+        }
+        els.composerMessage.hidden = false;
+        els.composerMessage.textContent = text;
+        els.composerMessage.className = `composer-message ${type || 'info'}`;
+      }
+
+      function updateSubmitButtonState() {
+        const hasText = els.postText.value.trim().length > 0;
+        const hasMedia = state.pendingAttachments.length > 0;
+        els.submitPostBtn.disabled = state.submittingPost || (!hasText && !hasMedia);
+        if (!state.submittingPost) {
+          els.submitPostBtn.textContent = 'โพสต์';
+        }
+      }
+
+      function renderComposerPreviews() {
+        els.composerPreviews.innerHTML = '';
+        state.pendingAttachments.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'preview-item';
+
+          if (item.kind === 'video') {
+            const vid = document.createElement('video');
+            vid.src = item.previewUrl;
+            vid.muted = true;
+            vid.playsInline = true;
+            vid.preload = 'metadata';
+            card.appendChild(vid);
+          } else {
+            const img = document.createElement('img');
+            img.src = item.previewUrl;
+            img.alt = item.name || 'ตัวอย่างรูปภาพ';
+            card.appendChild(img);
+          }
+
+          const badge = document.createElement('span');
+          badge.className = 'preview-badge';
+          badge.textContent = item.size
+            ? `${item.kind === 'video' ? 'วิดีโอ' : 'รูปภาพ'} • ${formatBytes(item.size)}`
+            : (item.kind === 'video' ? 'วิดีโอ (URL)' : 'รูปภาพ (URL)');
+          card.appendChild(badge);
+
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'preview-remove';
+          removeBtn.setAttribute('aria-label', 'นำไฟล์แนบออก');
+          removeBtn.textContent = '✕';
+          removeBtn.addEventListener('click', () => {
+            state.pendingAttachments = state.pendingAttachments.filter(a => a.id !== item.id);
+            renderComposerPreviews();
+            updateSubmitButtonState();
+            showComposerMessage('', '');
+          });
+          card.appendChild(removeBtn);
+
+          els.composerPreviews.appendChild(card);
+        });
+      }
+
+      function getFilteredPosts() {
+        let base = getPostsMatchingSidebarMode();
+        if (state.selectedDate) {
+          base = base.filter(p => toLocalDateKey(p.createdAt) === state.selectedDate);
+        }
+        return base;
+      }
+
+      function renderFeed() {
+        els.feedStream.innerHTML = '';
+
+        if (state.loadingFeed) {
+          const loadingCard = document.createElement('div');
+          loadingCard.className = 'card state-card';
+          loadingCard.innerHTML = `
+            <div class="state-icon">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+              </svg>
+            </div>
+            <h2 class="state-title">กำลังโหลดโพสต์จาก GitHub...</h2>
+            <p class="state-desc">กำลังดึงข้อมูลจาก ${state.gh.owner}/${state.gh.repo}</p>
+          `;
+          els.feedStream.appendChild(loadingCard);
+          return;
+        }
+
+        const visiblePosts = getFilteredPosts();
+
+        if (visiblePosts.length === 0) {
+          const emptyCard = document.createElement('div');
+          emptyCard.className = 'card state-card';
+
+          let emptyTitle = 'ยังไม่มีโพสต์ในฟีดของคุณ';
+          let statusSubtext = state.gh.connected
+            ? `เชื่อมต่อกับ ${state.gh.owner}/${state.gh.repo} เรียบร้อยแล้ว เขียนข้อความหรือแนบรูปภาพและวิดีโอด้านบนเพื่อสร้างโพสต์แรกของคุณ`
+            : 'เริ่มโพสต์ข้อความ รูปภาพ หรือวิดีโอได้ทันที และกดปุ่ม "ตั้งค่า GitHub" มุมขวาบนเพื่อจัดเก็บข้อมูลทั้งหมดลงใน GitHub Repository ของคุณ';
+
+          if (state.selectedDate) {
+            const thaiDate = formatThaiDateFromKey(state.selectedDate);
+            emptyTitle = `ไม่มีเนื้อหาในวันที่ ${thaiDate}`;
+            statusSubtext = 'ยังไม่มีโพสต์ที่สร้างในวันที่เลือก สามารถคลิกเลือกวันอื่นจากปฏิทินด้านขวา หรือกด "ดูโพสต์ทั้งหมด" เพื่อแสดงโพสต์ทุกวัน';
+          } else if (state.activeFilter.mode === 'saved') {
+            emptyTitle = 'ยังไม่มีเนื้อหาที่บันทึกไว้';
+            statusSubtext = 'กดปุ่ม "บันทึก" บนโพสต์ที่ต้องการเก็บไว้ เพื่อกลับมาอ่านหรือดูย้อนหลังได้จากเมนูนี้';
+          } else if (state.activeFilter.mode === 'group') {
+            const grpName = getGroupNameById(state.activeFilter.groupId);
+            emptyTitle = grpName ? `ยังไม่มีโพสต์ในกลุ่ม "${grpName}"` : 'ยังไม่มีโพสต์ในกลุ่มนี้';
+            statusSubtext = 'พิมพ์โพสต์ใหม่ด้านบนเพื่อเพิ่มเนื้อหาเข้ากลุ่มนี้ หรือแก้ไขโพสต์เดิมเพื่อย้ายเข้ากลุ่ม';
+          }
+
+          emptyCard.innerHTML = `
+            <div class="state-icon" aria-hidden="true">
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2"/>
+                <path d="M3 9h18"/>
+                <path d="M9 21V9"/>
+              </svg>
+            </div>
+            <h2 class="state-title"></h2>
+            <p class="state-desc"></p>
+          `;
+          emptyCard.querySelector('.state-title').textContent = emptyTitle;
+          emptyCard.querySelector('.state-desc').textContent = statusSubtext;
+          els.feedStream.appendChild(emptyCard);
+          return;
+        }
+
+        visiblePosts.forEach(post => {
+          const article = document.createElement('article');
+          article.className = 'card post-card';
+
+          // Post Header
+          const header = document.createElement('div');
+          header.className = 'post-header';
+
+          const authorGroup = document.createElement('div');
+          authorGroup.className = 'post-author-group';
+
+          const avatar = document.createElement('div');
+          avatar.className = 'avatar';
+          avatar.textContent = getInitial(post.author || state.displayName);
+
+          const metaWrap = document.createElement('div');
+          metaWrap.className = 'post-author-meta';
+
+          const authorName = document.createElement('span');
+          authorName.className = 'post-author-name';
+          authorName.textContent = post.author || state.displayName;
+
+          const metaLine = document.createElement('div');
+          metaLine.className = 'post-meta-line';
+
+          const timeSpan = document.createElement('span');
+          timeSpan.textContent = formatThaiDateTime(post.createdAt) + (post.updatedAt ? ' (แก้ไขแล้ว)' : '');
+
+          const dot = document.createElement('span');
+          dot.textContent = '•';
+
+          const storageTag = document.createElement('span');
+          storageTag.className = 'storage-tag';
+          storageTag.textContent = post.localOnly ? 'เฉพาะในเบราว์เซอร์' : 'GitHub';
+
+          metaLine.append(timeSpan, dot, storageTag);
+
+          const postGroupName = getGroupNameById(post.groupId) || post.groupName || '';
+          if (post.groupId && postGroupName) {
+            const grpBtn = document.createElement('button');
+            grpBtn.type = 'button';
+            grpBtn.className = 'post-group-tag';
+            grpBtn.textContent = postGroupName;
+            grpBtn.title = `ดูโพสต์ในกลุ่ม ${postGroupName}`;
+            grpBtn.addEventListener('click', () => {
+              if (state.groups.some(g => g.id === post.groupId)) {
+                setActiveFilter('group', post.groupId);
+              }
+            });
+            metaLine.appendChild(grpBtn);
+          }
+
+          metaWrap.append(authorName, metaLine);
+          authorGroup.append(avatar, metaWrap);
+
+          // Post Actions (Bookmark / Edit / Inline Delete Confirmation)
+          const actions = document.createElement('div');
+          actions.className = 'post-actions';
+
+          if (state.confirmDeleteId === post.id) {
+            const confirmBtn = document.createElement('button');
+            confirmBtn.type = 'button';
+            confirmBtn.className = 'btn btn-danger';
+            confirmBtn.style.padding = '5px 10px';
+            confirmBtn.style.fontSize = '12.5px';
+            confirmBtn.textContent = 'ยืนยันลบ';
+            confirmBtn.addEventListener('click', () => handleDeletePost(post.id, confirmBtn));
+
+            const cancelBtn = document.createElement('button');
+            cancelBtn.type = 'button';
+            cancelBtn.className = 'btn btn-ghost';
+            cancelBtn.style.fontSize = '12.5px';
+            cancelBtn.textContent = 'ยกเลิก';
+            cancelBtn.addEventListener('click', () => {
+              state.confirmDeleteId = null;
+              renderFeed();
+            });
+
+            actions.append(confirmBtn, cancelBtn);
+          } else {
+            const saved = isPostSaved(post);
+            const saveBtn = document.createElement('button');
+            saveBtn.type = 'button';
+            saveBtn.className = 'btn btn-ghost btn-save-post' + (saved ? ' saved' : '');
+            saveBtn.style.fontSize = '13px';
+            saveBtn.style.padding = '5px 10px';
+            saveBtn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+            saveBtn.innerHTML = `
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="${saved ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+              </svg>
+              <span>${saved ? 'บันทึกแล้ว' : 'บันทึก'}</span>
+            `;
+            saveBtn.addEventListener('click', () => handleToggleSavePost(post.id));
+
+            const editBtn = document.createElement('button');
+            editBtn.type = 'button';
+            editBtn.className = 'btn btn-ghost';
+            editBtn.style.fontSize = '13px';
+            editBtn.textContent = 'แก้ไข';
+            editBtn.addEventListener('click', () => {
+              state.editingPostId = post.id;
+              state.confirmDeleteId = null;
+              renderFeed();
+            });
+
+            const delBtn = document.createElement('button');
+            delBtn.type = 'button';
+            delBtn.className = 'btn btn-ghost';
+            delBtn.style.fontSize = '13px';
+            delBtn.textContent = 'ลบ';
+            delBtn.addEventListener('click', () => {
+              state.confirmDeleteId = post.id;
+              state.editingPostId = null;
+              renderFeed();
+            });
+
+            actions.append(saveBtn, editBtn, delBtn);
+          }
+
+          header.append(authorGroup, actions);
+          article.appendChild(header);
+
+          // Post Body or Inline Edit Mode
+          const mediaList = Array.isArray(post.media) ? post.media : [];
+          if (state.editingPostId === post.id) {
+            const editBox = document.createElement('div');
+            editBox.className = 'post-edit-box';
+
+            const editArea = document.createElement('textarea');
+            editArea.className = 'post-edit-textarea';
+            editArea.value = post.text || '';
+
+            const editGroupRow = document.createElement('div');
+            editGroupRow.className = 'composer-group-row';
+            editGroupRow.style.marginTop = '2px';
+
+            const editGroupLabel = document.createElement('span');
+            editGroupLabel.className = 'composer-group-label';
+            editGroupLabel.textContent = 'กลุ่มเนื้อหา:';
+
+            const editGroupSelect = document.createElement('select');
+            editGroupSelect.className = 'composer-group-select';
+            const noneOpt = document.createElement('option');
+            noneOpt.value = '';
+            noneOpt.textContent = 'ไม่ระบุกลุ่ม';
+            editGroupSelect.appendChild(noneOpt);
+            state.groups.forEach(g => {
+              const opt = document.createElement('option');
+              opt.value = g.id;
+              opt.textContent = g.name;
+              editGroupSelect.appendChild(opt);
+            });
+            editGroupSelect.value = post.groupId || '';
+
+            editGroupRow.append(editGroupLabel, editGroupSelect);
+
+            const editActions = document.createElement('div');
+            editActions.className = 'post-edit-actions';
+
+            const cancelEditBtn = document.createElement('button');
+            cancelEditBtn.type = 'button';
+            cancelEditBtn.className = 'btn';
+            cancelEditBtn.textContent = 'ยกเลิก';
+            cancelEditBtn.addEventListener('click', () => {
+              state.editingPostId = null;
+              renderFeed();
+            });
+
+            const saveEditBtn = document.createElement('button');
+            saveEditBtn.type = 'button';
+            saveEditBtn.className = 'btn btn-primary';
+            saveEditBtn.textContent = 'บันทึกข้อความ';
+            saveEditBtn.addEventListener('click', () =>
+              handleSaveEditPost(post.id, editArea.value, editGroupSelect.value, saveEditBtn)
+            );
+
+            editActions.append(cancelEditBtn, saveEditBtn);
+            editBox.append(editArea, editGroupRow, editActions);
+            article.appendChild(editBox);
+          } else if (post.text && post.text.trim()) {
+            const body = document.createElement('div');
+            const hasPreviewCard = Boolean(post.linkPreview && post.linkPreview.url);
+            const isShortOnlyText =
+              mediaList.length === 0 &&
+              !hasPreviewCard &&
+              post.text.trim().length <= 120 &&
+              !post.text.includes('\n');
+            body.className = isShortOnlyText ? 'post-body short-text' : 'post-body';
+            appendLinkifiedText(body, post.text);
+            article.appendChild(body);
+          }
+
+          // Link Preview Card inside Post (when post has a detected/saved link preview)
+          let effectivePreview = post.linkPreview || null;
+          if (!effectivePreview && post.text) {
+            const autoUrl = extractFirstUrl(post.text);
+            if (autoUrl) {
+              try {
+                effectivePreview = buildInitialLinkPreview(autoUrl);
+                effectivePreview.loading = false;
+              } catch (_) {}
+            }
+          }
+
+          if (effectivePreview && effectivePreview.url && state.editingPostId !== post.id) {
+            const previewHolder = document.createElement('div');
+            previewHolder.className = 'post-link-preview';
+            const cleanPreview = Object.assign({}, effectivePreview, { loading: false });
+            previewHolder.appendChild(createLinkPreviewElement(cleanPreview, true));
+            article.appendChild(previewHolder);
+          }
+
+          // Post Media Section
+          if (mediaList.length > 0) {
+            const mediaGrid = document.createElement('div');
+            const imageCount = mediaList.filter(m => m.kind !== 'video').length;
+            const layoutClass = mediaList.length === 1
+              ? 'count-1'
+              : (imageCount === 2 && mediaList.length === 2 ? 'count-2' : 'count-many');
+            mediaGrid.className = `post-media ${layoutClass}`;
+
+            mediaList.forEach(mediaItem => {
+              const frame = document.createElement('div');
+              frame.className = mediaItem.kind === 'video' ? 'media-frame video-frame' : 'media-frame';
+
+              const placeholder = document.createElement('div');
+              placeholder.className = 'media-loading';
+              placeholder.textContent = 'กำลังโหลดสื่อ...';
+              frame.appendChild(placeholder);
+
+              resolveRepoMediaUrl(mediaItem).then(resolvedUrl => {
+                frame.innerHTML = '';
+                if (!resolvedUrl) {
+                  const unavailable = document.createElement('div');
+                  unavailable.className = 'media-loading';
+                  unavailable.textContent = 'ไม่สามารถแสดงไฟล์สื่อได้';
+                  frame.appendChild(unavailable);
+                  return;
+                }
+
+                if (mediaItem.kind === 'video') {
+                  const videoEl = document.createElement('video');
+                  videoEl.controls = true;
+                  videoEl.playsInline = true;
+                  videoEl.preload = 'metadata';
+                  videoEl.src = resolvedUrl;
+                  frame.appendChild(videoEl);
+                } else {
+                  const imgEl = document.createElement('img');
+                  imgEl.src = resolvedUrl;
+                  imgEl.alt = mediaItem.name || 'รูปภาพประกอบโพสต์';
+                  imgEl.loading = 'lazy';
+                  imgEl.addEventListener('click', () => openLightbox(resolvedUrl));
+                  frame.appendChild(imgEl);
+                }
+              }).catch(() => {
+                placeholder.textContent = 'โหลดสื่อไม่สำเร็จ';
+              });
+
+              mediaGrid.appendChild(frame);
+            });
+
+            article.appendChild(mediaGrid);
+          }
+
+          els.feedStream.appendChild(article);
+        });
+      }
+
+      // Post Actions
+      function handleFileSelection(files, kind) {
+        if (!files || files.length === 0) return;
+        showComposerMessage('', '');
+
+        for (const file of Array.from(files)) {
+          if (state.gh.connected && file.size > MAX_GITHUB_FILE_BYTES) {
+            showComposerMessage(
+              `ไฟล์ "${file.name}" มีขนาด ${formatBytes(file.size)} เกินขีดจำกัด 25 MB ของการอัปโหลดผ่านเบราว์เซอร์ขึ้น GitHub กรุณาใช้คลิปขนาดเล็กลงหรือแนบเป็นลิงก์สื่อ`,
+              'error'
+            );
+            continue;
+          }
+
+          const previewUrl = URL.createObjectURL(file);
+          state.pendingAttachments.push({
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            kind,
+            source: 'file',
+            file,
+            previewUrl,
+            name: file.name,
+            size: file.size,
+            mime: file.type
+          });
+        }
+
+        renderComposerPreviews();
+        updateSubmitButtonState();
+      }
+
+      function handleAddUrlMedia() {
+        const url = els.urlMediaInput.value.trim();
+        const kind = els.urlMediaType.value === 'video' ? 'video' : 'image';
+        if (!url) return;
+
+        try {
+          const parsed = new URL(url);
+          if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+            showComposerMessage('กรุณาระบุลิงก์ที่ขึ้นต้นด้วย https:// หรือ http://', 'error');
+            return;
+          }
+        } catch (_) {
+          showComposerMessage('รูปแบบลิงก์ URL ไม่ถูกต้อง', 'error');
+          return;
+        }
+
+        state.pendingAttachments.push({
+          id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+          kind,
+          source: 'url',
+          previewUrl: url,
+          name: kind === 'video' ? 'วิดีโอจากลิงก์' : 'รูปภาพจากลิงก์',
+          size: 0,
+          mime: ''
+        });
+
+        els.urlMediaInput.value = '';
+        els.urlDrawer.hidden = true;
+        showComposerMessage('', '');
+        renderComposerPreviews();
+        updateSubmitButtonState();
+      }
+
+      async function handleCreatePost() {
+        const text = els.postText.value.trim();
+        if (!text && state.pendingAttachments.length === 0) return;
+        if (state.submittingPost) return;
+
+        state.submittingPost = true;
+        els.submitPostBtn.disabled = true;
+        showComposerMessage('', '');
+
+        const selectedGroupId = els.composerGroupSelect.value || '';
+        const selectedGroupName = getGroupNameById(selectedGroupId);
+
+        let attachedPreview = null;
+        if (state.draftLinkPreview && state.draftLinkPreview.url) {
+          attachedPreview = {
+            url: state.draftLinkPreview.url,
+            domain: state.draftLinkPreview.domain || '',
+            siteName: state.draftLinkPreview.siteName || '',
+            title: state.draftLinkPreview.title || '',
+            description: state.draftLinkPreview.description || '',
+            image: state.draftLinkPreview.image || ''
+          };
+        }
+
+        try {
+          const uploadedMedia = [];
+
+          if (state.gh.connected) {
+            // Check file sizes before uploading
+            for (const att of state.pendingAttachments) {
+              if (att.source === 'file' && att.size > MAX_GITHUB_FILE_BYTES) {
+                throw new Error(`ไฟล์ "${att.name}" เกิน 25 MB สำหรับ GitHub Contents API`);
+              }
+            }
+
+            // Upload each attachment
+            for (let i = 0; i < state.pendingAttachments.length; i++) {
+              const att = state.pendingAttachments[i];
+              if (att.source === 'file') {
+                els.submitPostBtn.textContent = `อัปโหลดสื่อ (${i + 1}/${state.pendingAttachments.length})...`;
+                const uploaded = await uploadMediaFileToGitHub(att, i + 1);
+                uploadedMedia.push(uploaded);
+              } else {
+                uploadedMedia.push({
+                  kind: att.kind,
+                  url: att.previewUrl,
+                  name: att.name
+                });
+              }
+            }
+
+            els.submitPostBtn.textContent = 'กำลังบันทึกโพสต์...';
+            const newPost = {
+              id: `post-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+              author: state.displayName || state.gh.owner || 'ฉัน',
+              text,
+              groupId: selectedGroupId,
+              groupName: selectedGroupName,
+              linkPreview: attachedPreview,
+              saved: false,
+              createdAt: new Date().toISOString(),
+              media: uploadedMedia
+            };
+
+            const remotePosts = await fetchPostsFromGitHub();
+            const merged = [newPost, ...remotePosts];
+            await savePostsJsonToGitHub(merged, `New post by ${newPost.author}`);
+
+            const localRemaining = state.posts.filter(p => p.localOnly);
+            state.posts = [...localRemaining, ...merged].sort(
+              (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+            );
+          } else {
+            // Local mode when GitHub is not configured yet
+            for (const att of state.pendingAttachments) {
+              uploadedMedia.push({
+                kind: att.kind,
+                url: att.previewUrl,
+                name: att.name,
+                mime: att.mime || '',
+                fileRef: att.source === 'file' ? att.file : null,
+                isSessionObjectUrl: att.source === 'file'
+              });
+            }
+
+            const localPost = {
+              id: `local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+              author: state.displayName || 'ฉัน',
+              text,
+              groupId: selectedGroupId,
+              groupName: selectedGroupName,
+              linkPreview: attachedPreview,
+              saved: false,
+              createdAt: new Date().toISOString(),
+              localOnly: true,
+              media: uploadedMedia
+            };
+
+            state.posts = [localPost, ...state.posts];
+            saveLocalPostsSnapshot();
+          }
+
+          // Clear composer
+          els.postText.value = '';
+          state.pendingAttachments = [];
+          state.draftLinkPreview = null;
+          state.dismissedPreviewUrl = '';
+          if (activePreviewController) activePreviewController.abort();
+
+          // Switch back from Saved view or past-date filter so user sees the new post right away
+          const todayKey = toLocalDateKey(new Date());
+          let viewChanged = false;
+          if (state.activeFilter.mode === 'saved') {
+            state.activeFilter = selectedGroupId
+              ? { mode: 'group', groupId: selectedGroupId }
+              : { mode: 'all', groupId: null };
+            viewChanged = true;
+          }
+          if (state.selectedDate && state.selectedDate !== todayKey) {
+            state.selectedDate = null;
+            viewChanged = true;
+          }
+          if (viewChanged) {
+            renderSidebarAndActiveView();
+          }
+
+          renderComposerLinkPreview();
+          renderComposerPreviews();
+          renderCalendar();
+          renderFeed();
+          updateSyncBanner();
+        } catch (err) {
+          showComposerMessage(err.message || 'เกิดข้อผิดพลาดในการสร้างโพสต์', 'error');
+        } finally {
+          state.submittingPost = false;
+          updateSubmitButtonState();
+        }
+      }
+
+      async function handleSaveEditPost(postId, newText, newGroupId, btnEl) {
+        const postIdx = state.posts.findIndex(p => p.id === postId);
+        if (postIdx === -1) return;
+
+        const target = state.posts[postIdx];
+        const trimmed = newText.trim();
+        if (!trimmed && (!target.media || target.media.length === 0)) {
+          return;
+        }
+
+        btnEl.disabled = true;
+        btnEl.textContent = 'กำลังบันทึก...';
+
+        let updatedPreview = target.linkPreview || null;
+        const detectedUrl = extractFirstUrl(trimmed);
+        if (!detectedUrl) {
+          updatedPreview = null;
+        } else if (!updatedPreview || updatedPreview.url !== detectedUrl) {
+          try {
+            const built = buildInitialLinkPreview(detectedUrl);
+            built.loading = false;
+            updatedPreview = built;
+          } catch (_) {
+            updatedPreview = null;
+          }
+        }
+
+        const resolvedGroupId = newGroupId || '';
+        const resolvedGroupName = getGroupNameById(resolvedGroupId);
+
+        try {
+          const updatedPost = Object.assign({}, target, {
+            text: trimmed,
+            groupId: resolvedGroupId,
+            groupName: resolvedGroupName,
+            linkPreview: updatedPreview,
+            updatedAt: new Date().toISOString()
+          });
+
+          if (!target.localOnly && state.gh.connected) {
+            const ghPosts = state.posts
+              .filter(p => !p.localOnly)
+              .map(p => (p.id === postId ? updatedPost : p));
+            await savePostsJsonToGitHub(ghPosts, `Edit post ${postId}`);
+          }
+
+          state.posts[postIdx] = updatedPost;
+          saveLocalPostsSnapshot();
+          state.editingPostId = null;
+          renderCalendar();
+          renderFeed();
+        } catch (err) {
+          showComposerMessage(err.message || 'แก้ไขโพสต์ไม่สำเร็จ', 'error');
+          btnEl.disabled = false;
+          btnEl.textContent = 'บันทึกข้อความ';
+        }
+      }
+
+      async function handleDeletePost(postId, btnEl) {
+        const target = state.posts.find(p => p.id === postId);
+        if (!target) return;
+
+        btnEl.disabled = true;
+        btnEl.textContent = 'กำลังลบ...';
+
+        try {
+          if (!target.localOnly && state.gh.connected) {
+            const remainingGhPosts = state.posts.filter(p => !p.localOnly && p.id !== postId);
+            await savePostsJsonToGitHub(remainingGhPosts, `Delete post ${postId}`);
+            if (Array.isArray(target.media)) {
+              for (const m of target.media) {
+                if (m.path) await deleteMediaFromGitHub(m);
+              }
+            }
+          }
+
+          state.posts = state.posts.filter(p => p.id !== postId);
+          state.savedPostIds.delete(postId);
+          state.confirmDeleteId = null;
+          persistSavedPostIds();
+          saveLocalPostsSnapshot();
+          updateSyncBanner();
+          renderCalendar();
+          renderFeed();
+        } catch (err) {
+          showComposerMessage(err.message || 'ลบโพสต์ไม่สำเร็จ', 'error');
+          btnEl.disabled = false;
+          btnEl.textContent = 'ยืนยันลบ';
+        }
+      }
+
+      async function handleSyncLocalPostsToGitHub() {
+        if (!state.gh.connected) return;
+        const localPosts = state.posts.filter(p => p.localOnly);
+        if (localPosts.length === 0) return;
+
+        els.syncLocalBtn.disabled = true;
+        els.syncLocalBtn.textContent = 'กำลังซิงค์...';
+
+        try {
+          const converted = [];
+          for (const lp of localPosts) {
+            const syncedMedia = [];
+            for (let i = 0; i < (lp.media || []).length; i++) {
+              const m = lp.media[i];
+              if (m.fileRef && m.fileRef.size <= MAX_GITHUB_FILE_BYTES) {
+                const up = await uploadMediaFileToGitHub({
+                  kind: m.kind,
+                  file: m.fileRef,
+                  previewUrl: m.url,
+                  name: m.name || 'media',
+                  mime: m.mime || ''
+                }, i + 1);
+                syncedMedia.push(up);
+              } else if (!m.isSessionObjectUrl && m.url) {
+                syncedMedia.push({ kind: m.kind, url: m.url, name: m.name || '' });
+              }
+            }
+            const newRemoteId = lp.id.replace(/^local-/, 'post-');
+            const wasSaved = isPostSaved(lp);
+            if (wasSaved) {
+              state.savedPostIds.delete(lp.id);
+              state.savedPostIds.add(newRemoteId);
+            }
+            converted.push({
+              id: newRemoteId,
+              author: lp.author || state.displayName,
+              text: lp.text,
+              groupId: lp.groupId || '',
+              groupName: lp.groupName || '',
+              linkPreview: lp.linkPreview || null,
+              saved: wasSaved,
+              createdAt: lp.createdAt,
+              updatedAt: lp.updatedAt || null,
+              media: syncedMedia
+            });
+          }
+
+          const remotePosts = await fetchPostsFromGitHub();
+          const merged = [...converted, ...remotePosts].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+          await savePostsJsonToGitHub(merged, `Sync ${converted.length} posts to GitHub`);
+
+          state.posts = merged;
+          persistSavedPostIds();
+          safeRemoveStorage(STORAGE_KEY_LOCAL_POSTS);
+          updateSyncBanner();
+          renderCalendar();
+          renderFeed();
+        } catch (err) {
+          showComposerMessage(err.message || 'ซิงค์ขึ้น GitHub ไม่สำเร็จ', 'error');
+        } finally {
+          els.syncLocalBtn.disabled = false;
+          els.syncLocalBtn.textContent = 'ซิงค์ขึ้น GitHub';
+        }
+      }
+
+      async function refreshFeedFromGitHub() {
+        if (!state.gh.connected) return;
+        state.loadingFeed = true;
+        els.refreshBtn.classList.add('spinning');
+        els.refreshBtn.disabled = true;
+        renderFeed();
+
+        try {
+          const repoMeta = await verifyRepoConnection(state.gh);
+          state.gh.isPrivate = repoMeta.isPrivate;
+          const remotePosts = await fetchPostsFromGitHub();
+          syncGroupsFromPosts(remotePosts);
+          const localOnlyPosts = state.posts.filter(p => p.localOnly);
+          state.posts = [...localOnlyPosts, ...remotePosts].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        } catch (err) {
+          showComposerMessage(err.message || 'โหลดข้อมูลจาก GitHub ไม่สำเร็จ', 'error');
+        } finally {
+          state.loadingFeed = false;
+          els.refreshBtn.classList.remove('spinning');
+          els.refreshBtn.disabled = false;
+          renderComposerGroupOptions();
+          renderSidebarAndActiveView();
+          renderCalendar();
+          updateHeaderUI();
+          renderFeed();
+        }
+      }
+
+      // Settings Modal Controls
+      function setSettingsStatus(text, type) {
+        if (!text) {
+          els.settingsStatus.hidden = true;
+          els.settingsStatus.textContent = '';
+          els.settingsStatus.className = 'modal-status';
+          return;
+        }
+        els.settingsStatus.hidden = false;
+        els.settingsStatus.textContent = text;
+        els.settingsStatus.className = `modal-status ${type}`;
+      }
+
+      function openSettingsModal() {
+        els.displayNameInput.value = state.displayName || 'ฉัน';
+        els.ghOwnerInput.value = state.gh.owner || '';
+        els.ghRepoInput.value = state.gh.repo || '';
+        els.ghBranchInput.value = state.gh.branch || 'main';
+        els.ghTokenInput.value = state.gh.token || '';
+        setSettingsStatus('', '');
+        els.settingsModal.hidden = false;
+        els.displayNameInput.focus();
+      }
+
+      function closeSettingsModal() {
+        els.settingsModal.hidden = true;
+      }
+
+      // Lightbox Controls
+      function openLightbox(src) {
+        els.lightboxImg.src = src;
+        els.lightbox.hidden = false;
+      }
+
+      function closeLightbox() {
+        els.lightbox.hidden = true;
+        els.lightboxImg.src = '';
+      }
+
+      // Event Listeners
+      els.postText.addEventListener('input', () => {
+        updateSubmitButtonState();
+        clearTimeout(linkDetectTimer);
+        linkDetectTimer = setTimeout(detectLinkInComposerText, 280);
+      });
+
+      els.postText.addEventListener('paste', () => {
+        setTimeout(() => {
+          updateSubmitButtonState();
+          detectLinkInComposerText();
+        }, 30);
+      });
+
+      els.dismissLinkPreviewBtn.addEventListener('click', () => {
+        if (state.draftLinkPreview && state.draftLinkPreview.url) {
+          state.dismissedPreviewUrl = state.draftLinkPreview.url;
+        }
+        state.draftLinkPreview = null;
+        if (activePreviewController) activePreviewController.abort();
+        renderComposerLinkPreview();
+      });
+
+      // Left Toolbar Navigation & Group Creation Listeners
+      els.navAllPostsBtn.addEventListener('click', () => setActiveFilter('all', null, true));
+      els.navSavedPostsBtn.addEventListener('click', () => setActiveFilter('saved', null, false));
+      els.resetViewBtn.addEventListener('click', () => setActiveFilter('all', null, true));
+
+      // Right Mini Calendar Listeners
+      els.calPrevMonthBtn.addEventListener('click', () => {
+        if (state.calendarViewMonth === 0) {
+          state.calendarViewMonth = 11;
+          state.calendarViewYear -= 1;
+        } else {
+          state.calendarViewMonth -= 1;
+        }
+        renderCalendar();
+      });
+
+      els.calNextMonthBtn.addEventListener('click', () => {
+        if (state.calendarViewMonth === 11) {
+          state.calendarViewMonth = 0;
+          state.calendarViewYear += 1;
+        } else {
+          state.calendarViewMonth += 1;
+        }
+        renderCalendar();
+      });
+
+      els.calTodayBtn.addEventListener('click', () => {
+        const now = new Date();
+        state.calendarViewYear = now.getFullYear();
+        state.calendarViewMonth = now.getMonth();
+        state.selectedDate = toLocalDateKey(now);
+        renderSidebarAndActiveView();
+        renderCalendar();
+        renderFeed();
+      });
+
+      els.calClearDateBtn.addEventListener('click', () => {
+        state.selectedDate = null;
+        renderSidebarAndActiveView();
+        renderCalendar();
+        renderFeed();
+      });
+
+      els.openCreateGroupBtn.addEventListener('click', () => {
+        const nextHidden = !els.groupCreateBox.hidden;
+        els.groupCreateBox.hidden = nextHidden;
+        els.groupCreateError.hidden = true;
+        if (!nextHidden) {
+          els.newGroupNameInput.focus();
+        }
+      });
+
+      els.cancelCreateGroupBtn.addEventListener('click', () => {
+        els.groupCreateBox.hidden = true;
+        els.groupCreateError.hidden = true;
+        els.newGroupNameInput.value = '';
+      });
+
+      els.confirmCreateGroupBtn.addEventListener('click', handleCreateGroup);
+      els.newGroupNameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleCreateGroup();
+        } else if (e.key === 'Escape') {
+          els.groupCreateBox.hidden = true;
+          els.groupCreateError.hidden = true;
+        }
+      });
+
+      els.pickImageBtn.addEventListener('click', () => els.imageFileInput.click());
+      els.pickVideoBtn.addEventListener('click', () => els.videoFileInput.click());
+
+      els.imageFileInput.addEventListener('change', (e) => {
+        handleFileSelection(e.target.files, 'image');
+        e.target.value = '';
+      });
+
+      els.videoFileInput.addEventListener('change', (e) => {
+        handleFileSelection(e.target.files, 'video');
+        e.target.value = '';
+      });
+
+      els.toggleUrlDrawerBtn.addEventListener('click', () => {
+        els.urlDrawer.hidden = !els.urlDrawer.hidden;
+        if (!els.urlDrawer.hidden) els.urlMediaInput.focus();
+      });
+
+      els.addUrlMediaBtn.addEventListener('click', handleAddUrlMedia);
+      els.urlMediaInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleAddUrlMedia();
+        }
+      });
+
+      els.submitPostBtn.addEventListener('click', handleCreatePost);
+      els.syncLocalBtn.addEventListener('click', handleSyncLocalPostsToGitHub);
+      els.refreshBtn.addEventListener('click', refreshFeedFromGitHub);
+
+      if (els.openSettingsBtn) els.openSettingsBtn.addEventListener('click', openSettingsModal);
+      els.closeSettingsBtn.addEventListener('click', closeSettingsModal);
+      els.settingsModal.addEventListener('click', (e) => {
+        if (e.target === els.settingsModal) closeSettingsModal();
+      });
+
+      els.toggleTokenBtn.addEventListener('click', () => {
+        const isPwd = els.ghTokenInput.type === 'password';
+        els.ghTokenInput.type = isPwd ? 'text' : 'password';
+        els.toggleTokenBtn.textContent = isPwd ? 'ซ่อน' : 'แสดง';
+      });
+
+      els.saveProfileOnlyBtn.addEventListener('click', () => {
+        const name = els.displayNameInput.value.trim() || 'ฉัน';
+        state.displayName = name;
+        persistConfig();
+        updateHeaderUI();
+        renderFeed();
+        closeSettingsModal();
+      });
+
+      els.disconnectGhBtn.addEventListener('click', () => {
+        state.gh = { owner: '', repo: '', branch: 'main', token: '', connected: false, isPrivate: false };
+        state.postsSha = null;
+        state.posts = state.posts.filter(p => p.localOnly);
+        persistConfig();
+        updateHeaderUI();
+        renderCalendar();
+        renderFeed();
+        closeSettingsModal();
+      });
+
+      els.settingsForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const displayName = els.displayNameInput.value.trim() || 'ฉัน';
+        const owner = els.ghOwnerInput.value.trim();
+        const repo = els.ghRepoInput.value.trim();
+        const branch = els.ghBranchInput.value.trim() || 'main';
+        const token = els.ghTokenInput.value.trim();
+
+        if (!owner || !repo || !token) {
+          setSettingsStatus('กรุณากรอก GitHub Username, ชื่อ Repository และ Personal Access Token ให้ครบถ้วน', 'error');
+          return;
+        }
+
+        els.saveGhBtn.disabled = true;
+        els.saveGhBtn.textContent = 'กำลังตรวจสอบ...';
+        setSettingsStatus('', '');
+
+        try {
+          const candidate = { owner, repo, branch, token };
+          const repoMeta = await verifyRepoConnection(candidate);
+
+          state.displayName = displayName === 'ฉัน' && owner ? owner : displayName;
+          state.gh = {
+            owner,
+            repo,
+            branch: branch || repoMeta.defaultBranch,
+            token,
+            connected: true,
+            isPrivate: repoMeta.isPrivate
+          };
+
+          persistConfig();
+          updateHeaderUI();
+          closeSettingsModal();
+          await refreshFeedFromGitHub();
+        } catch (err) {
+          setSettingsStatus(err.message || 'ไม่สามารถเชื่อมต่อ GitHub ได้', 'error');
+        } finally {
+          els.saveGhBtn.disabled = false;
+          els.saveGhBtn.textContent = 'บันทึกและเชื่อมต่อ GitHub';
+        }
+      });
+
+      els.lightboxCloseBtn.addEventListener('click', closeLightbox);
+      els.lightbox.addEventListener('click', (e) => {
+        if (e.target === els.lightbox) closeLightbox();
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          if (!els.lightbox.hidden) closeLightbox();
+          else if (!els.settingsModal.hidden) closeSettingsModal();
+          else if (state.confirmDeleteGroupId) {
+            state.confirmDeleteGroupId = null;
+            renderSidebarAndActiveView();
+          }
+        }
+      });
+
+      // Initialize App
+      loadSavedConfig();
+      renderComposerGroupOptions();
+      renderSidebarAndActiveView();
+      renderCalendar();
+      updateHeaderUI();
+      renderFeed();
+      if (state.gh.connected) {
+        refreshFeedFromGitHub();
+      }
+    })();
+  </script>
+</body>
+</html>
