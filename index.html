@@ -1209,6 +1209,69 @@
       border: 1px solid rgba(251, 192, 45, 0.48);
     }
 
+    .sync-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      background: var(--surface-header);
+      padding: 5px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-soft);
+    }
+
+    .sync-tab-btn {
+      padding: 8px 6px;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      line-height: 1.25;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .sync-tab-btn:hover {
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .sync-tab-btn.active {
+      background: var(--brand);
+      color: var(--brand-ink);
+      font-weight: 700;
+    }
+
+    .sync-pane {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sync-pane[hidden] {
+      display: none;
+    }
+
+    .sync-code-textarea {
+      width: 100%;
+      min-height: 92px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background: var(--surface-input);
+      color: var(--ink);
+      font-size: 13px;
+      resize: vertical;
+    }
+
+    .sync-code-textarea:focus {
+      outline: none;
+      border-color: var(--brand);
+      box-shadow: 0 0 0 2px rgba(251, 192, 45, 0.2);
+    }
+
     .modal-footer {
       padding: 14px 20px;
       background: var(--topbar-bg);
@@ -2803,69 +2866,148 @@
     </aside>
   </div>
 
-  <!-- GitHub Settings Modal -->
+  <!-- Multi-Device Sync & Profile Modal -->
   <div class="modal-backdrop" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle" hidden>
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width:530px;">
       <div class="modal-header">
-        <h2 class="modal-title" id="settingsModalTitle">ตั้งค่าโปรไฟล์และการจัดเก็บบน GitHub</h2>
+        <h2 class="modal-title" id="settingsModalTitle">ซิงค์ข้อมูลให้ครบทุกอุปกรณ์</h2>
         <button type="button" class="icon-btn" id="closeSettingsBtn" aria-label="ปิดหน้าต่าง">✕</button>
       </div>
 
       <form id="settingsForm" class="modal-body">
         <div class="form-group">
           <label class="form-label" for="displayNameInput">ชื่อที่แสดงบนโปรไฟล์และโพสต์</label>
-          <input type="text" id="displayNameInput" class="input-field" placeholder="เช่น สมชาย หรือ ชื่อพื้นที่ส่วนตัว" required>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label class="form-label" for="ghOwnerInput">GitHub Username / Owner</label>
-            <input type="text" id="ghOwnerInput" class="input-field" placeholder="alwayz58" value="alwayz58" autocomplete="off">
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="ghBranchInput">Branch</label>
-            <input type="text" id="ghBranchInput" class="input-field" placeholder="main" value="main" autocomplete="off">
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="ghRepoInput">ชื่อ Repository สำหรับซิงค์ข้อมูลข้ามอุปกรณ์</label>
           <div class="token-wrap">
-            <input type="text" id="ghRepoInput" class="input-field" list="ghRepoDatalist" value="my-pages-data" placeholder="เช่น my-pages-data หรือวางลิงก์ Repo" autocomplete="off">
-            <datalist id="ghRepoDatalist"></datalist>
-            <button type="button" class="btn" id="fetchReposBtn">ดึงรายชื่อ Repo</button>
+            <input type="text" id="displayNameInput" class="input-field" placeholder="เช่น สมชาย หรือ alwayz58" required>
+            <button type="button" class="btn" id="saveProfileOnlyBtn">บันทึกชื่อ</button>
           </div>
-          <span class="form-hint" id="ghRepoListHint">ตั้งค่าเริ่มต้นเป็น <code>my-pages-data</code> ภายใต้บัญชี <strong>alwayz58</strong> (หากต้องการดึง Private Repo ให้ใส่ Token ด้านล่างก่อนกด "ดึงรายชื่อ Repo")</span>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="ghTokenInput">GitHub Personal Access Token (จำเป็นสำหรับ Private Repo และการบันทึกข้ามอุปกรณ์)</label>
-          <div class="token-wrap">
-            <input type="password" id="ghTokenInput" class="input-field" placeholder="วางรหัส ghp_... หรือ github_pat_..." autocomplete="off">
-            <button type="button" class="btn" id="toggleTokenBtn">แสดง</button>
-          </div>
-          <span class="form-hint">หากใช้ Token แบบ Classic (<code>ghp_...</code> สิทธิ์ <code>repo</code>) ระบบจะสร้าง Repo <code>my-pages-data</code> ให้อัตโนมัติทันทีเมื่อกดบันทึก</span>
+        <!-- 3 Easy Sync Methods -->
+        <div class="sync-tabs" role="tablist" aria-label="เลือกวิธีซิงค์ข้อมูลข้ามอุปกรณ์">
+          <button type="button" class="sync-tab-btn active" id="syncTabCloudBtn" role="tab" aria-selected="true">
+            1. Cloud URL<br><span style="font-size:11px; opacity:0.85;">(ไม่ต้องใช้ Token)</span>
+          </button>
+          <button type="button" class="sync-tab-btn" id="syncTabCodeBtn" role="tab" aria-selected="false">
+            2. คัดลอกโค้ดซิงค์<br><span style="font-size:11px; opacity:0.85;">(ใช้ได้ทันที)</span>
+          </button>
+          <button type="button" class="sync-tab-btn" id="syncTabGhBtn" role="tab" aria-selected="false">
+            3. GitHub Repo<br><span style="font-size:11px; opacity:0.85;">(ต้องใช้ PAT)</span>
+          </button>
         </div>
 
-        <details class="help-box" open>
-          <summary>วิธีสร้าง Token สำหรับบัญชี alwayz58 (ทำครั้งเดียว ซิงค์ได้ทุกเครื่อง)</summary>
-          <ol>
-            <li>ล็อกอิน GitHub บัญชี <strong>alwayz58</strong> → กดรูปโปรไฟล์มุมขวาบน → <strong>Settings</strong> → เลื่อนลงล่างสุดเลือก <strong>Developer settings</strong></li>
-            <li>เลือก <strong>Personal access tokens</strong> → <strong>Tokens (classic)</strong> → กด <strong>Generate new token (classic)</strong> → ติ๊กช่อง <strong>repo</strong> แล้วกด Generate token (วิธีนี้แอปจะสร้าง Repo <code>my-pages-data</code> ให้อัตโนมัติ ไม่ต้องสร้างเอง)</li>
-            <li>หรือหากใช้ <strong>Fine-grained tokens</strong>: ให้สร้าง Repo ชื่อ <code>my-pages-data</code> (ติ๊ก Add a README file) ก่อน แล้วสร้าง Token กำหนดสิทธิ์ <strong>Contents: Read and write</strong></li>
-            <li>คัดลอกรหัส Token มาวางในช่องด้านบน แล้วกด <strong>"บันทึกและเชื่อมต่อ GitHub"</strong></li>
-          </ol>
-        </details>
+        <!-- PANE 1: Zero-Token Cloud Realtime Database Sync -->
+        <div class="sync-pane" id="syncPaneCloud" role="tabpanel">
+          <div class="form-group">
+            <label class="form-label" for="cloudDbUrlInput">ลิงก์ฐานข้อมูล Cloud (Firebase Realtime Database URL)</label>
+            <input
+              type="url"
+              id="cloudDbUrlInput"
+              class="input-field"
+              value="https://alwayz-f304a-default-rtdb.asia-southeast1.firebasedatabase.app/"
+              placeholder="https://alwayz-f304a-default-rtdb.asia-southeast1.firebasedatabase.app/"
+              autocomplete="off"
+            >
+            <span class="form-hint">เชื่อมต่อกับ <strong>alwayz-f304a-default-rtdb</strong> ให้อัตโนมัติแล้ว (เก็บแยกในโหนด <code>/mypages_sync/</code> โดยไม่กระทบข้อมูลโปรเจกต์อื่นในฐานข้อมูล)</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="cloudRoomKeyInput">รหัสห้องข้อมูลส่วนตัว (ตั้งให้ตรงกันทั้งบน PC และมือถือ)</label>
+            <input
+              type="text"
+              id="cloudRoomKeyInput"
+              class="input-field"
+              value="alwayz58-mypages"
+              placeholder="เช่น alwayz58-mypages"
+              autocomplete="off"
+            >
+            <span class="form-hint">ทุกเครื่องที่ใส่ลิงก์ Cloud URL และรหัสห้องเดียวกัน จะเห็นโพสต์ รูปภาพ กลุ่มเนื้อหา และรายการบันทึกตรงกันอัตโนมัติภายในไม่กี่วินาที</span>
+          </div>
+
+          <div style="display:flex; gap:8px; justify-content:space-between; flex-wrap:wrap; margin-top:2px;">
+            <button type="button" class="btn btn-ghost" id="disconnectCloudBtn" hidden>ยกเลิก Cloud Sync</button>
+            <button type="button" class="btn btn-primary" id="saveCloudSyncBtn" style="margin-left:auto; flex:1 1 auto;">เชื่อมต่อและซิงค์ทุกอุปกรณ์ทันที</button>
+          </div>
+        </div>
+
+        <!-- PANE 2: Instant Zero-Account Copy/Paste & File Sync -->
+        <div class="sync-pane" id="syncPaneCode" role="tabpanel" hidden>
+          <div class="form-group">
+            <span class="form-label">ส่งข้อมูลจากเครื่องนี้ไปอุปกรณ์อื่น (ครบทั้งโพสต์ รูปภาพ กลุ่ม และที่บันทึกไว้)</span>
+            <button type="button" class="btn btn-primary" id="copySyncBundleBtn" style="width:100%;">
+              คัดลอกโค้ดข้อมูลทั้งหมดในเครื่องนี้
+            </button>
+            <span class="form-hint">กดคัดลอกแล้วส่งข้อความไปทางแชทส่วนตัว (เช่น LINE Keep / แชทตัวเอง) เพื่อนำไปวางในมือถือหรือคอมอีกเครื่องได้ทันทีโดยไม่ต้องสมัครบัญชีใดๆ</span>
+          </div>
+
+          <div class="composer-divider" style="margin:4px 0;"></div>
+
+          <div class="form-group">
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+              <label class="form-label" for="pasteSyncBundleInput">รับและรวมข้อมูลจากอุปกรณ์อื่นเข้าเครื่องนี้</label>
+              <input type="file" id="importSyncFileInput" accept=".json,application/json,text/plain" hidden>
+              <button type="button" class="btn" id="pickSyncFileBtn" style="padding:4px 10px; font-size:12px;">เลือกไฟล์ .json</button>
+            </div>
+            <textarea
+              id="pasteSyncBundleInput"
+              class="sync-code-textarea"
+              placeholder="วางโค้ดข้อมูลที่คัดลอกมาจากอีกเครื่องที่นี่..."
+            ></textarea>
+            <button type="button" class="btn btn-primary" id="applyPastedSyncBtn" style="width:100%;">
+              นำเข้าและรวมข้อมูลให้ครบทันที
+            </button>
+            <span class="form-hint">ระบบจะรวมโพสต์และกลุ่มจากทั้งสองเครื่องเข้าด้วยกันโดยไม่ลบโพสต์เดิมที่มีอยู่</span>
+          </div>
+        </div>
+
+        <!-- PANE 3: GitHub Repository Sync -->
+        <div class="sync-pane" id="syncPaneGh" role="tabpanel" hidden>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="ghOwnerInput">GitHub Username / Owner</label>
+              <input type="text" id="ghOwnerInput" class="input-field" placeholder="alwayz58" value="alwayz58" autocomplete="off">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="ghBranchInput">Branch</label>
+              <input type="text" id="ghBranchInput" class="input-field" placeholder="main" value="main" autocomplete="off">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ghRepoInput">ชื่อ Repository</label>
+            <div class="token-wrap">
+              <input type="text" id="ghRepoInput" class="input-field" list="ghRepoDatalist" value="my-pages-data" placeholder="my-pages-data" autocomplete="off">
+              <datalist id="ghRepoDatalist"></datalist>
+              <button type="button" class="btn" id="fetchReposBtn">ดึงรายชื่อ Repo</button>
+            </div>
+            <span class="form-hint" id="ghRepoListHint">ผูกกับบัญชี <strong>alwayz58</strong></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="ghTokenInput">GitHub Personal Access Token (ต้องขึ้นต้นด้วย <code>ghp_</code> หรือ <code>github_pat_</code> ไม่ใช่รหัสผ่านล็อกอิน)</label>
+            <div class="token-wrap">
+              <input type="password" id="ghTokenInput" class="input-field" placeholder="ghp_... หรือ github_pat_..." autocomplete="off">
+              <button type="button" class="btn" id="toggleTokenBtn">แสดง</button>
+            </div>
+            <span class="form-hint">จัดเก็บข้อความโพสต์ใน <code>data/posts.json</code> และไฟล์รูปภาพ/วิดีโอในโฟลเดอร์ <code>media/</code> บน GitHub โดยอัตโนมัติ</span>
+          </div>
+
+          <details class="help-box">
+            <summary>วิธีสร้าง GitHub Token เพื่อจัดเก็บโพสต์ รูปภาพ และวิดีโอแบบง่าย</summary>
+            <ol>
+              <li>เข้าบัญชี GitHub → กดรูปโปรไฟล์มุมขวาบน → <strong>Settings</strong> → เลื่อนลงล่างสุดเลือก <strong>Developer settings</strong></li>
+              <li>ไปที่ <strong>Personal access tokens</strong> → <strong>Tokens (classic)</strong> → <strong>Generate new token (classic)</strong></li>
+              <li>ติ๊กช่องสิทธิ์ <strong><code>repo</code></strong> แล้วกด Generate token จากนั้นคัดลอกรหัส <code>ghp_...</code> มาวางด้านบนแล้วกดบันทึกได้เลย (ระบบจะสร้าง Repo ให้อัตโนมัติหากยังไม่มี)</li>
+            </ol>
+          </details>
+
+          <div style="display:flex; gap:8px; justify-content:space-between; flex-wrap:wrap; margin-top:2px;">
+            <button type="button" class="btn btn-ghost" id="disconnectGhBtn" hidden>ยกเลิกการเชื่อม GitHub</button>
+            <button type="submit" class="btn btn-primary" id="saveGhBtn" style="margin-left:auto; flex:1 1 auto;">บันทึกและเชื่อมต่อ GitHub</button>
+          </div>
+        </div>
 
         <div class="modal-status" id="settingsStatus" hidden></div>
-
-        <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" id="disconnectGhBtn" hidden>ยกเลิกการเชื่อม GitHub</button>
-          <div style="display:flex; gap:8px; margin-left:auto;">
-            <button type="button" class="btn" id="saveProfileOnlyBtn">บันทึกเฉพาะชื่อ</button>
-            <button type="submit" class="btn btn-primary" id="saveGhBtn">บันทึกและเชื่อมต่อ GitHub</button>
-          </div>
-        </div>
       </form>
     </div>
   </div>
@@ -3000,13 +3142,23 @@
       const STORAGE_KEY_GROUPS = 'personal_fb_groups_v1';
       const STORAGE_KEY_SAVED_IDS = 'personal_fb_saved_posts_v1';
       const STORAGE_KEY_PRIVACY = 'personal_fb_privacy_v1';
+      const STORAGE_KEY_CLOUD = 'personal_fb_cloud_sync_v1';
       const MAX_GITHUB_FILE_BYTES = 25 * 1024 * 1024; // 25 MB safe browser API upload cap
 
       const DEFAULT_GH_OWNER = 'alwayz58';
+      const DEFAULT_CLOUD_DB_URL = 'https://alwayz-f304a-default-rtdb.asia-southeast1.firebasedatabase.app/';
 
       // Application State
       const state = {
         displayName: 'ฉัน',
+        cloud: {
+          dbUrl: DEFAULT_CLOUD_DB_URL,
+          roomKey: 'alwayz58-mypages',
+          connected: true,
+          manuallyDisconnected: false,
+          lastRemoteUpdatedAt: '',
+          lastSyncedAt: ''
+        },
         gh: {
           owner: DEFAULT_GH_OWNER,
           repo: '',
@@ -3292,8 +3444,311 @@
         extLinkConfigSyncBtn: document.getElementById('extLinkConfigSyncBtn'),
         closeExtLinkBtn: document.getElementById('closeExtLinkBtn'),
         doneExtLinkBtn: document.getElementById('doneExtLinkBtn'),
-        copyExtLinkBtn: document.getElementById('copyExtLinkBtn')
+        copyExtLinkBtn: document.getElementById('copyExtLinkBtn'),
+        syncTabCloudBtn: document.getElementById('syncTabCloudBtn'),
+        syncTabCodeBtn: document.getElementById('syncTabCodeBtn'),
+        syncTabGhBtn: document.getElementById('syncTabGhBtn'),
+        syncPaneCloud: document.getElementById('syncPaneCloud'),
+        syncPaneCode: document.getElementById('syncPaneCode'),
+        syncPaneGh: document.getElementById('syncPaneGh'),
+        cloudDbUrlInput: document.getElementById('cloudDbUrlInput'),
+        cloudRoomKeyInput: document.getElementById('cloudRoomKeyInput'),
+        saveCloudSyncBtn: document.getElementById('saveCloudSyncBtn'),
+        disconnectCloudBtn: document.getElementById('disconnectCloudBtn'),
+        copySyncBundleBtn: document.getElementById('copySyncBundleBtn'),
+        pasteSyncBundleInput: document.getElementById('pasteSyncBundleInput'),
+        applyPastedSyncBtn: document.getElementById('applyPastedSyncBtn'),
+        importSyncFileInput: document.getElementById('importSyncFileInput'),
+        pickSyncFileBtn: document.getElementById('pickSyncFileBtn')
       };
+
+      function sanitizeGitHubToken(raw) {
+        return String(raw || '')
+          .trim()
+          .replace(/^["']+|["']+$/g, '')
+          .replace(/^(Bearer|token)\s+/i, '')
+          .replace(/\s+/g, '');
+      }
+
+      function persistCloudConfig() {
+        safeSetStorage(STORAGE_KEY_CLOUD, JSON.stringify({
+          dbUrl: state.cloud.dbUrl,
+          roomKey: state.cloud.roomKey,
+          connected: state.cloud.connected,
+          manuallyDisconnected: Boolean(state.cloud.manuallyDisconnected)
+        }));
+      }
+
+      function normalizeCloudBaseUrl(rawUrl) {
+        let u = String(rawUrl || '').trim();
+        if (!u) return '';
+        u = u.replace(/\/mypages_sync(\/.*)?$/i, '');
+        u = u.replace(/\/[^/]*\.json$/i, '');
+        u = u.replace(/\/+$/, '');
+        const parsed = new URL(u);
+        if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
+          throw new Error('กรุณาใส่ลิงก์ที่ขึ้นต้นด้วย https://');
+        }
+        return parsed.origin + parsed.pathname.replace(/\/+$/, '');
+      }
+
+      function sanitizeRoomKey(rawKey) {
+        const cleaned = String(rawKey || 'alwayz58-mypages')
+          .trim()
+          .replace(/[.#$\[\]\/\\]/g, '_')
+          .replace(/\s+/g, '-');
+        return cleaned || 'alwayz58-mypages';
+      }
+
+      function buildCloudEndpointUrl(baseUrl, roomKey, fieldOnly) {
+        const cleanBase = normalizeCloudBaseUrl(baseUrl);
+        const safeRoom = encodeURIComponent(sanitizeRoomKey(roomKey));
+        if (fieldOnly) {
+          return `${cleanBase}/mypages_sync/${safeRoom}/${fieldOnly}.json`;
+        }
+        return `${cleanBase}/mypages_sync/${safeRoom}.json`;
+      }
+
+      function buildFullAppSyncBundle() {
+        const cleanPosts = state.posts.map(p => ({
+          id: p.id,
+          author: p.author || state.displayName || 'ฉัน',
+          text: p.text || '',
+          visibility: p.visibility === 'private' ? 'private' : 'public',
+          groupId: p.groupId || '',
+          groupName: getGroupNameById(p.groupId) || p.groupName || '',
+          linkPreview: p.linkPreview || null,
+          saved: isPostSaved(p),
+          createdAt: p.createdAt || new Date().toISOString(),
+          updatedAt: p.updatedAt || null,
+          media: (p.media || [])
+            .filter(m => !m.isSessionObjectUrl && m.url)
+            .map(m => ({
+              kind: m.kind || 'image',
+              url: m.url,
+              path: m.path || '',
+              sha: m.sha || null,
+              name: m.name || '',
+              mime: m.mime || ''
+            }))
+        }));
+
+        return {
+          version: 3,
+          app: 'MyPages',
+          updatedAt: new Date().toISOString(),
+          displayName: state.displayName || 'ฉัน',
+          privacy: {
+            policy: state.privacy.policy === 'private' ? 'private' : 'public',
+            passwordHash: state.privacy.passwordHash || ''
+          },
+          groups: state.groups,
+          savedPostIds: Array.from(state.savedPostIds),
+          posts: cleanPosts
+        };
+      }
+
+      function applySyncBundleToState(bundle, mergeWithLocal) {
+        if (!bundle || typeof bundle !== 'object') return false;
+
+        const incomingPosts = Array.isArray(bundle)
+          ? bundle
+          : (Array.isArray(bundle.posts) ? bundle.posts : []);
+
+        const incomingGroups = (!Array.isArray(bundle) && Array.isArray(bundle.groups))
+          ? bundle.groups.filter(g => g && g.id && g.name)
+          : [];
+
+        const incomingSaved = (!Array.isArray(bundle) && Array.isArray(bundle.savedPostIds))
+          ? bundle.savedPostIds
+          : [];
+
+        if (!Array.isArray(bundle)) {
+          if (bundle.displayName && typeof bundle.displayName === 'string' && (!mergeWithLocal || state.displayName === 'ฉัน')) {
+            state.displayName = bundle.displayName;
+            persistConfig();
+          }
+          if (bundle.privacy && typeof bundle.privacy === 'object') {
+            if (!mergeWithLocal || !state.privacy.passwordHash) {
+              state.privacy.policy = bundle.privacy.policy === 'private' ? 'private' : 'public';
+              if (typeof bundle.privacy.passwordHash === 'string' && bundle.privacy.passwordHash) {
+                state.privacy.passwordHash = bundle.privacy.passwordHash;
+              }
+              persistPrivacyConfig();
+            }
+          }
+        }
+
+        if (mergeWithLocal) {
+          // Union merge groups
+          const groupMap = new Map();
+          state.groups.forEach(g => groupMap.set(g.id, g));
+          incomingGroups.forEach(g => {
+            const sameName = Array.from(groupMap.values()).find(x => x.name.toLowerCase() === g.name.toLowerCase());
+            if (!sameName) groupMap.set(g.id, g);
+          });
+          state.groups = Array.from(groupMap.values());
+
+          // Union merge savedPostIds
+          incomingSaved.forEach(id => state.savedPostIds.add(id));
+
+          // Union merge posts by id (prefer newer updatedAt/createdAt)
+          const postMap = new Map();
+          state.posts.forEach(p => postMap.set(p.id, Object.assign({}, p, { localOnly: !state.gh.connected })));
+          incomingPosts.forEach(rp => {
+            if (!rp || !rp.id) return;
+            const normalizedRp = Object.assign({}, rp, { localOnly: !state.gh.connected });
+            const existing = postMap.get(rp.id);
+            if (!existing) {
+              postMap.set(rp.id, normalizedRp);
+            } else {
+              const existTime = new Date(existing.updatedAt || existing.createdAt || 0).getTime();
+              const newTime = new Date(rp.updatedAt || rp.createdAt || 0).getTime();
+              if (newTime >= existTime) {
+                postMap.set(rp.id, normalizedRp);
+              }
+            }
+          });
+          state.posts = Array.from(postMap.values()).sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        } else {
+          // Authoritative Cloud replacement so deletions on another device also reflect
+          state.groups = incomingGroups;
+          state.savedPostIds = new Set(incomingSaved);
+          state.posts = incomingPosts
+            .filter(rp => rp && rp.id)
+            .map(rp => Object.assign({}, rp, { localOnly: !state.gh.connected }))
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+        }
+
+        syncGroupsFromPosts(state.posts);
+        persistGroups();
+        persistSavedPostIds();
+        saveLocalPostsSnapshot();
+        return true;
+      }
+
+      let cloudPushInFlight = false;
+      let cloudPendingPush = false;
+
+      async function pushCloudSyncNow() {
+        if (!state.cloud.connected || !state.cloud.dbUrl) return;
+        if (cloudPushInFlight) {
+          cloudPendingPush = true;
+          return;
+        }
+        cloudPushInFlight = true;
+        try {
+          const url = buildCloudEndpointUrl(state.cloud.dbUrl, state.cloud.roomKey);
+          const payload = buildFullAppSyncBundle();
+          const res = await fetch(url, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            cache: 'no-store'
+          });
+          if (res.ok) {
+            state.cloud.lastRemoteUpdatedAt = payload.updatedAt;
+            state.cloud.lastSyncedAt = payload.updatedAt;
+            lastRemoteCheckMs = Date.now();
+            updateHeaderUI();
+          }
+        } catch (_) {
+          // Silent retry on next action/sync
+        } finally {
+          cloudPushInFlight = false;
+          if (cloudPendingPush) {
+            cloudPendingPush = false;
+            pushCloudSyncNow();
+          }
+        }
+      }
+
+      async function pullCloudSyncNow(silent = false, mergeMode = false) {
+        if (!state.cloud.dbUrl || !state.cloud.connected) return false;
+        if (!silent && els.sidebarSyncNowBtn) {
+          els.sidebarSyncNowBtn.disabled = true;
+          els.sidebarSyncNowBtn.textContent = 'กำลังซิงค์...';
+        }
+        try {
+          const url = buildCloudEndpointUrl(state.cloud.dbUrl, state.cloud.roomKey);
+          const res = await fetch(url, { cache: 'no-store' });
+          if (!res.ok) {
+            if (res.status === 401 || res.status === 403) {
+              throw new Error('ฐานข้อมูลปฏิเสธสิทธิ์ (401/403) กรุณาเปิด Rules ใน Firebase Realtime Database ให้ .read และ .write เป็น true');
+            }
+            throw new Error(`ดึงข้อมูล Cloud ไม่สำเร็จ (${res.status})`);
+          }
+          const data = await res.json();
+          let shouldPushBack = false;
+          if (data && typeof data === 'object') {
+            const remotePostsCount = Array.isArray(data.posts) ? data.posts.length : 0;
+            const remoteGroupsCount = Array.isArray(data.groups) ? data.groups.length : 0;
+            applySyncBundleToState(data, mergeMode);
+            state.cloud.lastRemoteUpdatedAt = data.updatedAt || new Date().toISOString();
+            if (mergeMode && (state.posts.length > remotePostsCount || state.groups.length > remoteGroupsCount)) {
+              shouldPushBack = true;
+            }
+          } else if (data === null && (state.posts.length > 0 || state.groups.length > 0)) {
+            shouldPushBack = true;
+          }
+          state.cloud.lastSyncedAt = new Date().toISOString();
+          lastRemoteCheckMs = Date.now();
+          renderComposerGroupOptions();
+          updateHeaderUI();
+          applyPrivacyModeUI();
+          if (shouldPushBack) {
+            await pushCloudSyncNow();
+          }
+          return true;
+        } catch (err) {
+          if (silent && !state.cloud.lastSyncedAt) {
+            state.cloud.connected = false;
+            updateHeaderUI();
+            renderFeed();
+          } else if (!silent) {
+            showComposerMessage(err.message || 'ซิงค์ข้อมูล Cloud ไม่สำเร็จ', 'error');
+          }
+          return false;
+        } finally {
+          if (!silent && els.sidebarSyncNowBtn) {
+            els.sidebarSyncNowBtn.disabled = false;
+            els.sidebarSyncNowBtn.textContent = 'อัปเดตล่าสุด';
+          }
+        }
+      }
+
+      async function pollCloudTimestampIfChanged() {
+        if (
+          !state.cloud.connected ||
+          !state.cloud.dbUrl ||
+          cloudPushInFlight ||
+          state.submittingPost ||
+          state.editingPostId ||
+          document.visibilityState === 'hidden'
+        ) {
+          return;
+        }
+        try {
+          const tsUrl = buildCloudEndpointUrl(state.cloud.dbUrl, state.cloud.roomKey, 'updatedAt');
+          const res = await fetch(tsUrl, { cache: 'no-store' });
+          if (!res.ok) return;
+          const remoteTs = await res.json();
+          if (typeof remoteTs === 'string' && remoteTs && remoteTs !== state.cloud.lastRemoteUpdatedAt) {
+            await pullCloudSyncNow(true, false);
+          }
+        } catch (_) {}
+      }
+
+      async function syncAllActiveBackends(commitMessage) {
+        if (state.cloud.connected) {
+          await pushCloudSyncNow();
+        }
+        if (state.gh.connected && state.gh.token) {
+          await pushCurrentStateToGitHub(commitMessage);
+        }
+      }
 
       let activeExternalUrl = '';
 
@@ -4584,6 +5039,25 @@
           } catch (_) {}
         }
 
+        const cloudRaw = safeGetStorage(STORAGE_KEY_CLOUD);
+        if (cloudRaw) {
+          try {
+            const parsedCloud = JSON.parse(cloudRaw);
+            if (parsedCloud && typeof parsedCloud === 'object') {
+              state.cloud.manuallyDisconnected = Boolean(parsedCloud.manuallyDisconnected);
+              state.cloud.roomKey = String(parsedCloud.roomKey || 'alwayz58-mypages');
+              if (state.cloud.manuallyDisconnected) {
+                state.cloud.dbUrl = String(parsedCloud.dbUrl || DEFAULT_CLOUD_DB_URL);
+                state.cloud.connected = false;
+              } else {
+                state.cloud.dbUrl = String(parsedCloud.dbUrl || DEFAULT_CLOUD_DB_URL);
+                state.cloud.connected = Boolean(state.cloud.dbUrl);
+              }
+            }
+          } catch (_) {}
+        }
+        persistCloudConfig();
+
         const localRaw = safeGetStorage(STORAGE_KEY_LOCAL_POSTS);
         if (localRaw) {
           try {
@@ -4872,7 +5346,7 @@
 
         state.groups.push(newGroup);
         persistGroups();
-        pushCurrentStateToGitHub(`Create group ${name}`);
+        syncAllActiveBackends(`Create group ${name}`);
 
         els.newGroupNameInput.value = '';
         els.groupCreateError.hidden = true;
@@ -4895,9 +5369,7 @@
         });
 
         saveLocalPostsSnapshot();
-        if (state.gh.connected) {
-          await pushCurrentStateToGitHub(`Remove deleted group ${groupId}`);
-        }
+        await syncAllActiveBackends(`Remove deleted group ${groupId}`);
 
         if (state.activeFilter.mode === 'group' && state.activeFilter.groupId === groupId) {
           state.activeFilter = { mode: 'all', groupId: null };
@@ -4930,6 +5402,9 @@
         renderCalendar();
         renderFeed();
 
+        if (state.cloud.connected) {
+          pushCloudSyncNow();
+        }
         if (!target.localOnly && state.gh.connected) {
           try {
             const ghPosts = state.posts.filter(p => !p.localOnly);
@@ -4952,6 +5427,9 @@
         renderCalendar();
         renderFeed();
 
+        if (state.cloud.connected) {
+          pushCloudSyncNow();
+        }
         if (!target.localOnly && state.gh.connected) {
           try {
             const ghPosts = state.posts.filter(p => !p.localOnly);
@@ -5155,16 +5633,27 @@
             : `github.com/${activeOwner}`;
         }
 
-        if (state.gh.connected) {
+        if (els.disconnectCloudBtn) {
+          els.disconnectCloudBtn.hidden = !state.cloud.connected;
+        }
+        els.disconnectGhBtn.hidden = !(state.gh.connected || (state.gh.readOnly && state.gh.repo));
+
+        if (state.cloud.connected) {
+          if (els.sidebarSyncStatus) els.sidebarSyncStatus.className = 'sidebar-sync-status is-connected';
+          if (els.sidebarSyncStatusText) {
+            const syncNote = state.cloud.lastSyncedAt ? ` • ${formatThaiDateTime(state.cloud.lastSyncedAt)}` : '';
+            els.sidebarSyncStatusText.textContent = `ซิงค์ครบทุกอุปกรณ์แล้ว (${state.cloud.roomKey})${syncNote}`;
+          }
+          if (els.sidebarSyncNowBtn) els.sidebarSyncNowBtn.hidden = false;
+        } else if (state.gh.connected) {
           if (els.openSettingsBtn) els.openSettingsBtn.classList.add('connected');
           if (els.ghStatusLabel) els.ghStatusLabel.textContent = `${activeOwner}/${state.gh.repo}`;
           if (els.headerSubtitle) els.headerSubtitle.textContent = `เชื่อมต่อกับ GitHub (${state.gh.branch})`;
           if (els.refreshBtn) els.refreshBtn.hidden = false;
-          els.disconnectGhBtn.hidden = false;
           if (els.sidebarSyncStatus) els.sidebarSyncStatus.className = 'sidebar-sync-status is-connected';
           if (els.sidebarSyncStatusText) {
             const syncNote = state.gh.lastSyncedAt ? ` • อัปเดต ${formatThaiDateTime(state.gh.lastSyncedAt)}` : '';
-            els.sidebarSyncStatusText.textContent = `ซิงค์ข้ามอุปกรณ์แล้ว (${state.gh.branch})${syncNote}`;
+            els.sidebarSyncStatusText.textContent = `ซิงค์ผ่าน GitHub แล้ว (${state.gh.branch})${syncNote}`;
           }
           if (els.sidebarSyncNowBtn) els.sidebarSyncNowBtn.hidden = false;
         } else if (state.gh.readOnly && state.gh.repo) {
@@ -5172,10 +5661,9 @@
           if (els.ghStatusLabel) els.ghStatusLabel.textContent = '';
           if (els.headerSubtitle) els.headerSubtitle.textContent = '';
           if (els.refreshBtn) els.refreshBtn.hidden = true;
-          els.disconnectGhBtn.hidden = false;
           if (els.sidebarSyncStatus) els.sidebarSyncStatus.className = 'sidebar-sync-status is-readonly';
           if (els.sidebarSyncStatusText) {
-            els.sidebarSyncStatusText.textContent = `ดึงข้อมูลจาก ${activeOwner}/${state.gh.repo} (ใส่ Token หากต้องการบันทึกกลับ)`;
+            els.sidebarSyncStatusText.textContent = `ดึงข้อมูลจาก ${activeOwner}/${state.gh.repo}`;
           }
           if (els.sidebarSyncNowBtn) els.sidebarSyncNowBtn.hidden = false;
         } else {
@@ -5183,10 +5671,9 @@
           if (els.ghStatusLabel) els.ghStatusLabel.textContent = '';
           if (els.headerSubtitle) els.headerSubtitle.textContent = '';
           if (els.refreshBtn) els.refreshBtn.hidden = true;
-          els.disconnectGhBtn.hidden = true;
           if (els.sidebarSyncStatus) els.sidebarSyncStatus.className = 'sidebar-sync-status';
           if (els.sidebarSyncStatusText) {
-            els.sidebarSyncStatusText.textContent = 'เลือก Repository เพื่อเริ่มซิงค์ข้ามอุปกรณ์';
+            els.sidebarSyncStatusText.textContent = 'กด "ตั้งค่าการซิงค์" เพื่อให้ข้อมูลครบทุกอุปกรณ์';
           }
           if (els.sidebarSyncNowBtn) els.sidebarSyncNowBtn.hidden = true;
         }
@@ -5377,7 +5864,7 @@
 
           const storageTag = document.createElement('span');
           storageTag.className = 'storage-tag';
-          storageTag.textContent = post.localOnly ? 'เฉพาะในเบราว์เซอร์' : 'GitHub';
+          storageTag.textContent = !post.localOnly ? 'GitHub' : (state.cloud.connected ? 'ซิงค์ทุกอุปกรณ์' : 'เฉพาะในเบราว์เซอร์');
 
           metaLine.append(timeSpan, dot, storageTag);
 
@@ -5925,6 +6412,9 @@
           renderCalendar();
           renderFeed();
           updateSyncBanner();
+          if (state.cloud.connected) {
+            pushCloudSyncNow();
+          }
         } catch (err) {
           showComposerMessage(err.message || 'เกิดข้อผิดพลาดในการสร้างโพสต์', 'error');
         } finally {
@@ -5983,6 +6473,9 @@
 
           state.posts[postIdx] = updatedPost;
           saveLocalPostsSnapshot();
+          if (state.cloud.connected) {
+            pushCloudSyncNow();
+          }
           state.editingPostId = null;
           renderCalendar();
           renderFeed();
@@ -6016,6 +6509,9 @@
           state.confirmDeleteId = null;
           persistSavedPostIds();
           saveLocalPostsSnapshot();
+          if (state.cloud.connected) {
+            pushCloudSyncNow();
+          }
           updateSyncBanner();
           renderCalendar();
           renderFeed();
@@ -6196,20 +6692,50 @@
         els.settingsStatus.className = `modal-status ${type}`;
       }
 
+      function switchSyncModalTab(tabKey) {
+        const isCloud = tabKey === 'cloud';
+        const isCode = tabKey === 'code';
+        const isGh = tabKey === 'gh';
+
+        if (els.syncTabCloudBtn) {
+          els.syncTabCloudBtn.classList.toggle('active', isCloud);
+          els.syncTabCloudBtn.setAttribute('aria-selected', isCloud ? 'true' : 'false');
+        }
+        if (els.syncTabCodeBtn) {
+          els.syncTabCodeBtn.classList.toggle('active', isCode);
+          els.syncTabCodeBtn.setAttribute('aria-selected', isCode ? 'true' : 'false');
+        }
+        if (els.syncTabGhBtn) {
+          els.syncTabGhBtn.classList.toggle('active', isGh);
+          els.syncTabGhBtn.setAttribute('aria-selected', isGh ? 'true' : 'false');
+        }
+
+        if (els.syncPaneCloud) els.syncPaneCloud.hidden = !isCloud;
+        if (els.syncPaneCode) els.syncPaneCode.hidden = !isCode;
+        if (els.syncPaneGh) els.syncPaneGh.hidden = !isGh;
+        setSettingsStatus('', '');
+      }
+
       function openSettingsModal() {
         const ownerVal = state.gh.owner || DEFAULT_GH_OWNER;
         els.displayNameInput.value = state.displayName || 'ฉัน';
+        if (els.cloudDbUrlInput) els.cloudDbUrlInput.value = state.cloud.dbUrl || '';
+        if (els.cloudRoomKeyInput) els.cloudRoomKeyInput.value = state.cloud.roomKey || 'alwayz58-mypages';
+        if (els.pasteSyncBundleInput) els.pasteSyncBundleInput.value = '';
+        if (els.copySyncBundleBtn) els.copySyncBundleBtn.textContent = 'คัดลอกโค้ดข้อมูลทั้งหมดในเครื่องนี้';
         els.ghOwnerInput.value = ownerVal;
         els.ghRepoInput.value = state.gh.repo || DEFAULT_SYNC_REPO;
         els.ghBranchInput.value = state.gh.branch || 'main';
         els.ghTokenInput.value = state.gh.token || '';
+
+        if (state.gh.connected || !state.cloud.connected) {
+          switchSyncModalTab('gh');
+        } else {
+          switchSyncModalTab('cloud');
+        }
+
         setSettingsStatus('', '');
         els.settingsModal.hidden = false;
-        if (!state.gh.token) {
-          els.ghTokenInput.focus();
-        } else {
-          els.ghRepoInput.focus();
-        }
 
         fetchOwnerRepositories(ownerVal, state.gh.token).then(repos => {
           if (!els.ghRepoListHint) return;
@@ -6217,9 +6743,7 @@
             if (!state.gh.repo) {
               els.ghRepoInput.value = repos[0].name;
             }
-            els.ghRepoListHint.textContent = `พบ ${repos.length} Repository ในบัญชี ${ownerVal} — คลิกช่องด้านบนเพื่อเลือก หรือใช้ชื่อใหม่ได้`;
-          } else {
-            els.ghRepoListHint.textContent = `ตั้งค่าชื่อ Repo เริ่มต้นเป็น "${DEFAULT_SYNC_REPO}" แล้ว เพียงวางรหัส Token ด้านล่างแล้วกดบันทึกเพื่อสร้างหรือเชื่อมต่อได้ทันที`;
+            els.ghRepoListHint.textContent = `พบ ${repos.length} Repository ในบัญชี ${ownerVal}`;
           }
         }).catch(() => {});
       }
@@ -6400,9 +6924,172 @@
         els.sidebarConfigSyncBtn.addEventListener('click', openSettingsModal);
       }
 
+      if (els.syncTabCloudBtn) {
+        els.syncTabCloudBtn.addEventListener('click', () => switchSyncModalTab('cloud'));
+      }
+      if (els.syncTabCodeBtn) {
+        els.syncTabCodeBtn.addEventListener('click', () => switchSyncModalTab('code'));
+      }
+      if (els.syncTabGhBtn) {
+        els.syncTabGhBtn.addEventListener('click', () => switchSyncModalTab('gh'));
+      }
+
+      if (els.saveCloudSyncBtn) {
+        els.saveCloudSyncBtn.addEventListener('click', async () => {
+          const displayName = els.displayNameInput.value.trim() || 'ฉัน';
+          const rawUrl = (els.cloudDbUrlInput ? els.cloudDbUrlInput.value : '').trim();
+          const roomKey = sanitizeRoomKey(els.cloudRoomKeyInput ? els.cloudRoomKeyInput.value : 'alwayz58-mypages');
+
+          if (!rawUrl) {
+            setSettingsStatus('กรุณาวางลิงก์ Cloud Database URL (เช่น Firebase Realtime Database URL)', 'error');
+            if (els.cloudDbUrlInput) els.cloudDbUrlInput.focus();
+            return;
+          }
+
+          let cleanBase = '';
+          try {
+            cleanBase = normalizeCloudBaseUrl(rawUrl);
+          } catch (urlErr) {
+            setSettingsStatus(urlErr.message || 'รูปแบบลิงก์ Cloud URL ไม่ถูกต้อง', 'error');
+            return;
+          }
+
+          els.saveCloudSyncBtn.disabled = true;
+          els.saveCloudSyncBtn.textContent = 'กำลังเชื่อมต่อและซิงค์...';
+          setSettingsStatus('', '');
+
+          try {
+            const endpointUrl = buildCloudEndpointUrl(cleanBase, roomKey);
+            const getRes = await fetch(endpointUrl, { cache: 'no-store' });
+            if (!getRes.ok) {
+              if (getRes.status === 401 || getRes.status === 403) {
+                throw new Error('ฐานข้อมูลปฏิเสธการเข้าถึง (401/403) — กรุณาไปที่แท็บ Rules ของ Firebase Realtime Database แล้วตั้งค่า .read และ .write เป็น true');
+              }
+              throw new Error(`เชื่อมต่อลิงก์ฐานข้อมูลไม่สำเร็จ (รหัส ${getRes.status})`);
+            }
+
+            const existingRemote = await getRes.json();
+            state.displayName = displayName;
+            persistConfig();
+
+            if (existingRemote && typeof existingRemote === 'object') {
+              applySyncBundleToState(existingRemote, true);
+            }
+
+            const mergedPayload = buildFullAppSyncBundle();
+            const putRes = await fetch(endpointUrl, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(mergedPayload),
+              cache: 'no-store'
+            });
+
+            if (!putRes.ok) {
+              throw new Error(`อ่านข้อมูลได้แต่บันทึกกลับไม่ได้ (${putRes.status}) กรุณาเปิดสิทธิ์ .write เป็น true ใน Rules`);
+            }
+
+            state.cloud = {
+              dbUrl: cleanBase,
+              roomKey,
+              connected: true,
+              manuallyDisconnected: false,
+              lastRemoteUpdatedAt: mergedPayload.updatedAt,
+              lastSyncedAt: mergedPayload.updatedAt
+            };
+            persistCloudConfig();
+            renderComposerGroupOptions();
+            updateHeaderUI();
+            applyPrivacyModeUI();
+            closeSettingsModal();
+          } catch (err) {
+            setSettingsStatus(err.message || 'ไม่สามารถเชื่อมต่อ Cloud URL ได้ กรุณาตรวจสอบลิงก์หรือใช้แท็บ "2. คัดลอกโค้ดซิงค์"', 'error');
+          } finally {
+            els.saveCloudSyncBtn.disabled = false;
+            els.saveCloudSyncBtn.textContent = 'เชื่อมต่อและซิงค์ทุกอุปกรณ์ทันที';
+          }
+        });
+      }
+
+      if (els.disconnectCloudBtn) {
+        els.disconnectCloudBtn.addEventListener('click', () => {
+          state.cloud.connected = false;
+          state.cloud.manuallyDisconnected = true;
+          persistCloudConfig();
+          updateHeaderUI();
+          renderFeed();
+          closeSettingsModal();
+        });
+      }
+
+      if (els.copySyncBundleBtn) {
+        els.copySyncBundleBtn.addEventListener('click', async () => {
+          const name = els.displayNameInput.value.trim() || state.displayName || 'ฉัน';
+          state.displayName = name;
+          persistConfig();
+          const bundleStr = JSON.stringify(buildFullAppSyncBundle());
+          const ok = await copyTextToClipboard(bundleStr);
+          if (ok) {
+            els.copySyncBundleBtn.textContent = 'คัดลอกโค้ดข้อมูลสำเร็จ ✓ (ส่งไปอีกเครื่องได้เลย)';
+            setSettingsStatus('คัดลอกข้อมูลทั้งหมดในเครื่องนี้เรียบร้อยแล้ว นำไปวางในแท็บ "2. คัดลอกโค้ดซิงค์" บนมือถือหรือคอมอีกเครื่องได้ทันที', 'success');
+          } else {
+            if (els.pasteSyncBundleInput) {
+              els.pasteSyncBundleInput.value = bundleStr;
+              els.pasteSyncBundleInput.select();
+            }
+            setSettingsStatus('สร้างโค้ดข้อมูลในช่องด้านล่างแล้ว สามารถกดคัดลอกทั้งหมดไปวางในอีกเครื่องได้เลย', 'info');
+          }
+        });
+      }
+
+      if (els.pickSyncFileBtn && els.importSyncFileInput) {
+        els.pickSyncFileBtn.addEventListener('click', () => els.importSyncFileInput.click());
+        els.importSyncFileInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = () => {
+            if (els.pasteSyncBundleInput) {
+              els.pasteSyncBundleInput.value = String(reader.result || '');
+            }
+            setSettingsStatus(`อ่านไฟล์ "${file.name}" แล้ว กดปุ่ม "นำเข้าและรวมข้อมูลให้ครบทันที" ด้านล่างได้เลย`, 'info');
+          };
+          reader.readAsText(file);
+          e.target.value = '';
+        });
+      }
+
+      if (els.applyPastedSyncBtn) {
+        els.applyPastedSyncBtn.addEventListener('click', async () => {
+          const rawText = (els.pasteSyncBundleInput ? els.pasteSyncBundleInput.value : '').trim();
+          if (!rawText) {
+            setSettingsStatus('กรุณาวางโค้ดข้อมูลที่คัดลอกมาจากอีกเครื่อง หรือเลือกไฟล์ .json ก่อน', 'error');
+            if (els.pasteSyncBundleInput) els.pasteSyncBundleInput.focus();
+            return;
+          }
+          try {
+            const parsed = JSON.parse(rawText);
+            const applied = applySyncBundleToState(parsed, true);
+            if (!applied) {
+              throw new Error('รูปแบบโค้ดข้อมูลไม่ถูกต้อง');
+            }
+            await syncAllActiveBackends('Merge imported sync bundle');
+            renderComposerGroupOptions();
+            updateHeaderUI();
+            applyPrivacyModeUI();
+            if (els.pasteSyncBundleInput) els.pasteSyncBundleInput.value = '';
+            closeSettingsModal();
+          } catch (_) {
+            setSettingsStatus('โค้ดข้อมูลไม่สมบูรณ์ กรุณาคัดลอกจากปุ่ม "คัดลอกโค้ดข้อมูลทั้งหมด" ของอีกเครื่องมาวางใหม่อีกครั้ง', 'error');
+          }
+        });
+      }
+
       if (els.sidebarSyncNowBtn) {
         els.sidebarSyncNowBtn.addEventListener('click', async () => {
-          if (state.gh.connected && state.posts.some(p => p.localOnly)) {
+          if (state.cloud.connected) {
+            await pullCloudSyncNow(false, true);
+            await pushCloudSyncNow();
+          } else if (state.gh.connected && state.posts.some(p => p.localOnly)) {
             await handleSyncLocalPostsToGitHub();
           } else {
             await refreshFeedFromGitHub(false);
@@ -6493,7 +7180,7 @@
         const name = els.displayNameInput.value.trim() || 'ฉัน';
         state.displayName = name;
         persistConfig();
-        pushCurrentStateToGitHub('Update profile display name');
+        syncAllActiveBackends('Update profile display name');
         updateHeaderUI();
         renderFeed();
         closeSettingsModal();
@@ -6521,15 +7208,31 @@
 
       els.settingsForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (els.syncPaneGh && els.syncPaneGh.hidden) return;
         const displayName = els.displayNameInput.value.trim() || 'ฉัน';
         const normalized = normalizeGitHubOwnerRepo(els.ghOwnerInput.value, els.ghRepoInput.value);
         const owner = normalized.owner || DEFAULT_GH_OWNER;
         const repo = normalized.repo || DEFAULT_SYNC_REPO;
         const branch = els.ghBranchInput.value.trim() || 'main';
-        const token = els.ghTokenInput.value.trim();
+        const token = sanitizeGitHubToken(els.ghTokenInput.value);
 
         els.ghOwnerInput.value = owner;
         els.ghRepoInput.value = repo;
+        els.ghTokenInput.value = token;
+
+        if (
+          token &&
+          !token.startsWith('ghp_') &&
+          !token.startsWith('github_pat_') &&
+          !token.startsWith('gho_') &&
+          token.length < 32
+        ) {
+          setSettingsStatus(
+            'รหัสที่ใส่ไม่ใช่ GitHub Personal Access Token (ห้ามใส่รหัสผ่านล็อกอินบัญชี GitHub เพราะระบบไม่อนุญาต) — แนะนำให้สลับไปใช้แท็บ "1. Cloud URL" หรือ "2. คัดลอกโค้ดซิงค์" ด้านบน ซึ่งไม่ต้องใช้ Token เลยครับ',
+            'error'
+          );
+          return;
+        }
 
         els.saveGhBtn.disabled = true;
         els.saveGhBtn.textContent = 'กำลังตรวจสอบ...';
@@ -6639,7 +7342,7 @@
         }
         state.privacy.isLocked = false;
         persistPrivacyConfig();
-        pushCurrentStateToGitHub('Clear privacy password');
+        syncAllActiveBackends('Clear privacy password');
         els.clearPrivacyPwdBtn.hidden = true;
         els.privacyPasswordHint.textContent = 'ลบรหัสผ่านแล้ว สามารถกำหนดรหัสผ่านใหม่ได้ทุกเมื่อ';
         setPrivacyModalStatus('ลบรหัสผ่านป้องกันส่วนตัวเรียบร้อยแล้ว', 'success');
@@ -6668,7 +7371,7 @@
         }
 
         persistPrivacyConfig();
-        pushCurrentStateToGitHub('Update privacy policy');
+        syncAllActiveBackends('Update privacy policy');
         closePrivacyModal();
         applyPrivacyModeUI();
       }
@@ -6755,6 +7458,9 @@
 
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
+          if (state.cloud.connected && state.cloud.dbUrl && Date.now() - lastRemoteCheckMs > 5000) {
+            pollCloudTimestampIfChanged();
+          }
           const canSync = state.gh.owner && state.gh.repo && (state.gh.connected || state.gh.readOnly);
           if (
             canSync &&
@@ -6768,12 +7474,22 @@
         }
       });
 
+      setInterval(pollCloudTimestampIfChanged, 8000);
+
       // Initialize App
       loadSavedConfig();
       renderComposerGroupOptions();
       updateHeaderUI();
       applyPrivacyModeUI();
-      if (state.gh.owner && state.gh.repo && (state.gh.connected || state.gh.readOnly)) {
+      if (state.cloud.connected && state.cloud.dbUrl) {
+        pullCloudSyncNow(true, true).then(ok => {
+          if (!ok && state.gh.owner && state.gh.repo && (state.gh.connected || state.gh.readOnly)) {
+            refreshFeedFromGitHub(true);
+          } else if (!ok) {
+            autoDiscoverAlwayzSyncRepo();
+          }
+        });
+      } else if (state.gh.owner && state.gh.repo && (state.gh.connected || state.gh.readOnly)) {
         refreshFeedFromGitHub(false);
       } else {
         autoDiscoverAlwayzSyncRepo();
