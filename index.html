@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <style>
     :root {
       --bg: #3c3963;
@@ -26,6 +27,7 @@
       --brand-soft: rgba(251, 192, 45, 0.14);
       --photo-accent: #26cd37;
       --video-accent: #ff6b81;
+      --pdf-accent: #60a5fa;
       --link-accent: #fbc02d;
       --danger: #e41e3f;
       --danger-soft: rgba(228, 30, 63, 0.18);
@@ -2388,7 +2390,7 @@
 
       .media-triggers {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 6px;
         width: 100%;
       }
@@ -2498,6 +2500,285 @@
       }
     }
 
+    /* PDF Attachments in Composer & Feed + Built-in PDF Reader */
+    .pdf-preview-fallback {
+      width: 100%;
+      height: 100%;
+      padding: 12px 10px 28px;
+      background: linear-gradient(145deg, #242142 0%, #19172e 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+      color: var(--ink);
+    }
+
+    .pdf-preview-filename {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--muted);
+      max-width: 100%;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      overflow-wrap: anywhere;
+    }
+
+    .post-pdf-list {
+      padding: 0 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .post-card > .post-header + .post-pdf-list {
+      padding-top: 14px;
+    }
+
+    .pdf-attachment-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 13px;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: border-color 0.15s ease, background-color 0.15s ease;
+      cursor: pointer;
+    }
+
+    .pdf-attachment-card:hover {
+      border-color: var(--brand);
+      background: #2f2c4d;
+    }
+
+    .pdf-cover-thumb {
+      width: 54px;
+      height: 70px;
+      border-radius: 5px;
+      background: #1b1930;
+      border: 1px solid var(--border-soft);
+      overflow: hidden;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--pdf-accent);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pdf-cover-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #ffffff;
+    }
+
+    .pdf-meta-info {
+      flex: 1 1 auto;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pdf-doc-title {
+      font-size: 14.5px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .pdf-doc-sub {
+      font-size: 12.5px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pdf-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(96, 165, 250, 0.18);
+      border: 1px solid rgba(96, 165, 250, 0.42);
+      color: #93c5fd;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pdf-read-btn {
+      flex-shrink: 0;
+      padding: 7px 13px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    /* Full-Featured In-App PDF Reader Modal */
+    .pdf-reader-dialog {
+      width: 100%;
+      max-width: 960px;
+      height: 90vh;
+      height: 90dvh;
+      max-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-modal);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .pdf-reader-header {
+      padding: 10px 14px;
+      background: var(--surface-header);
+      border-bottom: 1px solid var(--border-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+
+    .pdf-reader-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+      flex: 1 1 200px;
+    }
+
+    .pdf-reader-title {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--brand);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pdf-reader-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .pdf-ctrl-btn {
+      height: 32px;
+      min-width: 32px;
+      padding: 0 9px;
+      font-size: 13px;
+      border-radius: var(--radius-md);
+    }
+
+    .pdf-page-status {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ink);
+      padding: 0 6px;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pdf-reader-viewport {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: auto;
+      background: #1a182d;
+      padding: 18px 12px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .pdf-page-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      max-width: 100%;
+    }
+
+    .pdf-canvas-wrap {
+      background: #ffffff;
+      border-radius: 4px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
+      max-width: 100%;
+      overflow-x: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pdf-canvas-wrap canvas {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    .pdf-page-caption {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .pdf-fallback-frame {
+      width: 100%;
+      height: 100%;
+      min-height: 70vh;
+      border: none;
+      border-radius: 4px;
+      background: #ffffff;
+    }
+
+    @media (max-width: 560px) {
+      .post-pdf-list {
+        padding: 0 12px 12px;
+      }
+      .pdf-attachment-card {
+        flex-wrap: wrap;
+        padding: 10px;
+      }
+      .pdf-read-btn {
+        width: 100%;
+        justify-content: center;
+      }
+      .pdf-reader-dialog {
+        height: 94vh;
+        height: 94dvh;
+      }
+      .pdf-reader-header {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+      .pdf-reader-controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .pdf-reader-viewport {
+        padding: 10px 6px 20px;
+        gap: 12px;
+      }
+    }
+
     /* Extra-Narrow Phones (<= 370px) */
     @media (max-width: 370px) {
       .gh-status-btn {
@@ -2510,10 +2791,6 @@
 
       .media-triggers {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .media-triggers .media-btn:last-child {
-        grid-column: 1 / -1;
       }
     }
   </style>
@@ -2767,12 +3044,13 @@
               <select id="urlMediaType" class="select-field" aria-label="ประเภทสื่อ">
                 <option value="image">รูปภาพ (URL)</option>
                 <option value="video">วิดีโอ (URL .mp4/.webm)</option>
+                <option value="pdf">เอกสาร PDF (URL .pdf)</option>
               </select>
               <input
                 type="url"
                 id="urlMediaInput"
                 class="input-field"
-                placeholder="วางลิงก์ไฟล์รูปภาพหรือวิดีโอโดยตรง..."
+                placeholder="วางลิงก์ไฟล์รูปภาพ วิดีโอ หรือ PDF โดยตรง..."
               >
               <button type="button" class="btn btn-primary" id="addUrlMediaBtn">เพิ่มสื่อ</button>
             </div>
@@ -2790,6 +3068,7 @@
             <div class="media-triggers">
               <input type="file" id="imageFileInput" accept="image/*" multiple hidden>
               <input type="file" id="videoFileInput" accept="video/*" multiple hidden>
+              <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple hidden>
 
               <button type="button" class="media-btn" id="pickImageBtn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--photo-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -2806,6 +3085,16 @@
                   <rect x="2" y="6" width="14" height="12" rx="2"/>
                 </svg>
                 <span>วิดีโอ</span>
+              </button>
+
+              <button type="button" class="media-btn" id="pickPdfBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--pdf-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+                <span>ไฟล์ PDF</span>
               </button>
 
               <button type="button" class="media-btn" id="toggleUrlDrawerBtn">
@@ -3124,6 +3413,35 @@
           <button type="button" class="btn btn-primary" id="copyExtLinkBtn">คัดลอกลิงก์</button>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Built-in In-App PDF Reader Modal -->
+  <div class="modal-backdrop" id="pdfReaderModal" role="dialog" aria-modal="true" aria-labelledby="pdfReaderTitle" hidden>
+    <div class="pdf-reader-dialog">
+      <div class="pdf-reader-header">
+        <div class="pdf-reader-title-group">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--pdf-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink:0;">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+          <h2 class="pdf-reader-title" id="pdfReaderTitle">เอกสาร PDF</h2>
+        </div>
+
+        <div class="pdf-reader-controls">
+          <button type="button" class="btn pdf-ctrl-btn" id="pdfPrevPageBtn" title="หน้าก่อนหน้า" aria-label="หน้าก่อนหน้า">‹</button>
+          <span class="pdf-page-status" id="pdfPageStatus">หน้า 1 / 1</span>
+          <button type="button" class="btn pdf-ctrl-btn" id="pdfNextPageBtn" title="หน้าถัดไป" aria-label="หน้าถัดไป">›</button>
+
+          <button type="button" class="btn pdf-ctrl-btn" id="pdfZoomOutBtn" title="ย่อขนาด" aria-label="ย่อขนาด">−</button>
+          <button type="button" class="btn pdf-ctrl-btn" id="pdfZoomResetBtn" title="รีเซ็ตขนาดพอดีจอ">100%</button>
+          <button type="button" class="btn pdf-ctrl-btn" id="pdfZoomInBtn" title="ขยายขนาด" aria-label="ขยายขนาด">+</button>
+
+          <button type="button" class="icon-btn" id="closePdfReaderBtn" style="width:32px; height:32px;" aria-label="ปิดหน้าต่างอ่าน PDF">✕</button>
+        </div>
+      </div>
+
+      <div class="pdf-reader-viewport" id="pdfReaderViewport"></div>
     </div>
   </div>
 
@@ -3459,8 +3777,366 @@
         pasteSyncBundleInput: document.getElementById('pasteSyncBundleInput'),
         applyPastedSyncBtn: document.getElementById('applyPastedSyncBtn'),
         importSyncFileInput: document.getElementById('importSyncFileInput'),
-        pickSyncFileBtn: document.getElementById('pickSyncFileBtn')
+        pickSyncFileBtn: document.getElementById('pickSyncFileBtn'),
+        pdfFileInput: document.getElementById('pdfFileInput'),
+        pickPdfBtn: document.getElementById('pickPdfBtn'),
+        pdfReaderModal: document.getElementById('pdfReaderModal'),
+        pdfReaderTitle: document.getElementById('pdfReaderTitle'),
+        pdfPrevPageBtn: document.getElementById('pdfPrevPageBtn'),
+        pdfNextPageBtn: document.getElementById('pdfNextPageBtn'),
+        pdfPageStatus: document.getElementById('pdfPageStatus'),
+        pdfZoomOutBtn: document.getElementById('pdfZoomOutBtn'),
+        pdfZoomResetBtn: document.getElementById('pdfZoomResetBtn'),
+        pdfZoomInBtn: document.getElementById('pdfZoomInBtn'),
+        closePdfReaderBtn: document.getElementById('closePdfReaderBtn'),
+        pdfReaderViewport: document.getElementById('pdfReaderViewport')
       };
+
+      const MAX_LOCAL_PDF_BYTES = 12 * 1024 * 1024; // 12 MB safe limit for local/Cloud JSON sync
+      const PDF_WORKER_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      const PDF_CMAP_URL = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/cmaps/';
+
+      const pdfReaderState = {
+        doc: null,
+        numPages: 0,
+        currentPage: 1,
+        zoom: 1,
+        renderGen: 0,
+        observer: null,
+        renderedPages: new Set()
+      };
+
+      function initPdfJsWorker() {
+        if (window.pdfjsLib && window.pdfjsLib.GlobalWorkerOptions) {
+          if (!window.pdfjsLib.GlobalWorkerOptions.workerSrc) {
+            window.pdfjsLib.GlobalWorkerOptions.workerSrc = PDF_WORKER_URL;
+          }
+          return true;
+        }
+        return false;
+      }
+
+      function fileToDataUrlFull(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || ''));
+          reader.onerror = () => reject(new Error('ไม่สามารถอ่านไฟล์ PDF ได้'));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function sourceToPdfUint8Array(source) {
+        if (!source) throw new Error('ไม่พบข้อมูลไฟล์ PDF');
+        if (source instanceof Uint8Array) return source;
+        if (source instanceof ArrayBuffer) return new Uint8Array(source);
+        if (typeof Blob !== 'undefined' && source instanceof Blob) {
+          const buf = await source.arrayBuffer();
+          return new Uint8Array(buf);
+        }
+        const str = String(source);
+        if (str.startsWith('data:')) {
+          const commaIdx = str.indexOf(',');
+          const b64 = commaIdx >= 0 ? str.slice(commaIdx + 1) : str;
+          const clean = b64.replace(/\s/g, '');
+          const bin = atob(clean);
+          const bytes = new Uint8Array(bin.length);
+          for (let i = 0; i < bin.length; i++) {
+            bytes[i] = bin.charCodeAt(i);
+          }
+          return bytes;
+        }
+        const res = await fetch(str);
+        if (!res.ok) {
+          throw new Error(`โหลดไฟล์ PDF ไม่สำเร็จ (${res.status})`);
+        }
+        const buf = await res.arrayBuffer();
+        return new Uint8Array(buf);
+      }
+
+      async function loadPdfDocumentSafe(source) {
+        if (!initPdfJsWorker()) {
+          throw new Error('PDFJS_UNAVAILABLE');
+        }
+        const rawBytes = await sourceToPdfUint8Array(source);
+        try {
+          const task = window.pdfjsLib.getDocument({
+            data: rawBytes.slice(0),
+            cMapUrl: PDF_CMAP_URL,
+            cMapPacked: true
+          });
+          return await task.promise;
+        } catch (_) {
+          const fallbackTask = window.pdfjsLib.getDocument({
+            data: rawBytes.slice(0),
+            cMapUrl: PDF_CMAP_URL,
+            cMapPacked: true,
+            disableWorker: true
+          });
+          return await fallbackTask.promise;
+        }
+      }
+
+      async function extractPdfCoverAndPages(source) {
+        try {
+          const pdfDoc = await loadPdfDocumentSafe(source);
+          const numPages = pdfDoc.numPages || 1;
+          const page = await pdfDoc.getPage(1);
+          const baseVp = page.getViewport({ scale: 1 });
+          const targetW = 240;
+          const scale = targetW / Math.max(baseVp.width, 1);
+          const vp = page.getViewport({ scale });
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.round(vp.width));
+          canvas.height = Math.max(1, Math.round(vp.height));
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          await page.render({ canvasContext: ctx, viewport: vp }).promise;
+          const coverUrl = canvas.toDataURL('image/jpeg', 0.8);
+          try { pdfDoc.destroy(); } catch (_) {}
+          return { coverUrl, pageCount: numPages };
+        } catch (_) {
+          return { coverUrl: '', pageCount: 0 };
+        }
+      }
+
+      function updatePdfReaderControlsUI() {
+        const total = pdfReaderState.numPages || 1;
+        const curr = Math.min(Math.max(1, pdfReaderState.currentPage), total);
+        if (els.pdfPageStatus) {
+          els.pdfPageStatus.textContent = `หน้า ${curr} / ${total}`;
+        }
+        if (els.pdfPrevPageBtn) {
+          els.pdfPrevPageBtn.disabled = curr <= 1;
+        }
+        if (els.pdfNextPageBtn) {
+          els.pdfNextPageBtn.disabled = curr >= total;
+        }
+        if (els.pdfZoomResetBtn) {
+          els.pdfZoomResetBtn.textContent = `${Math.round(pdfReaderState.zoom * 100)}%`;
+        }
+        if (els.pdfZoomOutBtn) {
+          els.pdfZoomOutBtn.disabled = pdfReaderState.zoom <= 0.5;
+        }
+        if (els.pdfZoomInBtn) {
+          els.pdfZoomInBtn.disabled = pdfReaderState.zoom >= 2.5;
+        }
+      }
+
+      async function renderSinglePdfPageSlot(pageNum, gen) {
+        if (!pdfReaderState.doc || pdfReaderState.renderGen !== gen) return;
+        if (pdfReaderState.renderedPages.has(pageNum)) return;
+        pdfReaderState.renderedPages.add(pageNum);
+
+        const slot = els.pdfReaderViewport.querySelector(`[data-pdf-page="${pageNum}"]`);
+        if (!slot) return;
+        const wrap = slot.querySelector('.pdf-canvas-wrap');
+        if (!wrap) return;
+
+        try {
+          const page = await pdfReaderState.doc.getPage(pageNum);
+          if (pdfReaderState.renderGen !== gen) return;
+
+          const unscaledVp = page.getViewport({ scale: 1 });
+          const availWidth = Math.max(260, (els.pdfReaderViewport.clientWidth || 720) - 28);
+          const fitScale = Math.min(availWidth / Math.max(unscaledVp.width, 1), 1.35);
+          const cssScale = fitScale * pdfReaderState.zoom;
+          const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+          const cssVp = page.getViewport({ scale: cssScale });
+          const renderVp = page.getViewport({ scale: cssScale * dpr });
+
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.max(1, Math.floor(renderVp.width));
+          canvas.height = Math.max(1, Math.floor(renderVp.height));
+          canvas.style.width = `${Math.floor(cssVp.width)}px`;
+          canvas.style.height = `${Math.floor(cssVp.height)}px`;
+
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+          await page.render({ canvasContext: ctx, viewport: renderVp }).promise;
+          if (pdfReaderState.renderGen !== gen) return;
+
+          wrap.innerHTML = '';
+          wrap.style.minHeight = '';
+          wrap.style.width = '';
+          wrap.appendChild(canvas);
+        } catch (_) {
+          wrap.innerHTML = '<div class="media-loading" style="color:#475569;">ไม่สามารถแสดงหน้านี้ได้</div>';
+        }
+      }
+
+      function buildPdfPagesLayout() {
+        if (!els.pdfReaderViewport || !pdfReaderState.doc) return;
+        if (pdfReaderState.observer) {
+          pdfReaderState.observer.disconnect();
+          pdfReaderState.observer = null;
+        }
+        pdfReaderState.renderedPages.clear();
+        pdfReaderState.renderGen += 1;
+        const gen = pdfReaderState.renderGen;
+
+        els.pdfReaderViewport.innerHTML = '';
+        const total = pdfReaderState.numPages;
+
+        for (let p = 1; p <= total; p++) {
+          const slot = document.createElement('div');
+          slot.className = 'pdf-page-slot';
+          slot.setAttribute('data-pdf-page', String(p));
+
+          const wrap = document.createElement('div');
+          wrap.className = 'pdf-canvas-wrap';
+          wrap.style.width = 'min(100%, 680px)';
+          wrap.style.minHeight = '420px';
+          wrap.innerHTML = `<div class="media-loading" style="color:#64748b;">กำลังเตรียมหน้าที่ ${p}...</div>`;
+
+          const cap = document.createElement('span');
+          cap.className = 'pdf-page-caption';
+          cap.textContent = `หน้าที่ ${p} จาก ${total}`;
+
+          slot.append(wrap, cap);
+          els.pdfReaderViewport.appendChild(slot);
+        }
+
+        updatePdfReaderControlsUI();
+
+        // Render first 2 pages right away for instant display
+        renderSinglePdfPageSlot(1, gen);
+        if (total >= 2) renderSinglePdfPageSlot(2, gen);
+
+        if ('IntersectionObserver' in window) {
+          pdfReaderState.observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              const pNum = Number(entry.target.getAttribute('data-pdf-page') || 0);
+              if (!pNum) return;
+              if (entry.isIntersecting) {
+                renderSinglePdfPageSlot(pNum, gen);
+              }
+            });
+          }, {
+            root: els.pdfReaderViewport,
+            rootMargin: '500px 0px'
+          });
+
+          els.pdfReaderViewport.querySelectorAll('.pdf-page-slot').forEach(el => {
+            pdfReaderState.observer.observe(el);
+          });
+        } else {
+          for (let p = 3; p <= total; p++) {
+            renderSinglePdfPageSlot(p, gen);
+          }
+        }
+      }
+
+      function scrollToPdfPage(targetPage) {
+        if (!els.pdfReaderViewport || !pdfReaderState.doc) return;
+        const clamped = Math.min(Math.max(1, targetPage), pdfReaderState.numPages);
+        pdfReaderState.currentPage = clamped;
+        updatePdfReaderControlsUI();
+        const slot = els.pdfReaderViewport.querySelector(`[data-pdf-page="${clamped}"]`);
+        if (slot) {
+          slot.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      function closePdfReader() {
+        if (pdfReaderState.observer) {
+          pdfReaderState.observer.disconnect();
+          pdfReaderState.observer = null;
+        }
+        pdfReaderState.renderGen += 1;
+        pdfReaderState.renderedPages.clear();
+        if (pdfReaderState.doc) {
+          try { pdfReaderState.doc.destroy(); } catch (_) {}
+          pdfReaderState.doc = null;
+        }
+        if (els.pdfReaderViewport) {
+          els.pdfReaderViewport.innerHTML = '';
+        }
+        if (els.pdfReaderModal) {
+          els.pdfReaderModal.hidden = true;
+        }
+      }
+
+      async function openPdfReader(mediaItem) {
+        if (!mediaItem || !els.pdfReaderModal) return;
+        const docTitle = mediaItem.name || 'เอกสาร PDF';
+        els.pdfReaderTitle.textContent = docTitle;
+        pdfReaderState.zoom = 1;
+        pdfReaderState.currentPage = 1;
+        pdfReaderState.numPages = mediaItem.pageCount || 1;
+        updatePdfReaderControlsUI();
+
+        els.pdfReaderViewport.innerHTML = `
+          <div class="card state-card" style="max-width:420px; margin:auto;">
+            <h3 class="state-title" style="font-size:16px;">กำลังเปิดเอกสาร PDF...</h3>
+            <p class="state-desc" id="pdfLoadingDesc"></p>
+          </div>
+        `;
+        const loadingDescEl = document.getElementById('pdfLoadingDesc');
+        if (loadingDescEl) loadingDescEl.textContent = docTitle;
+        els.pdfReaderModal.hidden = false;
+
+        let resolvedSource = null;
+        try {
+          if (mediaItem.fileRef) {
+            resolvedSource = mediaItem.fileRef;
+          } else if (mediaItem.path) {
+            resolvedSource = await resolveRepoMediaUrl(mediaItem);
+          } else {
+            resolvedSource = mediaItem.url;
+          }
+
+          if (!resolvedSource) {
+            throw new Error('ไม่พบข้อมูลไฟล์ PDF');
+          }
+
+          const pdfDoc = await loadPdfDocumentSafe(resolvedSource);
+          pdfReaderState.doc = pdfDoc;
+          pdfReaderState.numPages = pdfDoc.numPages || 1;
+          pdfReaderState.currentPage = 1;
+          buildPdfPagesLayout();
+        } catch (err) {
+          const fallbackStr = typeof resolvedSource === 'string' ? resolvedSource : (mediaItem.url || '');
+          if (fallbackStr && (fallbackStr.startsWith('data:') || fallbackStr.startsWith('blob:'))) {
+            els.pdfReaderViewport.innerHTML = '';
+            const frame = document.createElement('iframe');
+            frame.className = 'pdf-fallback-frame';
+            frame.title = docTitle;
+            frame.src = fallbackStr;
+            els.pdfReaderViewport.appendChild(frame);
+          } else if (fallbackStr && /^https?:\/\//i.test(fallbackStr)) {
+            els.pdfReaderViewport.innerHTML = '';
+            const errCard = document.createElement('div');
+            errCard.className = 'card state-card';
+            errCard.style.maxWidth = '460px';
+            errCard.style.margin = 'auto';
+            errCard.innerHTML = `
+              <h3 class="state-title" style="font-size:17px;">เซิร์ฟเวอร์ปลายทางจำกัดการฝังอ่านข้ามโดเมน</h3>
+              <p class="state-desc">ลิงก์ PDF ภายนอกนี้ไม่อนุญาตให้ดึงข้อมูลข้ามเว็บไซต์โดยตรง สามารถเปิดหรือคัดลอกลิงก์เพื่ออ่านในแท็บใหม่ได้ทันที</p>
+            `;
+            const openExtBtn = document.createElement('button');
+            openExtBtn.type = 'button';
+            openExtBtn.className = 'btn btn-primary';
+            openExtBtn.textContent = 'เปิดลิงก์เอกสาร PDF';
+            openExtBtn.addEventListener('click', (ev) => {
+              closePdfReader();
+              handleSmartLinkOpen(ev, fallbackStr, docTitle, false);
+            });
+            errCard.appendChild(openExtBtn);
+            els.pdfReaderViewport.appendChild(errCard);
+          } else {
+            els.pdfReaderViewport.innerHTML = `
+              <div class="card state-card" style="max-width:420px; margin:auto;">
+                <h3 class="state-title" style="font-size:16px;">ไม่สามารถเปิดอ่านไฟล์ PDF นี้ได้</h3>
+                <p class="state-desc">${(err && err.message) || 'ไฟล์อาจเสียหายหรือมีรูปแบบไม่รองรับ'}</p>
+              </div>
+            `;
+          }
+        }
+      }
 
       function sanitizeGitHubToken(raw) {
         return String(raw || '')
@@ -3522,14 +4198,17 @@
           createdAt: p.createdAt || new Date().toISOString(),
           updatedAt: p.updatedAt || null,
           media: (p.media || [])
-            .filter(m => !m.isSessionObjectUrl && m.url)
+            .filter(m => !m.isSessionObjectUrl && (m.url || m.path))
             .map(m => ({
               kind: m.kind || 'image',
-              url: m.url,
+              url: m.url || '',
               path: m.path || '',
               sha: m.sha || null,
               name: m.name || '',
-              mime: m.mime || ''
+              mime: m.mime || '',
+              size: m.size || 0,
+              pageCount: m.pageCount || 0,
+              coverUrl: m.coverUrl || ''
             }))
         }));
 
@@ -4856,7 +5535,10 @@
           sha: savedContent.sha || null,
           url: savedContent.download_url || '',
           mime: attachment.mime || '',
-          name: attachment.name
+          name: attachment.name,
+          size: attachment.size || 0,
+          pageCount: attachment.pageCount || 0,
+          coverUrl: attachment.coverUrl || ''
         };
       }
 
@@ -4937,7 +5619,10 @@
                 kind: m.kind,
                 url: m.url,
                 name: m.name || '',
-                mime: m.mime || ''
+                mime: m.mime || '',
+                size: m.size || 0,
+                pageCount: m.pageCount || 0,
+                coverUrl: m.coverUrl || ''
               }))
           }));
 
@@ -5120,10 +5805,12 @@
         if (!q) return true;
         const groupName = getGroupNameById(post.groupId) || post.groupName || '';
         const lp = post.linkPreview || {};
+        const mediaNames = Array.isArray(post.media) ? post.media.map(m => m.name || '').join(' ') : '';
         const haystack = [
           post.text || '',
           post.author || '',
           groupName,
+          mediaNames,
           lp.title || '',
           lp.description || '',
           lp.domain || '',
@@ -5718,7 +6405,42 @@
           const card = document.createElement('div');
           card.className = 'preview-item';
 
-          if (item.kind === 'video') {
+          if (item.kind === 'pdf') {
+            if (item.coverUrl) {
+              const img = document.createElement('img');
+              img.src = item.coverUrl;
+              img.alt = item.name || 'ตัวอย่างปกเอกสาร PDF';
+              img.style.objectFit = 'contain';
+              img.style.background = '#ffffff';
+              card.appendChild(img);
+            } else {
+              const fb = document.createElement('div');
+              fb.className = 'pdf-preview-fallback';
+              fb.innerHTML = `
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--pdf-accent)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                </svg>
+              `;
+              const fn = document.createElement('span');
+              fn.className = 'pdf-preview-filename';
+              fn.textContent = item.name || 'เอกสาร PDF';
+              fb.appendChild(fn);
+              card.appendChild(fb);
+            }
+            card.style.cursor = 'pointer';
+            card.title = 'คลิกเพื่อเปิดอ่านตัวอย่างไฟล์ PDF';
+            card.addEventListener('click', (e) => {
+              if (e.target.closest('.preview-remove')) return;
+              openPdfReader({
+                kind: 'pdf',
+                name: item.name || 'เอกสาร PDF',
+                fileRef: item.file || null,
+                url: item.dataUrl || item.previewUrl || '',
+                pageCount: item.pageCount || 0
+              });
+            });
+          } else if (item.kind === 'video') {
             const vid = document.createElement('video');
             vid.src = item.previewUrl;
             vid.muted = true;
@@ -5734,9 +6456,16 @@
 
           const badge = document.createElement('span');
           badge.className = 'preview-badge';
-          badge.textContent = item.size
-            ? `${item.kind === 'video' ? 'วิดีโอ' : 'รูปภาพ'} • ${formatBytes(item.size)}`
-            : (item.kind === 'video' ? 'วิดีโอ (URL)' : 'รูปภาพ (URL)');
+          if (item.kind === 'pdf') {
+            const pagePart = item.pageCount ? ` ${item.pageCount} หน้า` : '';
+            badge.textContent = item.size
+              ? `PDF${pagePart} • ${formatBytes(item.size)}`
+              : `PDF (URL)${pagePart}`;
+          } else {
+            badge.textContent = item.size
+              ? `${item.kind === 'video' ? 'วิดีโอ' : 'รูปภาพ'} • ${formatBytes(item.size)}`
+              : (item.kind === 'video' ? 'วิดีโอ (URL)' : 'รูปภาพ (URL)');
+          }
           card.appendChild(badge);
 
           const removeBtn = document.createElement('button');
@@ -6074,13 +6803,81 @@
             article.appendChild(previewHolder);
           }
 
-          // Post Media Section
-          if (mediaList.length > 0) {
+          // Post PDF Attachments Section
+          const pdfMediaList = mediaList.filter(m => m.kind === 'pdf');
+          const visualMediaList = mediaList.filter(m => m.kind !== 'pdf');
+
+          if (pdfMediaList.length > 0) {
+            const pdfListWrap = document.createElement('div');
+            pdfListWrap.className = 'post-pdf-list';
+
+            pdfMediaList.forEach(pdfItem => {
+              const cardEl = document.createElement('div');
+              cardEl.className = 'pdf-attachment-card';
+
+              const coverBox = document.createElement('div');
+              coverBox.className = 'pdf-cover-thumb';
+              if (pdfItem.coverUrl) {
+                const cImg = document.createElement('img');
+                cImg.src = pdfItem.coverUrl;
+                cImg.alt = pdfItem.name || 'ปกเอกสาร PDF';
+                coverBox.appendChild(cImg);
+              } else {
+                coverBox.innerHTML = `
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                  </svg>
+                  <span style="margin-top:2px;">PDF</span>
+                `;
+              }
+
+              const metaBox = document.createElement('div');
+              metaBox.className = 'pdf-meta-info';
+
+              const titleDiv = document.createElement('div');
+              titleDiv.className = 'pdf-doc-title';
+              titleDiv.textContent = pdfItem.name || 'เอกสาร PDF';
+
+              const subDiv = document.createElement('div');
+              subDiv.className = 'pdf-doc-sub';
+
+              const pill = document.createElement('span');
+              pill.className = 'pdf-badge-pill';
+              pill.textContent = 'PDF';
+              subDiv.appendChild(pill);
+
+              const detailParts = [];
+              if (pdfItem.pageCount) detailParts.push(`${pdfItem.pageCount} หน้า`);
+              if (pdfItem.size) detailParts.push(formatBytes(pdfItem.size));
+              if (detailParts.length === 0) detailParts.push('คลิกเพื่อเปิดอ่านเอกสาร');
+
+              const detailSpan = document.createElement('span');
+              detailSpan.textContent = detailParts.join(' • ');
+              subDiv.appendChild(detailSpan);
+
+              metaBox.append(titleDiv, subDiv);
+
+              const readBtn = document.createElement('button');
+              readBtn.type = 'button';
+              readBtn.className = 'btn btn-primary pdf-read-btn';
+              readBtn.textContent = 'อ่านไฟล์ PDF';
+
+              cardEl.addEventListener('click', () => openPdfReader(pdfItem));
+              cardEl.append(coverBox, metaBox, readBtn);
+              pdfListWrap.appendChild(cardEl);
+            });
+
+            article.appendChild(pdfListWrap);
+          }
+
+          // Post Visual Media Section (Images & Videos)
+          if (visualMediaList.length > 0) {
             const mediaGrid = document.createElement('div');
-            const imageCount = mediaList.filter(m => m.kind !== 'video').length;
-            const layoutClass = mediaList.length === 1
+            const imageCount = visualMediaList.filter(m => m.kind !== 'video').length;
+            const layoutClass = visualMediaList.length === 1
               ? 'count-1'
-              : (imageCount === 2 && mediaList.length === 2 ? 'count-2' : 'count-many');
+              : (imageCount === 2 && visualMediaList.length === 2 ? 'count-2' : 'count-many');
             mediaGrid.className = `post-media ${layoutClass}`;
 
             const mountMediaIntoFrame = (frame, mediaItem, resolvedUrl) => {
@@ -6125,7 +6922,7 @@
               }
             };
 
-            mediaList.forEach(mediaItem => {
+            visualMediaList.forEach(mediaItem => {
               const frame = document.createElement('div');
               frame.className = mediaItem.kind === 'video' ? 'media-frame video-frame' : 'media-frame';
 
@@ -6200,7 +6997,15 @@
         for (const file of Array.from(files)) {
           if (state.gh.connected && file.size > MAX_GITHUB_FILE_BYTES) {
             showComposerMessage(
-              `ไฟล์ "${file.name}" มีขนาด ${formatBytes(file.size)} เกินขีดจำกัด 25 MB ของการอัปโหลดผ่านเบราว์เซอร์ขึ้น GitHub กรุณาใช้คลิปขนาดเล็กลงหรือแนบเป็นลิงก์สื่อ`,
+              `ไฟล์ "${file.name}" มีขนาด ${formatBytes(file.size)} เกินขีดจำกัด 25 MB ของการอัปโหลดผ่านเบราว์เซอร์ขึ้น GitHub กรุณาใช้ไฟล์ขนาดเล็กลงหรือแนบเป็นลิงก์สื่อ`,
+              'error'
+            );
+            continue;
+          }
+
+          if (kind === 'pdf' && !state.gh.connected && file.size > MAX_LOCAL_PDF_BYTES) {
+            showComposerMessage(
+              `ไฟล์ PDF "${file.name}" มีขนาด ${formatBytes(file.size)} (การซิงค์แบบไม่ใช้ GitHub รองรับไม่เกิน 12 MB ต่อไฟล์ หรือเชื่อมต่อ GitHub Repo เพื่ออัปโหลดได้ถึง 25 MB)`,
               'error'
             );
             continue;
@@ -6214,14 +7019,27 @@
             file,
             previewUrl,
             dataUrl: '',
+            coverUrl: '',
+            pageCount: 0,
             name: file.name,
             size: file.size,
-            mime: file.type
+            mime: file.type || (kind === 'pdf' ? 'application/pdf' : '')
           };
           if (kind === 'image') {
             imageFileToCompressedDataUrl(file).then(dUrl => {
               if (dUrl) item.dataUrl = dUrl;
             });
+          } else if (kind === 'pdf') {
+            if (file.size <= MAX_LOCAL_PDF_BYTES) {
+              fileToDataUrlFull(file).then(dUrl => {
+                if (dUrl) item.dataUrl = dUrl;
+              }).catch(() => {});
+            }
+            extractPdfCoverAndPages(file).then(meta => {
+              if (meta.coverUrl) item.coverUrl = meta.coverUrl;
+              if (meta.pageCount) item.pageCount = meta.pageCount;
+              renderComposerPreviews();
+            }).catch(() => {});
           }
           state.pendingAttachments.push(item);
         }
@@ -6232,11 +7050,12 @@
 
       function handleAddUrlMedia() {
         const url = els.urlMediaInput.value.trim();
-        const kind = els.urlMediaType.value === 'video' ? 'video' : 'image';
+        let kind = els.urlMediaType.value;
         if (!url) return;
 
+        let parsed = null;
         try {
-          const parsed = new URL(url);
+          parsed = new URL(url);
           if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
             showComposerMessage('กรุณาระบุลิงก์ที่ขึ้นต้นด้วย https:// หรือ http://', 'error');
             return;
@@ -6246,15 +7065,40 @@
           return;
         }
 
-        state.pendingAttachments.push({
+        if (/\.pdf(\?|$)/i.test(parsed.pathname)) {
+          kind = 'pdf';
+        } else if (kind !== 'video' && kind !== 'pdf') {
+          kind = 'image';
+        }
+
+        const segs = safeDecodeSegment(parsed.pathname || '').split('/').filter(Boolean);
+        const lastSeg = segs.length > 0 ? segs[segs.length - 1] : '';
+        const defaultLabel = kind === 'pdf'
+          ? (lastSeg || 'เอกสาร PDF จากลิงก์')
+          : (kind === 'video' ? 'วิดีโอจากลิงก์' : 'รูปภาพจากลิงก์');
+
+        const item = {
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
           kind,
           source: 'url',
           previewUrl: url,
-          name: kind === 'video' ? 'วิดีโอจากลิงก์' : 'รูปภาพจากลิงก์',
+          dataUrl: '',
+          coverUrl: '',
+          pageCount: 0,
+          name: defaultLabel,
           size: 0,
-          mime: ''
-        });
+          mime: kind === 'pdf' ? 'application/pdf' : ''
+        };
+
+        if (kind === 'pdf') {
+          extractPdfCoverAndPages(url).then(meta => {
+            if (meta.coverUrl) item.coverUrl = meta.coverUrl;
+            if (meta.pageCount) item.pageCount = meta.pageCount;
+            renderComposerPreviews();
+          }).catch(() => {});
+        }
+
+        state.pendingAttachments.push(item);
 
         els.urlMediaInput.value = '';
         els.urlDrawer.hidden = true;
@@ -6303,14 +7147,22 @@
             for (let i = 0; i < state.pendingAttachments.length; i++) {
               const att = state.pendingAttachments[i];
               if (att.source === 'file') {
-                els.submitPostBtn.textContent = `อัปโหลดสื่อ (${i + 1}/${state.pendingAttachments.length})...`;
+                if (att.kind === 'pdf' && !att.coverUrl) {
+                  const meta = await extractPdfCoverAndPages(att.file);
+                  if (meta.coverUrl) att.coverUrl = meta.coverUrl;
+                  if (meta.pageCount) att.pageCount = meta.pageCount;
+                }
+                els.submitPostBtn.textContent = `อัปโหลดไฟล์ (${i + 1}/${state.pendingAttachments.length})...`;
                 const uploaded = await uploadMediaFileToGitHub(att, i + 1);
                 uploadedMedia.push(uploaded);
               } else {
                 uploadedMedia.push({
                   kind: att.kind,
                   url: att.previewUrl,
-                  name: att.name
+                  name: att.name,
+                  size: 0,
+                  pageCount: att.pageCount || 0,
+                  coverUrl: att.coverUrl || ''
                 });
               }
             }
@@ -6338,7 +7190,7 @@
               (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
             );
           } else {
-            // Local mode when GitHub is not configured yet
+            // Local / Cloud mode when GitHub is not configured yet
             for (const att of state.pendingAttachments) {
               let resolvedLocalUrl = att.previewUrl;
               let sessionOnly = att.source === 'file';
@@ -6348,12 +7200,29 @@
                   resolvedLocalUrl = persistentDataUrl;
                   sessionOnly = false;
                 }
+              } else if (att.source === 'file' && att.kind === 'pdf') {
+                els.submitPostBtn.textContent = 'กำลังเตรียมไฟล์ PDF...';
+                if (!att.coverUrl) {
+                  const meta = await extractPdfCoverAndPages(att.file);
+                  if (meta.coverUrl) att.coverUrl = meta.coverUrl;
+                  if (meta.pageCount) att.pageCount = meta.pageCount;
+                }
+                if (att.size <= MAX_LOCAL_PDF_BYTES) {
+                  const pdfDataUrl = att.dataUrl || (await fileToDataUrlFull(att.file));
+                  if (pdfDataUrl) {
+                    resolvedLocalUrl = pdfDataUrl;
+                    sessionOnly = false;
+                  }
+                }
               }
               uploadedMedia.push({
                 kind: att.kind,
                 url: resolvedLocalUrl,
                 name: att.name,
                 mime: att.mime || '',
+                size: att.size || 0,
+                pageCount: att.pageCount || 0,
+                coverUrl: att.coverUrl || '',
                 fileRef: att.source === 'file' ? att.file : null,
                 isSessionObjectUrl: sessionOnly
               });
