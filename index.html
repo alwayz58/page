@@ -3100,9 +3100,9 @@
 
           <div class="composer-footer">
             <div class="media-triggers">
-              <input type="file" id="imageFileInput" accept="image/*" multiple hidden>
-              <input type="file" id="videoFileInput" accept="video/*" multiple hidden>
-              <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple hidden>
+              <input type="file" id="imageFileInput" accept="image/*" multiple style="display: none;">
+              <input type="file" id="videoFileInput" accept="video/*" multiple style="display: none;">
+              <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple style="display: none;">
 
               <button type="button" class="media-btn" id="pickImageBtn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--photo-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -3506,6 +3506,11 @@
       const DEFAULT_GH_OWNER = 'alwayz58';
       const DEFAULT_CLOUD_DB_URL = 'https://alwayz-f304a-default-rtdb.asia-southeast1.firebasedatabase.app/';
 
+      // Set PDF.js worker source for standard in-app PDF rendering
+      if (window.pdfjsLib) {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+      }
+
       // Application State
       const state = {
         displayName: 'ฉัน',
@@ -3797,6 +3802,51 @@
         ghRepoDatalist: document.getElementById('ghRepoDatalist'),
         fetchReposBtn: document.getElementById('fetchReposBtn'),
         ghRepoListHint: document.getElementById('ghRepoListHint'),
+        toggleLockModeBtn: document.getElementById('toggleLockModeBtn'),
+        toggleLockModeIcon: document.getElementById('toggleLockModeIcon'),
+        toggleLockModeLabel: document.getElementById('toggleLockModeLabel'),
+        openPrivacyBtn: document.getElementById('openPrivacyBtn'),
+        privateLockScreen: document.getElementById('privateLockScreen'),
+        lockScreenForm: document.getElementById('lockScreenForm'),
+        lockScreenPwdInput: document.getElementById('lockScreenPwdInput'),
+        toggleLockScreenPwdBtn: document.getElementById('toggleLockScreenPwdBtn'),
+        lockScreenError: document.getElementById('lockScreenError'),
+        mainAppLayout: document.getElementById('mainAppLayout'),
+        publicModeBanner: document.getElementById('publicModeBanner'),
+        bannerUnlockBtn: document.getElementById('bannerUnlockBtn'),
+        composerSection: document.getElementById('composerSection'),
+        composerVisibilitySelect: document.getElementById('composerVisibilitySelect'),
+        privacyModal: document.getElementById('privacyModal'),
+        closePrivacyBtn: document.getElementById('closePrivacyBtn'),
+        privacyForm: document.getElementById('privacyForm'),
+        policyPublicCard: document.getElementById('policyPublicCard'),
+        policyPrivateCard: document.getElementById('policyPrivateCard'),
+        policyPublicRadio: document.getElementById('policyPublicRadio'),
+        policyPrivateRadio: document.getElementById('policyPrivateRadio'),
+        privacyPasswordInput: document.getElementById('privacyPasswordInput'),
+        togglePrivacyPwdBtn: document.getElementById('togglePrivacyPwdBtn'),
+        privacyPasswordHint: document.getElementById('privacyPasswordHint'),
+        privacyStatus: document.getElementById('privacyStatus'),
+        clearPrivacyPwdBtn: document.getElementById('clearPrivacyPwdBtn'),
+        savePrivacySettingsBtn: document.getElementById('savePrivacySettingsBtn'),
+        saveAndLockNowBtn: document.getElementById('saveAndLockNowBtn'),
+        unlockModal: document.getElementById('unlockModal'),
+        closeUnlockBtn: document.getElementById('closeUnlockBtn'),
+        unlockModalForm: document.getElementById('unlockModalForm'),
+        unlockModalPwdInput: document.getElementById('unlockModalPwdInput'),
+        toggleUnlockModalPwdBtn: document.getElementById('toggleUnlockModalPwdBtn'),
+        unlockModalError: document.getElementById('unlockModalError'),
+        cancelUnlockModalBtn: document.getElementById('cancelUnlockModalBtn'),
+        sidebarSyncDivider: document.getElementById('sidebarSyncDivider'),
+        sidebarSyncCard: document.getElementById('sidebarSyncCard'),
+        sidebarGhAccountLink: document.getElementById('sidebarGhAccountLink'),
+        sidebarSyncStatus: document.getElementById('sidebarSyncStatus'),
+        sidebarSyncStatusText: document.getElementById('sidebarSyncStatusText'),
+        sidebarSyncNowBtn: document.getElementById('sidebarSyncNowBtn'),
+        sidebarConfigSyncBtn: document.getElementById('sidebarConfigSyncBtn'),
+        ghRepoDatalist: document.getElementById('ghRepoDatalist'),
+        fetchReposBtn: document.getElementById('fetchReposBtn'),
+        ghRepoListHint: document.getElementById('ghRepoListHint'),
         externalLinkModal: document.getElementById('externalLinkModal'),
         extLinkModalTitle: document.getElementById('extLinkModalTitle'),
         extLinkMediaPreview: document.getElementById('extLinkMediaPreview'),
@@ -3858,6 +3908,15 @@
         });
       }
 
+      function fileToArrayBuffer(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsArrayBuffer(file);
+        });
+      }
+
       function dataUrlToUint8Array(dataUrl) {
         const commaIdx = dataUrl.indexOf(',');
         const b64 = commaIdx >= 0 ? dataUrl.slice(commaIdx + 1) : dataUrl;
@@ -3872,6 +3931,10 @@
 
       async function pdfSourceToUint8Array(src) {
         if (!src) throw new Error('ไม่พบข้อมูลไฟล์ PDF');
+        if (src instanceof File) {
+          const buf = await fileToArrayBuffer(src);
+          return new Uint8Array(buf);
+        }
         if (src.startsWith('data:')) {
           return dataUrlToUint8Array(src);
         }
@@ -6406,8 +6469,8 @@
             card.appendChild(placeholder);
 
             // Attempt to load live thumbnail from first page
-            extractPdfPreviewMeta(item.previewUrl, item.name).then(meta => {
-              if (meta && meta.thumbUrl) {
+            extractPdfPreviewMeta(item.file || item.previewUrl, item.name).then(meta => {
+              if (meta && meta.thumbUrl && placeholder.parentNode === card) {
                 const img = document.createElement('img');
                 img.className = 'pdf-thumb-img';
                 img.src = meta.thumbUrl;
@@ -6974,6 +7037,7 @@
 
               // Get source URL (either cached blob or direct network URL)
               const getSourceUrl = async () => {
+                if (pdfItem.fileRef) return pdfItem.fileRef;
                 if (!pdfItem.path && pdfItem.url) return pdfItem.url;
                 return await resolveRepoMediaUrl(pdfItem);
               };
@@ -7352,6 +7416,12 @@
               let sessionOnly = att.source === 'file';
               if (att.source === 'file' && att.kind === 'image') {
                 const persistentDataUrl = att.dataUrl || (await imageFileToCompressedDataUrl(att.file));
+                if (persistentDataUrl) {
+                  resolvedLocalUrl = persistentDataUrl;
+                  sessionOnly = false;
+                }
+              } else if (att.source === 'file' && att.kind === 'pdf') {
+                const persistentDataUrl = att.dataUrl || (await fileToDataUrl(att.file));
                 if (persistentDataUrl) {
                   resolvedLocalUrl = persistentDataUrl;
                   sessionOnly = false;
