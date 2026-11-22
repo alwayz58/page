@@ -6387,6 +6387,34 @@
             vid.playsInline = true;
             vid.preload = 'metadata';
             card.appendChild(vid);
+          } else if (item.kind === 'pdf') {
+            card.className = 'preview-item pdf-preview-item';
+            
+            const placeholder = document.createElement('div');
+            placeholder.className = 'pdf-preview-placeholder';
+            placeholder.innerHTML = `
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14 2 14 8 20 8"/>
+                <line x1="16" x2="8" y1="13" y2="13"/>
+                <line x1="16" x2="8" y1="17" y2="17"/>
+                <line x1="10" x2="8" y1="9" y2="9"/>
+              </svg>
+              <span class="pdf-preview-filename"></span>
+            `;
+            placeholder.querySelector('.pdf-preview-filename').textContent = item.name || 'เอกสาร.pdf';
+            card.appendChild(placeholder);
+
+            // Attempt to load live thumbnail from first page
+            extractPdfPreviewMeta(item.previewUrl, item.name).then(meta => {
+              if (meta && meta.thumbUrl) {
+                const img = document.createElement('img');
+                img.className = 'pdf-thumb-img';
+                img.src = meta.thumbUrl;
+                img.alt = item.name;
+                card.insertBefore(img, placeholder);
+              }
+            }).catch(() => {});
           } else {
             const img = document.createElement('img');
             img.src = item.previewUrl;
@@ -6396,9 +6424,13 @@
 
           const badge = document.createElement('span');
           badge.className = 'preview-badge';
-          badge.textContent = item.size
-            ? `${item.kind === 'video' ? 'วิดีโอ' : 'รูปภาพ'} • ${formatBytes(item.size)}`
-            : (item.kind === 'video' ? 'วิดีโอ (URL)' : 'รูปภาพ (URL)');
+          if (item.kind === 'pdf') {
+            badge.textContent = `PDF • ${formatBytes(item.size)}`;
+          } else {
+            badge.textContent = item.size
+              ? `${item.kind === 'video' ? 'วิดีโอ' : 'รูปภาพ'} • ${formatBytes(item.size)}`
+              : (item.kind === 'video' ? 'วิดีโอ (URL)' : 'รูปภาพ (URL)');
+          }
           card.appendChild(badge);
 
           const removeBtn = document.createElement('button');
@@ -6737,12 +6769,15 @@
           }
 
           // Post Media Section
-          if (mediaList.length > 0) {
+          const pdfList = mediaList.filter(m => m.kind === 'pdf');
+          const visualMediaList = mediaList.filter(m => m.kind !== 'pdf');
+
+          if (visualMediaList.length > 0) {
             const mediaGrid = document.createElement('div');
-            const imageCount = mediaList.filter(m => m.kind !== 'video').length;
-            const layoutClass = mediaList.length === 1
+            const imageCount = visualMediaList.filter(m => m.kind !== 'video').length;
+            const layoutClass = visualMediaList.length === 1
               ? 'count-1'
-              : (imageCount === 2 && mediaList.length === 2 ? 'count-2' : 'count-many');
+              : (imageCount === 2 && visualMediaList.length === 2 ? 'count-2' : 'count-many');
             mediaGrid.className = `post-media ${layoutClass}`;
 
             const mountMediaIntoFrame = (frame, mediaItem, resolvedUrl) => {
@@ -6787,7 +6822,7 @@
               }
             };
 
-            mediaList.forEach(mediaItem => {
+            visualMediaList.forEach(mediaItem => {
               const frame = document.createElement('div');
               frame.className = mediaItem.kind === 'video' ? 'media-frame video-frame' : 'media-frame';
 
@@ -6810,6 +6845,312 @@
             });
 
             article.appendChild(mediaGrid);
+          }
+
+          // PDF Document Attachments List
+          if (pdfList.length > 0 && state.editingPostId !== post.id) {
+            const pdfContainer = document.createElement('div');
+            pdfContainer.className = 'post-pdf-list';
+
+            // Inline reader container (placed underneath the list of cards)
+            const inlineReader = document.createElement('div');
+            inlineReader.className = 'pdf-inline-reader';
+            inlineReader.hidden = true;
+
+            const inlineState = {
+              pdfDoc: null,
+              currentPage: 1,
+              numPages: 1,
+              zoom: 1.0,
+              srcUrl: '',
+              renderId: 0
+            };
+
+            const renderInlinePdfPage = async (viewportEl, canvas, pageStatusEl, prevBtn, nextBtn) => {
+              const myRenderId = ++inlineState.renderId;
+              viewportEl.innerHTML = '';
+              viewportEl.appendChild(canvas);
+
+              try {
+                const page = await inlineState.pdfDoc.getPage(inlineState.currentPage);
+                const unscaledVp = page.getViewport({ scale: 1 });
+                const availW = Math.min(680, Math.max(260, (viewportEl.clientWidth || 540) - 16));
+                const fitScale = availW / (unscaledVp.width || 600);
+                const scale = fitScale * inlineState.zoom;
+                const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+                const cssVp = page.getViewport({ scale });
+                const renderVp = page.getViewport({ scale: scale * dpr });
+
+                canvas.width = Math.floor(renderVp.width);
+                canvas.height = Math.floor(renderVp.height);
+                canvas.style.width = `${Math.floor(cssVp.width)}px`;
+                canvas.style.height = `${Math.floor(cssVp.height)}px`;
+                canvas.className = 'pdf-page-canvas';
+
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                if (myRenderId === inlineState.renderId) {
+                  await page.render({ canvasContext: ctx, viewport: renderVp }).promise;
+                  pageStatusEl.textContent = `หน้า ${inlineState.currentPage} / ${inlineState.numPages}`;
+                  prevBtn.disabled = inlineState.currentPage <= 1;
+                  nextBtn.disabled = inlineState.currentPage >= inlineState.numPages;
+                }
+              } catch (_) {
+                if (myRenderId === inlineState.renderId) {
+                  viewportEl.innerHTML = '<div class="media-loading">ไม่สามารถเรนเดอร์หน้านี้ได้</div>';
+                }
+              }
+            };
+
+            pdfList.forEach(pdfItem => {
+              const wrap = document.createElement('div');
+              wrap.className = 'pdf-doc-wrap';
+
+              const card = document.createElement('div');
+              card.className = 'pdf-doc-card';
+
+              const thumb = document.createElement('div');
+              thumb.className = 'pdf-doc-thumb';
+              const thumbImg = document.createElement('img');
+              thumbImg.alt = pdfItem.name;
+              thumbImg.src = generateFallbackPdfThumbDataUrl(pdfItem.name);
+              thumb.appendChild(thumbImg);
+
+              const thumbTag = document.createElement('span');
+              thumbTag.className = 'pdf-doc-thumb-tag';
+              thumbTag.textContent = 'PDF';
+              thumb.appendChild(thumbTag);
+
+              const info = document.createElement('div');
+              info.className = 'pdf-doc-info';
+
+              const title = document.createElement('div');
+              title.className = 'pdf-doc-title';
+              title.textContent = pdfItem.name || 'เอกสาร PDF';
+
+              const meta = document.createElement('div');
+              meta.className = 'pdf-doc-meta';
+              const typePill = document.createElement('span');
+              typePill.className = 'pdf-type-pill';
+              typePill.innerHTML = `
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                </svg>
+                <span>เอกสาร</span>
+              `;
+              meta.appendChild(typePill);
+
+              const pageCountSpan = document.createElement('span');
+              pageCountSpan.textContent = 'กำลังคำนวณจำนวนหน้า...';
+              meta.appendChild(pageCountSpan);
+
+              info.append(title, meta);
+
+              const actions = document.createElement('div');
+              actions.className = 'pdf-doc-actions';
+
+              const readBtn = document.createElement('button');
+              readBtn.type = 'button';
+              readBtn.className = 'btn btn-primary';
+              readBtn.style.padding = '6px 12px';
+              readBtn.style.fontSize = '13px';
+              readBtn.textContent = 'อ่านเอกสาร';
+
+              const openTabBtn = document.createElement('button');
+              openTabBtn.type = 'button';
+              openTabBtn.className = 'btn';
+              openTabBtn.style.padding = '6px 12px';
+              openTabBtn.style.fontSize = '13px';
+              openTabBtn.textContent = 'เปิดลิงก์';
+
+              actions.append(readBtn, openTabBtn);
+              card.append(thumb, info, actions);
+              wrap.appendChild(card);
+              pdfContainer.appendChild(wrap);
+
+              // Get source URL (either cached blob or direct network URL)
+              const getSourceUrl = async () => {
+                if (!pdfItem.path && pdfItem.url) return pdfItem.url;
+                return await resolveRepoMediaUrl(pdfItem);
+              };
+
+              // Resolve page count & beautiful thumbnail from live document
+              getSourceUrl().then(url => {
+                if (!url) return;
+                extractPdfPreviewMeta(url, pdfItem.name).then(metaObj => {
+                  if (metaObj.thumbUrl) thumbImg.src = metaObj.thumbUrl;
+                  pageCountSpan.textContent = metaObj.pageCount > 0 ? `${metaObj.pageCount} หน้า` : 'เอกสาร PDF';
+                }).catch(() => {
+                  pageCountSpan.textContent = 'เอกสาร PDF';
+                });
+              });
+
+              // Toggle inline expandable reader
+              readBtn.addEventListener('click', async () => {
+                const url = await getSourceUrl();
+                if (!url) {
+                  showComposerMessage('ไม่สามารถเชื่อมต่อไฟล์ PDF ได้', 'error');
+                  return;
+                }
+
+                // If reader is already showing this document, toggle close
+                if (!inlineReader.hidden && inlineState.srcUrl === url) {
+                  inlineReader.hidden = true;
+                  return;
+                }
+
+                // Initialize reader bar and viewport
+                inlineReader.hidden = false;
+                inlineReader.innerHTML = '';
+
+                const bar = document.createElement('div');
+                bar.className = 'pdf-reader-bar';
+
+                const barLeft = document.createElement('div');
+                barLeft.className = 'pdf-bar-group';
+
+                const prevBtn = document.createElement('button');
+                prevBtn.type = 'button';
+                prevBtn.className = 'calendar-nav-btn';
+                prevBtn.textContent = '‹';
+
+                const pageStatus = document.createElement('span');
+                pageStatus.className = 'pdf-page-status';
+                pageStatus.textContent = 'กำลังเปิด...';
+
+                const nextBtn = document.createElement('button');
+                nextBtn.type = 'button';
+                nextBtn.className = 'calendar-nav-btn';
+                nextBtn.textContent = '›';
+
+                barLeft.append(prevBtn, pageStatus, nextBtn);
+
+                const barRight = document.createElement('div');
+                barRight.className = 'pdf-bar-group';
+
+                const zoomOut = document.createElement('button');
+                zoomOut.type = 'button';
+                zoomOut.className = 'calendar-nav-btn';
+                zoomOut.textContent = '−';
+
+                const zoomReset = document.createElement('button');
+                zoomReset.type = 'button';
+                zoomReset.className = 'btn';
+                zoomReset.style.padding = '4px 8px';
+                zoomReset.style.fontSize = '12px';
+                zoomReset.textContent = '100%';
+
+                const zoomIn = document.createElement('button');
+                zoomIn.type = 'button';
+                zoomIn.className = 'calendar-nav-btn';
+                zoomIn.textContent = '+';
+
+                const fullScreenBtn = document.createElement('button');
+                fullScreenBtn.type = 'button';
+                fullScreenBtn.className = 'btn btn-primary';
+                fullScreenBtn.style.padding = '4px 10px';
+                fullScreenBtn.style.fontSize = '12px';
+                fullScreenBtn.textContent = 'อ่านเต็มหน้าจอ ↗';
+
+                barRight.append(zoomOut, zoomReset, zoomIn, fullScreenBtn);
+                bar.append(barLeft, barRight);
+                inlineReader.appendChild(bar);
+
+                const viewport = document.createElement('div');
+                viewport.className = 'pdf-inline-viewport';
+                viewport.innerHTML = '<div class="media-loading">กำลังโหลดเนื้อหา PDF...</div>';
+                inlineReader.appendChild(viewport);
+
+                const canvas = document.createElement('canvas');
+
+                inlineState.srcUrl = url;
+                inlineState.currentPage = 1;
+                inlineState.zoom = 1.0;
+
+                try {
+                  const doc = await loadPdfDocument(url);
+                  inlineState.pdfDoc = doc;
+                  inlineState.numPages = doc.numPages || 1;
+                  await renderInlinePdfPage(viewport, canvas, pageStatus, prevBtn, nextBtn);
+                } catch (_) {
+                  inlineState.pdfDoc = null;
+                  inlineState.numPages = 1;
+                  viewport.innerHTML = '';
+                  const fallbackFrame = document.createElement('iframe');
+                  fallbackFrame.className = 'pdf-fallback-frame';
+                  fallbackFrame.src = getSafePdfBlobUrl(url);
+                  viewport.appendChild(fallbackFrame);
+                }
+
+                prevBtn.addEventListener('click', () => {
+                  if (inlineState.currentPage > 1) {
+                    inlineState.currentPage--;
+                    renderInlinePdfPage(viewport, canvas, pageStatus, prevBtn, nextBtn);
+                  }
+                });
+
+                nextBtn.addEventListener('click', () => {
+                  if (inlineState.currentPage < inlineState.numPages) {
+                    inlineState.currentPage++;
+                    renderInlinePdfPage(viewport, canvas, pageStatus, prevBtn, nextBtn);
+                  }
+                });
+
+                zoomIn.addEventListener('click', () => {
+                  if (inlineState.zoom < 2.0) {
+                    inlineState.zoom += 0.15;
+                    zoomReset.textContent = `${Math.round(inlineState.zoom * 100)}%`;
+                    renderInlinePdfPage(viewport, canvas, pageStatus, prevBtn, nextBtn);
+                  }
+                });
+
+                zoomOut.addEventListener('click', () => {
+                  if (inlineState.zoom > 0.6) {
+                    inlineState.zoom -= 0.15;
+                    zoomReset.textContent = `${Math.round(inlineState.zoom * 100)}%`;
+                    renderInlinePdfPage(viewport, canvas, pageStatus, prevBtn, nextBtn);
+                  }
+                });
+
+                zoomReset.addEventListener('click', () => {
+                  inlineState.zoom = 1.0;
+                  zoomReset.textContent = '100%';
+                  renderInlinePdfPage(viewport, canvas, pageStatus, prevBtn, nextBtn);
+                });
+
+                fullScreenBtn.addEventListener('click', () => {
+                  openPdfReaderModal(url, pdfItem.name);
+                });
+              });
+
+              openTabBtn.addEventListener('click', async (e) => {
+                const url = await getSourceUrl();
+                if (url) {
+                  handleSmartLinkOpen(e, url, pdfItem.name || 'ลิงก์เอกสาร PDF', false);
+                }
+              });
+
+              title.addEventListener('click', async (e) => {
+                const url = await getSourceUrl();
+                if (url) {
+                  openPdfReaderModal(url, pdfItem.name);
+                }
+              });
+
+              thumb.addEventListener('click', async (e) => {
+                const url = await getSourceUrl();
+                if (url) {
+                  openPdfReaderModal(url, pdfItem.name);
+                }
+              });
+            });
+
+            pdfContainer.appendChild(inlineReader);
+            article.appendChild(pdfContainer);
           }
 
           els.feedStream.appendChild(article);
@@ -6882,6 +7223,11 @@
           };
           if (kind === 'image') {
             imageFileToCompressedDataUrl(file).then(dUrl => {
+              if (dUrl) item.dataUrl = dUrl;
+            });
+          } else if (kind === 'pdf') {
+            // Also store base64 dataUrl if needed for local standalone persistence
+            fileToDataUrl(file).then(dUrl => {
               if (dUrl) item.dataUrl = dUrl;
             });
           }
