@@ -3100,9 +3100,7 @@
 
           <div class="composer-footer">
             <div class="media-triggers">
-              <input type="file" id="imageFileInput" accept="image/*" multiple style="display: none;">
-              <input type="file" id="videoFileInput" accept="video/*" multiple style="display: none;">
-              <input type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple style="display: none;">
+              <input type="file" id="unifiedFileInput" accept="image/*,video/*,application/pdf,.pdf" multiple style="display: none;">
 
               <button type="button" class="media-btn" id="pickImageBtn">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--photo-accent)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -3726,9 +3724,7 @@
         addUrlMediaBtn: document.getElementById('addUrlMediaBtn'),
         composerPreviews: document.getElementById('composerPreviews'),
         composerMessage: document.getElementById('composerMessage'),
-        imageFileInput: document.getElementById('imageFileInput'),
-        videoFileInput: document.getElementById('videoFileInput'),
-        pdfFileInput: document.getElementById('pdfFileInput'),
+        unifiedFileInput: document.getElementById('unifiedFileInput'),
         pickImageBtn: document.getElementById('pickImageBtn'),
         pickVideoBtn: document.getElementById('pickVideoBtn'),
         pickPdfBtn: document.getElementById('pickPdfBtn'),
@@ -7274,22 +7270,39 @@
           }
 
           const previewUrl = URL.createObjectURL(file);
+          // Automatically detect the file kind based on mime type or file extension
+          let detectedKind = kind;
+          if (!kind || kind === 'auto' || kind === 'pdf' || kind === 'image' || kind === 'video') {
+            const mime = (file.type || '').toLowerCase();
+            const name = (file.name || '').toLowerCase();
+            if (mime.startsWith('image/') || /\.(jpe?g|png|gif|webp|svg|avif)$/i.test(name)) {
+              detectedKind = 'image';
+            } else if (mime.startsWith('video/') || /\.(mp4|webm|ogg|mov)$/i.test(name)) {
+              detectedKind = 'video';
+            } else if (mime === 'application/pdf' || name.endsWith('.pdf')) {
+              detectedKind = 'pdf';
+            } else {
+              showComposerMessage(`ไม่รองรับไฟล์ "${file.name}" กรุณาเลือกไฟล์รูปภาพ วิดีโอ หรือ PDF เท่านั้น`, 'error');
+              continue;
+            }
+          }
+
           const item = {
             id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-            kind,
+            kind: detectedKind,
             source: 'file',
             file,
             previewUrl,
             dataUrl: '',
             name: file.name,
             size: file.size,
-            mime: file.type
+            mime: file.type || (detectedKind === 'pdf' ? 'application/pdf' : '')
           };
-          if (kind === 'image') {
+          if (detectedKind === 'image') {
             imageFileToCompressedDataUrl(file).then(dUrl => {
               if (dUrl) item.dataUrl = dUrl;
             });
-          } else if (kind === 'pdf') {
+          } else if (detectedKind === 'pdf') {
             // Also store base64 dataUrl if needed for local standalone persistence
             fileToDataUrl(file).then(dUrl => {
               if (dUrl) item.dataUrl = dUrl;
@@ -7956,16 +7969,12 @@
         }
       });
 
-      els.pickImageBtn.addEventListener('click', () => els.imageFileInput.click());
-      els.pickVideoBtn.addEventListener('click', () => els.videoFileInput.click());
+      els.pickImageBtn.addEventListener('click', () => els.unifiedFileInput.click());
+      els.pickVideoBtn.addEventListener('click', () => els.unifiedFileInput.click());
+      els.pickPdfBtn.addEventListener('click', () => els.unifiedFileInput.click());
 
-      els.imageFileInput.addEventListener('change', (e) => {
-        handleFileSelection(e.target.files, 'image');
-        e.target.value = '';
-      });
-
-      els.videoFileInput.addEventListener('change', (e) => {
-        handleFileSelection(e.target.files, 'video');
+      els.unifiedFileInput.addEventListener('change', (e) => {
+        handleFileSelection(e.target.files, 'auto');
         e.target.value = '';
       });
 
